@@ -17,7 +17,7 @@ visStimWidth = 14; %28% calculated from degrees of flash size width
 visStimLength = 59*(1080/1200); %118% calculated from degrees of flash size length
 visStimEcc = 220; %140% calculated from degrees from center, horizontal
 FixMarkHeight = 0; % fixation mark seems to be quite high
-visStimHeight = 400 - FixMarkHeight; % 10 degrees under fixation mark = 986 pixels
+visStimHeight = 400*(1080/1200);% - FixMarkHeight; % 10 degrees under fixation mark = 986 pixels
 stimColour = [180 180 180]; %[230 230 230];
 
 % Durations
@@ -52,9 +52,10 @@ rampTime = 0.01; % rise and fall times of the tones.
 %     wavedata{iTone}(1+end-length(ramp):end) = wavedata{iTone}(1+end-length(ramp):end) .* ramp;
 %     wavedata{iTone} = wavedata{iTone} * volume; % adjust volume.
 % end
-design = repmat([1 2 3 4],1,4);
-nTrials = 16;
-ExpDesign = design(randperm(nTrials));
+
+nTrials = 4;
+design = repmat([1 2 3 4],1,nTrials/4);
+ExpDesign = design(randperm(nTrials))
 
 %Start the sequence of trials
 PsychPortAudio('RunMode', pahandle, 1);
@@ -84,7 +85,7 @@ for iTrial=1:nTrials
     else
         intLength = intLengths(3);
     end
-    ITI = ITI + intLength
+    ITI = ITI + intLength;
     
     time = time + ITI;
     
@@ -165,7 +166,7 @@ for iTrial=1:nTrials
     presentationTime(iTrial,4) = Screen('Flip', window, time);
     % flip to empty after 17ms
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
-    startAudioTime(iTrial, 3) = PsychPortAudio('Start', pahandle, 1, 0 ,1)
+    startAudioTime(iTrial, 3) = PsychPortAudio('Start', pahandle, 1, 0 ,1);
     tempPresentationTime(3) = Screen('Flip', window, presentationTime(iTrial,4) + stimDur);
     % Start audio playback at time 'time', return onset timestamp.
     % wait before going to question
@@ -203,8 +204,11 @@ for iTrial=1:nTrials
 end
 % amount of flashes we expect to see per condition (incl. illusory)
 hypothesisAns = [2 3 2 3];
+for i=1:4
+    expectedAns(ExpDesign==i) = hypothesisAns(i);
+end
 % map hypothesis to condition
-expectedAns = changem(ExpDesign, hypothesisAns, [1 2 3 4]);
+%expectedAns = changem(ExpDesign, hypothesisAns, [1 2 3 4]);
 asExpected = presentation.flashAnswer == expectedAns;
 totalScore = sum(asExpected)/nTrials;
 
@@ -223,7 +227,6 @@ for i=1:4
     exclNegatives = presentation.confAnswer(condIndices);
     exclNegatives = exclNegatives(exclNegatives>0);
     condConfmean = mean(exclNegatives) - 10;
-
     conditionConf(i) = condConfmean;
 end
 presentation.totalScore = totalScore
