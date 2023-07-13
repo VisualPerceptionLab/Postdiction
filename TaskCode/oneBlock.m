@@ -53,7 +53,7 @@ rampTime = 0.01; % rise and fall times of the tones.
 %     wavedata{iTone} = wavedata{iTone} * volume; % adjust volume.
 % end
 
-nTrials = 4;
+nTrials = 64;
 design = repmat([1 2 3 4],1,nTrials/4);
 ExpDesign = design(randperm(nTrials))
 

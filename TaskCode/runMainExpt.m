@@ -20,8 +20,8 @@ try
     subjID = input('Subject number?: ');
     %% This might be a safer way to ensure consistency in omissions&contrast across participants.
     Practice = input('1 = Behavourial Training 0 = Scanning');
-    BlockNumber = input('Blocknumber?: (1,2,3 or 4)');
-    toneOrientation = input('Cue map? (1 or 2): ');
+    %BlockNumber = input('Blocknumber?: (1,2,3 or 4)');
+    %toneOrientation = input('Cue map? (1 or 2): ');
    
     [background,Lmin,Lmax] = calibrateLum(1);
     
