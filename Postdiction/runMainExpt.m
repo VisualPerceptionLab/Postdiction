@@ -11,6 +11,7 @@ global window width height;
 global environment;
 global pahandle;
 global subjID
+global background Lmax;
 %global Q
 
 try
@@ -24,7 +25,7 @@ try
     %BlockNumber = input('Blocknumber?: (1,2,3 or 4)');
     %toneOrientation = input('Cue map? (1 or 2): ');
    
-    [background,Lmin,Lmax] = calibrateLum(1);
+    [background,~,Lmax] = calibrateLum(1.5);
     
     nBlocks = 1; %2
     nTrialsPerBlock = 64; %64 (should be multiple of 32)
@@ -66,11 +67,14 @@ try
     textSize = round(20*(heightRatioDifference));
     Screen('TextFont',window, 'Arial');
     Screen('TextSize',window, textSize);
-    Screen('FillRect', window, background);
+    % Change for background
+    %background = background/5*3;
+    Screen('FillRect', window, background);%background);
     wrapat = round(100*widthRatioDifference); %wrapat = 100;
     vspacing = 1.5*widthRatioDifference; %vspacing = 1.5;
     
     % Create fixation bullseye
+    % Change for background
     fixColour = Lmin;
     fixDiam = ceil(degrees2pixels(0.7));
     makeFixCross(fixColour, fixDiam, background);

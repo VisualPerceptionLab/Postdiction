@@ -62,49 +62,37 @@ switch environmentID
             end
         end
         
-    case 3
+   case 3
         %PsychJavaTrouble;
-        
         environment = 'beh_lab'
-        distFromScreen = 60
-        pixelsPerCm = 1368/20;%(1920/52.5 + 1080/29)/2
-        
+        distFromScreen = 44;
+        % The pixels per cm monitor averaged over resp. width and height
+        % for measurement errors.
+        pixelsPerCm = (1920/53.8 + 1080/30.5) / 2;%(1920/52.5 + 1080/29)/2
         buttonDeviceID = -1;
-        
         mriTiming = false
         waitTime = 4
-        
         audioDeviceID = [] % Which audio device?
         Screen('Preference', 'SkipSyncTests', 1);
-        
-    case 4
+   case 4
         environment = 'macbook'
         distFromScreen = 50
         pixelsPerCm = 1440/29
-        
         buttonDeviceID = -1;
-        
         mriTiming = false
         waitTime = 4
-        
         audioDeviceID = [] % Which audio device?
         Screen('Preference', 'SkipSyncTests', 1);
-        
-    case 5
+   case 5
         PsychJavaTrouble;
         environment = 'FILworkstation'
-        distFromScreen = 91;%50
-        pixelsPerCm = 1920/31;%1920/44 % rough estimate
-        
+        distFromScreen = 61.5;%50
+        pixelsPerCm = (1920/52 + 1200/32.5)/2;%1920/44 % rough estimate
         buttonDeviceID = -1;
-        
         mriTiming = false
         waitTime = 4
-        
         audioDeviceID = [] % Which audio device?
         Screen('Preference', 'SkipSyncTests', 1);
-        
-        Screen('Preference', 'TextRenderer',0) % otherwise, drawing text will cause PTB to crash.
 %     case 6
 %         environment = 'Laptop'
 %         distFromScreen = 60

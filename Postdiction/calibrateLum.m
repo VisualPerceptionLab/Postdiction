@@ -29,27 +29,38 @@ end
 
 % interpolate over the whole rgb range
 lum = interp1(rgb,lum,0:255,'pchip');
+%figure; plot(lum)
 
-%middle of the luminance range:
-medium_lum = (min(lum) + max(lum))/2;
-lum_diff = abs(lum - medium_lum);
+%middle of the luminance range (now 1/3 of max brightness):
+% medium_lum = (min(lum) + max(lum))/2;
+% 1/3 of max brightness
+background_lum = (min(lum) + max(lum))/3;
+lum_diff = abs(lum - background_lum);
 [val ind] = min(lum_diff);
 background = ind - 1; %ind is 1-256 and need 0-255
 
 if exist('contrast', 'var')
-    Lmin = medium_lum - (medium_lum-min(lum))*contrast;
-    Lmax = medium_lum + (max(lum)-medium_lum)*contrast;
+%     % for gratings; use Michelson contrast
+%     Lmin = medium_lum - (medium_lum-min(lum))*contrast;
+%     Lmax = medium_lum + (max(lum)-medium_lum)*contrast;
+%     
+%     lum_diff = abs(lum - Lmin);
+%     [val ind] = min(lum_diff);
+%     Lmin_rgb = ind - 1; %ind is 1-256 and need 0-255
+%     
+%     lum_diff = abs(lum - Lmax);
+%     [val ind] = min(lum_diff);
+%     Lmax_rgb = ind - 1; %ind is 1-256 and need 0-255 
     
-    lum_diff = abs(lum - Lmin);
-    [val ind] = min(lum_diff);
-    Lmin_rgb = ind - 1; %ind is 1-256 and need 0-255
-    
+    % PK: for the contrast of a bright flash on a dark background; use
+    % Weber contrast
+    Lmax = (contrast+1)*background_lum;
     lum_diff = abs(lum - Lmax);
     [val ind] = min(lum_diff);
-    Lmax_rgb = ind - 1; %ind is 1-256 and need 0-255 
+    Lmax_rgb = ind - 1; %ind is 1-256 and need 0-255
     
-    % PK: for the contrast of a bright flash on a dark background.
-    %background = Lmin_rgb;
+    % Don't need Lmin and Lmin_rgb, just initialise to 0.
+    Lmin=0; Lmin_rgb=0;
 end
 
 

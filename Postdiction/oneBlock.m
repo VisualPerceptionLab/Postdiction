@@ -1,6 +1,7 @@
 function presentation = oneBlock(time, volume)
 
 global environment window width height;
+global background Lmax;
 global fixCrossTexture fixRect fixCrossTexture_ITI;
 %global Q;
 global pahandle subjID;
@@ -8,33 +9,27 @@ global buttonDeviceID;
 
 PsychPortAudio('RunMode', pahandle, 1);
 
-saveStim = true;
 % data{1}.tempPresentationTime(:,1) - data{1}.presentationTime(:,2)
 
-% for pilot, let's divide by old_dimension/new_dimension*relevantdim
-% Space
-%visStimWidthDegrees = 0.14;
-%visStimWidth = degrees2pixels(visStimWidthDegrees);
-visStimWidth = 14; %28% calculated from degrees of flash size width
-visStimLength = 59*(1080/1200); %118% calculated from degrees of flash size length
-visStimEcc = 220; %140% calculated from degrees from center, horizontal
+visStimWidth = degrees2pixels(0.28); % 14; %28% calculated from degrees of flash size width
+visStimLength = degrees2pixels(1.2); %%118% calculated from degrees of flash size length
+visStimEcc = degrees2pixels(2 * 1.42); %140% calculated from degrees from center, horizontal
 FixMarkHeight = 0; % fixation mark seems to be quite high
-visStimHeight = 400*(1080/1200);% - FixMarkHeight; % 10 degrees under fixation mark = 986 pixels
-stimColour = [180 180 180]; %[230 230 230];
+visStimHeight = degrees2pixels(4.3);% - FixMarkHeight; % 10 degrees under fixation mark = 986 pixels
+stimColour = Lmax; %[230 230 230];
 
 % Durations
 preOnset = 1;% 23ms before first stimulus presentation
 postOnset = preOnset; % same before as after
 questionDur = 1; %duration of question
-stimDur = 2/60; % 0.039; %0.017% 17ms show flash
+stimDur = 2/60;%2 % 0.039; %0.017% 17ms show flash
 stimInterval = 2/60; %0.030; % 52ms inbetween stimuli
 audioInterval = 0.13; % 130ms audio interval
 toneDur = 0.007; % 7ms
 halfframe = 1/120;
-toneFreqs = [1500]; % 800hz postdiction % A4 C#5 E5
+toneFreqs = 800; % 800hz postdiction % A4 C#5 E5
 responseTime = 1.5;
 confidenceTime = 1.5;
-%ITI = 2;
  %Update time
 
 % add jitter
@@ -55,21 +50,25 @@ rampTime = 0.01; % rise and fall times of the tones.
 %     wavedata{iTone} = wavedata{iTone} * volume; % adjust volume.
 % end
 
-nTrials = 64;
+nTrials = 8;
 design = repmat([1 2 3 4],1,nTrials/4);
 ExpDesign = design(randperm(nTrials));
 
 %Start the sequence of trials
 PsychPortAudio('RunMode', pahandle, 1);
-% Play a sound, to initialise the audio device.
-[wavedata, sampleRate] = MakeBeep(toneFreqs, toneDur, sampleRate);
-
+% Initialise
+[wavedata, sampleRate] = MakeBeep(toneFreqs, toneDur, sampleRate);  
 currentTime = round(clock);
 resultDir = fullfile(pwd,'Results',sprintf('S%02d',subjID));
 if ~exist(resultDir,'dir'); mkdir(resultDir); end
 resultFile = sprintf('results_mainexp_%d_%d_%d_%d_%d_%d.mat',currentTime);
 resultFile = fullfile(resultDir,resultFile);
-
+% vis_stim1_coord = [width/2-visStimEcc-(1/2)*visStimWidth height/2+visStimHeight-(1/2)*visStimLength width/2-visStimEcc+(1/2)*visStimWidth height/2+visStimHeight+(1/2)*visStimLength];
+% vis_stim2_coord = [width/2-0-(1/2)*visStimWidth height/2+visStimHeight-(1/2)*visStimLength width/2-visStimEcc+(1/2)*visStimWidth height/2+visStimHeight+(1/2)*visStimLength];
+% vis_stim3_coord = [width/2+visStimEcc-(1/2)*visStimWidth height/2+visStimHeight-(1/2)*visStimLength width/2-visStimEcc+(1/2)*visStimWidth height/2+visStimHeight+(1/2)*visStimLength];
+vis_stim1_coord = [width/2-visStimEcc-(1/2)*visStimWidth height/2+visStimHeight-(1/2)*visStimLength width/2-visStimEcc+(1/2)*visStimWidth height/2+visStimHeight+(1/2)*visStimLength];
+vis_stim2_coord = [width/2-0-(1/2)*visStimWidth height/2+visStimHeight-(1/2)*visStimLength width/2-0+(1/2)*visStimWidth height/2+visStimHeight+(1/2)*visStimLength];
+vis_stim3_coord = [width/2+visStimEcc-(1/2)*visStimWidth height/2+visStimHeight-(1/2)*visStimLength width/2+visStimEcc+(1/2)*visStimWidth height/2+visStimHeight+(1/2)*visStimLength];
 
 for iTrial=1:nTrials
     % select condition
@@ -80,37 +79,25 @@ for iTrial=1:nTrials
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     % presentationTime keeps the start time of trial and show time of all visual
     % cues
-    presentationTime(iTrial,1) = Screen('Flip', window, time);
+    presentationTime(iTrial,1) = Screen('Flip', window, time - halfframe);
     PsychPortAudio('FillBuffer', pahandle, wavedata);
-    ITI = 1;
-    % Duration of just fixation mark
-    intLengths = [0 1.5 3];
-    intProps =   [0.5 0.3 0.2];
-    x = rand;
-    if x < intProps(1)
-        intLength = intLengths(1);
-    elseif x < intProps(1) + intProps(2)
-        intLength = intLengths(2);
-    else
-        intLength = intLengths(3);
-    end
-    ITI = ITI + intLength;
     
-    time = time + ITI;
-    
+    time = presentationTime(iTrial,1) + preOnset;
 
     % Stimulus Pair 1
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
-    Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], [-visStimEcc visStimHeight width height]));
+   
+    Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], vis_stim1_coord));
     
     %PK: first rectangle coordinates
-    [width/2-visStimEcc-(1/2)*visStimWidth height/2+visStimHeight-(1/2)*visStimLength width/2-visStimEcc+(1/2)*visStimWidth height/2+visStimHeight+(1/2)*visStimLength]
+    %vis_stim1_coord = [width/2-visStimEcc-(1/2)*visStimWidth height/2+visStimHeight-(1/2)*visStimLength width/2-visStimEcc+(1/2)*visStimWidth height/2+visStimHeight+(1/2)*visStimLength]
     
     
     % Show first visual stimulus one frame flip later for its indended
     % duration
     % 1st stimulus time shown
-    presentationTime(iTrial,2) = Screen('Flip', window, time);
+    %startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, time ,0);
+    presentationTime(iTrial,2) = Screen('Flip', window, time - halfframe);
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, 0 ,1);
     tempPresentationTime(1) = Screen('Flip', window, presentationTime(iTrial,2) + stimDur);
@@ -139,7 +126,7 @@ for iTrial=1:nTrials
     % invisible rabbit
     if thisCondition == 3 
     % Visual cue 2
-    Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], [0 visStimHeight width height]));
+    Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], vis_stim2_coord));
     presentationTime(iTrial,3) = Screen('Flip', window, time);
     %Show first visual stimulus one frame flip later for its indended
     end
@@ -147,7 +134,7 @@ for iTrial=1:nTrials
     % if condition 4: rect, sound
     if thisCondition == 4 
     % Visual cue 2
-    Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], [0 visStimHeight width height]));
+    Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], vis_stim2_coord));
     presentationTime(iTrial,3) = Screen('Flip', window, time);
     startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, 0 ,1);
     end
@@ -174,7 +161,7 @@ for iTrial=1:nTrials
     % Stimulus Pair 3
     
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
-    Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], [visStimEcc visStimHeight width height]));
+    Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], vis_stim3_coord));
     % interspace with some time
     % follow with visual stimulus one frame later
     presentationTime(iTrial,4) = Screen('Flip', window, time);
@@ -202,8 +189,26 @@ for iTrial=1:nTrials
     time = tempPresentationTime(4) + confidenceTime;
     [confAnswer, confRespTime] = getResponse(time-halfframe);
     
-    Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
+    Screen('DrawTexture', window, fixCrossTexture_ITI, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     tempPresentationTime(4) = Screen('Flip', window, time);
+    
+    % Duration of just fixation mark
+    ITI = 1;
+    if mriTiming
+        intLengths = [0 1.5 3];
+        intProps =   [0.5 0.3 0.2];
+        x = rand;
+        if x < intProps(1)
+            intLength = intLengths(1);
+        elseif x < intProps(1) + intProps(2)
+            intLength = intLengths(2);
+        else
+            intLength = intLengths(3);
+        end
+        ITI = ITI + intLength;
+    end
+    time = time + ITI;
+    
     presentation.confAnswer(iTrial) = confAnswer;
     presentation.flashAnswer(iTrial) = flashAnswer;
     presentation.condition(iTrial) = thisCondition;
