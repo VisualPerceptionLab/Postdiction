@@ -5,7 +5,7 @@
 
 clear all; close all;
 
-rng('shuffle') % re5set the state of the random number generator.
+rng('default') % re5set the state of the random number generator.
 
 global window width height;
 global environment;
@@ -25,7 +25,7 @@ try
     %BlockNumber = input('Blocknumber?: (1,2,3 or 4)');
     %toneOrientation = input('Cue map? (1 or 2): ');
    
-    [background,~,Lmax] = calibrateLum(1.5);
+    [background,Lmin,Lmax] = calibrateLum(1.0); %1.5
     
     nBlocks = 1; %2
     nTrialsPerBlock = 64; %64 (should be multiple of 32)
@@ -83,7 +83,7 @@ try
     
     % store the time at which the experiment actually starts - i.e. the
     % start of the first trial.
-    initialTime = time;
+    initialTime = time + 1;
     data = [];
     %Display blocks
     for iBlock = 1:nBlocks

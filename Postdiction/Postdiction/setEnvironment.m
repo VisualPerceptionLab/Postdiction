@@ -8,6 +8,7 @@ global distFromScreen pixelsPerCm;
 global environment buttonDeviceID scanPulseDeviceID;
 global pahandle;
 global TR;
+global mriTiming;
 
 environmentID = input('Which environment? (mri = 1, mri_offline = 2, testingroom4 = 3, macbook = 4, FILworkstation = 5): ');
 
@@ -121,10 +122,19 @@ if audio
     
     PsychPortAudio('RunMode', pahandle, 1);
     % Play a sound, to initialise the audio device.
-    %[wavedata, sampleRate] = MakeBeep(750, 0.5, sampleRate);
-    %PsychPortAudio('FillBuffer', pahandle, wavedata);
+    [wavedata, sampleRate] = MakeBeep(800, 0.007, sampleRate); 
+    PsychPortAudio('FillBuffer', pahandle, wavedata);
     % Start audio playback at time 'time', return onset timestamp.
-    %PsychPortAudio('Start', pahandle, 1);
+    PsychPortAudio('Start', pahandle, 1);
+    
+    WaitSecs(1)
+    [wavedata, sampleRate] = MakeBeep(2000, 0.007, sampleRate);
+    % hack wavedata to make it a square wave
+    wavedata(wavedata<0) = -1;
+    wavedata(wavedata>0) = 1;
+    PsychPortAudio('FillBuffer', pahandle, wavedata);
+    % Start audio playback at time 'time', return onset timestamp.
+    PsychPortAudio('Start', pahandle, 1);
 end
 
 end
