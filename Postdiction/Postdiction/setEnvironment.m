@@ -1,4 +1,4 @@
-function [mriTiming, waitTime] = setEnvironment(audio)
+function [mriTiming, waitTime, sampleRate] = setEnvironment(audio)
 % [waitTime] = setEnvironment(audio);
 %
 % Sets some global variables. Boolean 'audio' determines whether sound
@@ -19,7 +19,6 @@ switch environmentID
         environment = 'mri'
         distFromScreen = 91; % prev 90 + 5
         pixelsPerCm = 1920/31; % prev 1920/44.5
-        
         TR = 0.073*48 %0.080*48 for sequence with initial volume in opposite PE dir
         
         mriTiming = true
@@ -44,7 +43,6 @@ switch environmentID
         environment = 'mri_offline'
         distFromScreen = 91; % prev 90 + 5
         pixelsPerCm = 1920/31; % prev 1920/44.5
-        
         mriTiming = false
         waitTime = 4
         

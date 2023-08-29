@@ -19,7 +19,7 @@ else
     conf_key_3 = KbName('w');
     conf_key_4 = KbName('q');
     up_arrow = KbName('UpArrow');
-    down_arrow = KbName('DownArrow');
+    down_arrow = kbName('DownArrow');
     escape = KbName('escape');
 end
 
@@ -32,10 +32,10 @@ while GetSecs < endTime
             answer = 2;
             break;
         elseif keyCode(up_arrow)
-            answer = 21;
-            break;
-        elseif keyCode(down_arrow)
             answer = 20;
+            break;
+        elseif keyCode(flash_key_2)
+            answer = 21;
             break;
         elseif keyCode(flash_key_2)
             answer = 3;

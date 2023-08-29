@@ -16,19 +16,19 @@ global background Lmax;
 
 try
     
-    [mriTiming, waitTime] = setEnvironment(true); % Initialise environment, including audio.
+    [mriTiming, waitTime, sampleRate] = setEnvironment(true); % Initialise environment, including audio.
     KbName('UnifyKeyNames');
-    
     subjID = input('Subject number?: ');
     %% This might be a safer way to ensure consistency in omissions&contrast across participants.
-    Practice = input('1 = Behavourial Training 0 = Scanning');
+    training = input('1 = Behavourial Training 0 = Scanning');
+    showInstructions = input('Show instructions? (1: yes or 2: no): ');
     %BlockNumber = input('Blocknumber?: (1,2,3 or 4)');
     %toneOrientation = input('Cue map? (1 or 2): ');
    
     [background,Lmin,Lmax] = calibrateLum(1.0); %1.5
     
     nBlocks = 1; %2
-    nTrialsPerBlock = 64; %64 (should be multiple of 32)
+    nTrialsPerBlock = 64; 
     nTrialsTotal = nBlocks*nTrialsPerBlock;
     feedback = 0;
     practice = 0;
@@ -47,13 +47,12 @@ try
     %     end
     %     getStaircases(subjID,resultDir,runType);
     
-%     if exist(fullfile(resultDir,'volume.mat'),'file')
-%         load(fullfile(resultDir,'volume.mat'),'volume');
-%     else
-%         disp('No volume calibration found, using default volume.');
-%         volume = 1;
-%     end
-    volume = 1;
+    if exist(fullfile(resultDir,'volume.mat'),'file')
+        load(fullfile(resultDir,'volume.mat'),'volume');
+    else
+        disp('No volume calibration found, using default volume.');
+        volume = 1;
+    end
     %Open window and do useful stuff
     if strcmp(environment,'mri') || strcmp(environment,'mri_offline')
         [window,width,height] = openScreen(0);
@@ -78,6 +77,11 @@ try
     fixColour = Lmin;
     fixDiam = ceil(degrees2pixels(0.7));
     makeFixCross(fixColour, fixDiam, background);
+
+    if showInstructions == 1
+        showInstructions_MainExpt(background,Lmin,volume,wrapat,vspacing);
+    end
+
     % Wait for scanner trigger or button press (depending on environment) before starting the experiment.
     time = waitForTrigger(waitTime,[],fixColour);
     
@@ -103,7 +107,7 @@ try
 %         
         %Present a block of trials
         %trialSequence
-        data{iBlock} = oneBlock(time, volume);
+        data{iBlock} = oneBlock(time, volume, training, nTrialsPerBlock, sampleRate);
 
         
         %Save the data

@@ -1,4 +1,4 @@
-function presentation = oneBlock(time, volume)
+function presentation = oneBlock(time, volume, training, nTrials, sampleRate)
 
 global environment window width height;
 global background Lmax mriTiming;
@@ -21,19 +21,24 @@ stimColour = Lmax; %[230 230 230];
 % Durations
 preOnset = 1;% 23ms before first stimulus presentation
 postOnset = preOnset; % same before as after
-questionDur = 1; %duration of question
 stimDur = 1/60; %2/60;%2 % 0.039; %0.017% 17ms show flash
 stimInterval = 3/60; %2/60; %0.030; % 52ms inbetween stimuli
 %audioInterval = 0.13; % 130ms audio interval
 toneDur = 0.007; % 7ms
 halfframe = 1/120;
 toneFreqs = 2000; % 800hz postdiction % A4 C#5 E5
-responseTime = 1.5;
-confidenceTime = 1.5;
-sampleRate = 44100;
+if training
+    flash_text = 'How many flashes did you see?';
+    conf_text = 'If three, how clear was the middle flash?';
+    responseTime = 1.5;
+    confidenceTime = 1.5;
+else
+    flash_text = '';
+    conf_text = 'C?';
+    responseTime = 1;
+    confidenceTime = 1;
+end
 
-
-nTrials = 64;
 design = repmat([1 2 3 4],1,nTrials/4);
 ExpDesign = design(randperm(nTrials));
 
@@ -44,6 +49,8 @@ PsychPortAudio('RunMode', pahandle, 1);
 % hack wavedata to make it a square wave
 wavedata(wavedata<0) = -1;
 wavedata(wavedata>0) = 1;
+wavedata = wavedata * volume;
+
 currentTime = round(clock);
 resultDir = fullfile(pwd,'Results',sprintf('S%02d',subjID));
 if ~exist(resultDir,'dir'); mkdir(resultDir); end
@@ -79,7 +86,7 @@ for iTrial=1:nTrials
     % duration
     % 1st stimulus time shown
     %startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, time ,0);
-    time = presentationTime(iTrial,1) + preOnset;
+    time = presentationTime(iTrial,1) 
     startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, time ,1);
     presentationTime(iTrial,2) = Screen('Flip', window, startAudioTime(iTrial, 1) - halfframe);
     
@@ -157,10 +164,12 @@ for iTrial=1:nTrials
     endPresentationTime(iTrial, 3) = Screen('Flip', window, presentationTime(iTrial,4) + stimDur - halfframe);
     % Start audio playback at time 'time', return onset timestamp.
     % wait before going to question
-    time = endPresentationTime(iTrial, 3) + postOnset;
+    time = endPresentationTime(iTrial, 3);%+ postOnset;
+    
+    % question 1
+    Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
+    DrawFormattedText(window, flash_text, 'center', height/2-70, [0 0 0]);
 
-
-    DrawFormattedText(window, 'How many flashes did you see?', 'center', 'center', [0 0 0]);
     tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
     time = tempPresentationTime(1) + responseTime;
 
@@ -169,17 +178,30 @@ for iTrial=1:nTrials
     %Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     tempPresentationTime(1) = Screen('Flip', window, time-halfframe);
     %time = tempPresentationTime(1) + 1;
+    
+    % question 2
+    Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
+    DrawFormattedText(window, conf_text, 'center', height/2-70, [0 0 0]);
 
-    DrawFormattedText(window, 'How confident are you in your answer?', 'center', 'center', [0 0 0]);
     tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
     time = tempPresentationTime(1) + confidenceTime;
     [confAnswer, confRespTime] = getResponse(time-halfframe);
     
     Screen('DrawTexture', window, fixCrossTexture_ITI, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
+    time = tempPresentationTime(1);
+     % If there was no (timely/valid) response, flicker the bull's eye
+    if (flashAnswer == -10) || (confAnswer == -10)
+        % Present bull's eye
+        Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 0 width height]));
+        fixFlicker_time = Screen('Flip', window, time + 0.1 - halfframe);
+        % Replace by fixation point
+        Screen('DrawTexture', window, fixCrossTexture_ITI, fixRect, CenterRect(fixRect, [0 0 width height]));
+        Screen('Flip', window, fixFlicker_time + 0.1 - halfframe);
+    end
     
-    % Duration of just fixation mark
-    ITI = 1;
+    % Duration of just ITI fixation mark
+    ITI = 0;
     if mriTiming
         intLengths = [0 1.5 3];
         intProps =   [0.5 0.3 0.2];

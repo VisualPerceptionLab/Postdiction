@@ -19,23 +19,28 @@ try
     
     % attributes of the auditory cue tone
     %toneFreqs = [500 800 1100]; % Frequencies used by Sander Bosch
-    toneFreqs = [440 554 659]; % A4 C#5 E5
-    toneDur = 0.08;
+    %toneFreqs = [440 554 659]; % A4 C#5 E5
+    %toneDur = 0.08;
     toneInt = 0.005;
     sampleRate = 44100;
-    rampTime = 0.01; % rise and fall times of the tones.
-    
+    %rampTime = 0.01; % rise and fall times of the tones.
+    toneDur = 0.007; % 7ms
+    toneFreqs = 2000; % 800hz postdiction % A4 C#5 E5
     SOA = 0.75; % SOA between tone sequences
     
     % create tones
     wavedata = cell(1,length(toneFreqs));
     for iTone = 1:length(toneFreqs)
-        [wavedata{iTone}, sampleRate] = MakeBeep(toneFreqs(iTone), toneDur, sampleRate);
+        %[wavedata{iTone}, sampleRate] = MakeBeep(toneFreqs(iTone), toneDur, sampleRate);
         % add linear rise and fall ramps
-        ramp = 0:1/(rampTime*sampleRate):1;
-        wavedata{iTone}(1:length(ramp)) = wavedata{iTone}(1:length(ramp)) .* ramp;
-        ramp = ramp(end:-1:1);
-        wavedata{iTone}(1+end-length(ramp):end) = wavedata{iTone}(1+end-length(ramp):end) .* ramp;
+        %ramp = 0:1/(rampTime*sampleRate):1;
+        %wavedata{iTone}(1:length(ramp)) = wavedata{iTone}(1:length(ramp)) .* ramp;
+        %ramp = ramp(end:-1:1);
+        %wavedata{iTone}(1+end-length(ramp):end) = wavedata{iTone}(1+end-length(ramp):end) .* ramp;
+        [wavedata, sampleRate] = MakeBeep(toneFreqs, toneDur, sampleRate);
+        % hack wavedata to make it a square wave
+        wavedata(wavedata<0) = -1;
+        wavedata(wavedata>0) = 1;
     end
     curWavedata = wavedata;
     
@@ -54,7 +59,7 @@ try
         reqCueTime(1) = time;
         for iTone = 1:length(toneFreqs)
             % Fill the audio playback buffer with the audio data 'wavedata':
-            PsychPortAudio('FillBuffer', pahandle, curWavedata{toneOrder(iTone)});
+            PsychPortAudio('FillBuffer', pahandle, curWavedata);
             % Start audio playback at time 'time', return onset timestamp.
             cueTime(iTone) = PsychPortAudio('Start', pahandle, 1, reqCueTime(iTone), 1);
             reqCueTime(iTone+1) = cueTime(iTone) + toneDur + toneInt;
@@ -68,18 +73,18 @@ try
         while GetSecs < time - 0.050;
             [answer, respTime] = getResponse(GetSecs + 0.050); % look for responses
             switch answer
-                case 1
+                case 20
                     % turn volume down
                     volume = 0.95*volume
                     FlushEvents('keyDown');
-                case 2
+                case 21
                     % turn volume up
                     volume = 1.05*volume
                     FlushEvents('keyDown');
             end
             % adjust volume of tones
             for iTone = 1:length(toneFreqs)
-                curWavedata{iTone} = wavedata{iTone} * volume;
+                curWavedata = wavedata * volume;
             end
             % save volume
             save(fullfile(resultDir,'volume.mat'),'volume');

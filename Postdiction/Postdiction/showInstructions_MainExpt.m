@@ -1,4 +1,4 @@
-function [] = showInstructions_MainExpt(toneOrientation,background,Lmin,volume,wrapat,vspacing)
+function [] = showInstructions_MainExpt(background,Lmin,volume,wrapat,vspacing)
 %Shows instructions for the grating task.
 
 global window width height;
@@ -19,40 +19,40 @@ spatFreq = 0.5
 %Show instructions on screen
 
 %% What the gratings look like
-text = 'Thank you for participating in our study!\n\nIn this study you will see so-called ''gratings''.\n\nPress any key to see what the gratings look like.';
+text = 'Thank you for participating in our study!\n\nIn this study you will be reporting on visual flashes.\n\nPress any key to see what the gratings look like.';
 DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
 Screen('Flip',window);
 WaitSecs(1);
 FlushEvents('keyDown');
 KbWait(buttonDeviceID);
 
-%Show gratings
-gratingContrast = 0.8;
-for i=1:4
-    %Show grating
-    grating1Phase = rand*2*pi; % random phase, between 0 and 2*pi
-    stimulusMatrix = makeStimulus(gratingContrast, 0, 1, gratingSize_degrees,grating1Phase,spatFreq,innerDegree);
-    readyStimulus = Screen('MakeTexture', window, stimulusMatrix);
-    
-    %Draw the grating
-    if rem(i,2) == 1
-        grating1RotAngle = rotAngles(1); %right-tilted orientation
-        text = 'Right-tilted grating';
-    else
-        grating1RotAngle = rotAngles(2); %left-tilted orientation
-        text = 'Left-tilted grating';
-    end
-    Screen('DrawTexture', window, readyStimulus, [], destSquare, grating1RotAngle);
-    % Draw the fixation bull's-eye
-    Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 0 width height]));
-    DrawFormattedText(window, text, 'center', 150, 0, wrapat);
-    text = 'Press a button to continue.';
-    DrawFormattedText(window, text, 'center', height-150, 0, wrapat);
-    Screen('Flip', window);
-    WaitSecs(.5);
-    FlushEvents('keyDown');
-    KbWait(buttonDeviceID);
-end
+% %Show gratings
+% gratingContrast = 0.8;
+% for i=1:4
+%     %Show grating
+%     grating1Phase = rand*2*pi; % random phase, between 0 and 2*pi
+%     stimulusMatrix = makeStimulus(gratingContrast, 0, 1, gratingSize_degrees,grating1Phase,spatFreq,innerDegree);
+%     readyStimulus = Screen('MakeTexture', window, stimulusMatrix);
+%     
+%     %Draw the grating
+%     if rem(i,2) == 1
+%         grating1RotAngle = rotAngles(1); %right-tilted orientation
+%         text = 'Right-tilted grating';
+%     else
+%         grating1RotAngle = rotAngles(2); %left-tilted orientation
+%         text = 'Left-tilted grating';
+%     end
+%     Screen('DrawTexture', window, readyStimulus, [], destSquare, grating1RotAngle);
+%     % Draw the fixation bull's-eye
+%     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 0 width height]));
+%     DrawFormattedText(window, text, 'center', 150, 0, wrapat);
+%     text = 'Press a button to continue.';
+%     DrawFormattedText(window, text, 'center', height-150, 0, wrapat);
+%     Screen('Flip', window);
+%     WaitSecs(.5);
+%     FlushEvents('keyDown');
+%     KbWait(buttonDeviceID);
+% end
 
 %What the trials are like
 text = 'On each trial, your task will be to report the orientation of the grating. It can be either:\n\n<: tilted to the left\n\nor:\n\n>: tilted to the right.\n\nPress any key to see examples.';
@@ -62,33 +62,33 @@ WaitSecs(1);
 FlushEvents('keyDown');
 KbWait(buttonDeviceID);
 
-%Show gratings
-gratingContrast = 0.8;
-for i=1:2
-    %Show grating
-    grating1Phase = rand*2*pi; % random phase, between 0 and 2*pi
-    stimulusMatrix = makeStimulus(gratingContrast, 0, 1, gratingSize_degrees,grating1Phase,spatFreq,innerDegree);
-    readyStimulus = Screen('MakeTexture', window, stimulusMatrix);
-    
-    %Draw the grating
-    if rem(i,2) == 1
-        grating1RotAngle = rotAngles(2); %left-tilted orientation
-        text = '<: Left-tilted grating';
-    else
-        grating1RotAngle = rotAngles(1); %right-tilted orientation
-        text = '>: Right-tilted grating';
-    end
-    Screen('DrawTexture', window, readyStimulus, [], destSquare, grating1RotAngle);
-    % Draw the fixation bull's-eye
-    Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 0 width height]));
-    DrawFormattedText(window, text, 'center', 150, 0, wrapat);
-    text = 'Press a button to continue.';
-    DrawFormattedText(window, text, 'center', height-150, 0, wrapat);
-    Screen('Flip', window);
-    WaitSecs(.5);
-    FlushEvents('keyDown');
-    KbWait(buttonDeviceID);
-end
+% %Show gratings
+% gratingContrast = 0.8;
+% for i=1:2
+%     %Show grating
+%     grating1Phase = rand*2*pi; % random phase, between 0 and 2*pi
+%     stimulusMatrix = makeStimulus(gratingContrast, 0, 1, gratingSize_degrees,grating1Phase,spatFreq,innerDegree);
+%     readyStimulus = Screen('MakeTexture', window, stimulusMatrix);
+%     
+%     %Draw the grating
+%     if rem(i,2) == 1
+%         grating1RotAngle = rotAngles(2); %left-tilted orientation
+%         text = '<: Left-tilted grating';
+%     else
+%         grating1RotAngle = rotAngles(1); %right-tilted orientation
+%         text = '>: Right-tilted grating';
+%     end
+%     Screen('DrawTexture', window, readyStimulus, [], destSquare, grating1RotAngle);
+%     % Draw the fixation bull's-eye
+%     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 0 width height]));
+%     DrawFormattedText(window, text, 'center', 150, 0, wrapat);
+%     text = 'Press a button to continue.';
+%     DrawFormattedText(window, text, 'center', height-150, 0, wrapat);
+%     Screen('Flip', window);
+%     WaitSecs(.5);
+%     FlushEvents('keyDown');
+%     KbWait(buttonDeviceID);
+% end
 
 %What the task is like
 text = 'Each trial will start with a fixation point, which will be presented in the middle of the screen. It is important that you keep your eyes fixed on this point. Then, a grating will be briefly presented. Your task is to detect whether the grating is left-tilted (<) or right-tilted (>). After the grating has disappeared, the symbols ''<'' (for left-tilted) and ''>'' (for right-tilted) will appear on the screen.';
@@ -110,41 +110,41 @@ Screen('Flip',window);
 WaitSecs(3);
 Screen('Flip',window);
 
-practiceStage1 = true;
-while practiceStage1
-    % run practice block without auditory cues, without noise, without
-    % confidence response, and without time limit on response.
-    gratingContrast = 0.8;
-    noiseContrast = 0;
-    time = GetSecs + 5;
-    nTrialsPerBlock = 16;
-    propOmission.prob = 0;
-    propOmission.alwaysValid = true;
-    trialSequence = getTrialStructure(nTrialsPerBlock, propOmission);
-    feedback = true;
-    practice = 1;
-    data = practiceBlock(gratingContrast, noiseContrast, nTrialsPerBlock, time, toneOrientation, trialSequence, background, Lmin, volume, false, feedback, practice);
-    
-    %What the trials are like
-    text = sprintf('You responded correctly on %d out of %d trials.\n\n',data.nCorrect,nTrialsPerBlock);
-    if data.nCorrect/nTrialsPerBlock < 0.75
-        text = [text 'Is the task clear? If not, please ask the experimenter to explain.\n\nPress the left button to practice again.'];
-    else
-        text = [text 'Well done. Press the left button if you want to practice again, or press the right button to continue.'];
-    end
-    DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
-    Screen('Flip',window);
-    WaitSecs(1);
-    FlushEvents('keyDown');
-    
-    [repeatDecision, ~] = getResponse(Inf);
-    if repeatDecision == 1
-        practiceStage1 = true;
-    elseif repeatDecision == 2
-        practiceStage1 = false;
-    end
-    Screen('Flip',window);
-end
+% practiceStage1 = true;
+% while practiceStage1
+%     % run practice block without auditory cues, without noise, without
+%     % confidence response, and without time limit on response.
+%     gratingContrast = 0.8;
+%     noiseContrast = 0;
+%     time = GetSecs + 5;
+%     nTrialsPerBlock = 16;
+%     propOmission.prob = 0;
+%     propOmission.alwaysValid = true;
+%     trialSequence = getTrialStructure(nTrialsPerBlock, propOmission);
+%     feedback = true;
+%     practice = 1;
+%     data = practiceBlock(gratingContrast, noiseContrast, nTrialsPerBlock, time, toneOrientation, trialSequence, background, Lmin, volume, false, feedback, practice);
+%     
+%     %What the trials are like
+%     text = sprintf('You responded correctly on %d out of %d trials.\n\n',data.nCorrect,nTrialsPerBlock);
+%     if data.nCorrect/nTrialsPerBlock < 0.75
+%         text = [text 'Is the task clear? If not, please ask the experimenter to explain.\n\nPress the left button to practice again.'];
+%     else
+%         text = [text 'Well done. Press the left button if you want to practice again, or press the right button to continue.'];
+%     end
+%     DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
+%     Screen('Flip',window);
+%     WaitSecs(1);
+%     FlushEvents('keyDown');
+%     
+%     [repeatDecision, ~] = getResponse(Inf);
+%     if repeatDecision == 1
+%         practiceStage1 = true;
+%     elseif repeatDecision == 2
+%         practiceStage1 = false;
+%     end
+%     Screen('Flip',window);
+% end
 
 % Explain that gratings will be presented more briefly in the real
 % experiment and have people practice this.
@@ -156,39 +156,39 @@ FlushEvents('keyDown');
 KbWait(buttonDeviceID);
 Screen('Flip',window);
 
-practiceStage2 = true;
-while practiceStage2
-    gratingContrast = 0.8;
-    noiseContrast = 0;
-    time = GetSecs + 5;
-    nTrialsPerBlock = 16;
-    propOmission.prob = 0;
-    propOmission.alwaysValid = true;
-    trialSequence = getTrialStructure(nTrialsPerBlock, propOmission);
-    feedback = true;
-    practice = 2;
-    data = practiceBlock(gratingContrast, noiseContrast, nTrialsPerBlock, time, toneOrientation, trialSequence, background, Lmin, volume, false, feedback, practice);
-    
-    %What the trials are like
-    text = sprintf('You responded correctly on %d out of %d trials.\n\n',data.nCorrect,nTrialsPerBlock);
-    if data.nCorrect/nTrialsPerBlock < 0.75
-        text = [text 'Is the task clear? If not, please ask the experimenter to explain.\n\nPress the left button to practice again.'];
-    else
-        text = [text 'Well done. Press the left button if you want to practice again, or press the right button to continue.'];
-    end
-    DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
-    Screen('Flip',window);
-    WaitSecs(1);
-    FlushEvents('keyDown');
-    
-    [repeatDecision, ~] = getResponse(Inf);
-    if repeatDecision == 1
-        practiceStage2 = true;
-    elseif repeatDecision == 2
-        practiceStage2 = false;
-    end
-    Screen('Flip',window);
-end
+% practiceStage2 = true;
+% while practiceStage2
+%     gratingContrast = 0.8;
+%     noiseContrast = 0;
+%     time = GetSecs + 5;
+%     nTrialsPerBlock = 16;
+%     propOmission.prob = 0;
+%     propOmission.alwaysValid = true;
+%     trialSequence = getTrialStructure(nTrialsPerBlock, propOmission);
+%     feedback = true;
+%     practice = 2;
+%     data = practiceBlock(gratingContrast, noiseContrast, nTrialsPerBlock, time, toneOrientation, trialSequence, background, Lmin, volume, false, feedback, practice);
+%     
+%     %What the trials are like
+%     text = sprintf('You responded correctly on %d out of %d trials.\n\n',data.nCorrect,nTrialsPerBlock);
+%     if data.nCorrect/nTrialsPerBlock < 0.75
+%         text = [text 'Is the task clear? If not, please ask the experimenter to explain.\n\nPress the left button to practice again.'];
+%     else
+%         text = [text 'Well done. Press the left button if you want to practice again, or press the right button to continue.'];
+%     end
+%     DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
+%     Screen('Flip',window);
+%     WaitSecs(1);
+%     FlushEvents('keyDown');
+%     
+%     [repeatDecision, ~] = getResponse(Inf);
+%     if repeatDecision == 1
+%         practiceStage2 = true;
+%     elseif repeatDecision == 2
+%         practiceStage2 = false;
+%     end
+%     Screen('Flip',window);
+% end
 
 % Explain that response time is limited, and have people practice this.
 text = 'Excellent. Up to now, there has not been any time pressure on your responses. However, in the actual experiment, you will only have one second to give your response. Press a key to practice this.';
@@ -199,39 +199,39 @@ FlushEvents('keyDown');
 KbWait(buttonDeviceID);
 Screen('Flip',window);
 
-practiceStage3 = true;
-while practiceStage3
-    gratingContrast = 0.8;
-    noiseContrast = 0;
-    time = GetSecs + 5;
-    nTrialsPerBlock = 16;
-    propOmission.prob = 0;
-    propOmission.alwaysValid = true;
-    trialSequence = getTrialStructure(nTrialsPerBlock, propOmission);
-    feedback = true;
-    practice = 3;
-    data = practiceBlock(gratingContrast, noiseContrast, nTrialsPerBlock, time, toneOrientation, trialSequence, background, Lmin, volume, false, feedback, practice);
-    
-    %What the trials are like
-    text = sprintf('You responded correctly on %d out of %d trials.\n\n',data.nCorrect,nTrialsPerBlock);
-    if data.nCorrect/nTrialsPerBlock < 0.75
-        text = [text 'Is the task clear? If not, please ask the experimenter to explain.\n\nPress the left button to practice again.'];
-    else
-        text = [text 'Well done. Press the left button if you want to practice again, or press the right button to continue.'];
-    end
-    DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
-    Screen('Flip',window);
-    WaitSecs(1);
-    FlushEvents('keyDown');
-    
-    [repeatDecision, ~] = getResponse(Inf);
-    if repeatDecision == 1
-        practiceStage3 = true;
-    elseif repeatDecision == 2
-        practiceStage3 = false;
-    end
-    Screen('Flip',window);
-end
+% practiceStage3 = true;
+% while practiceStage3
+%     gratingContrast = 0.8;
+%     noiseContrast = 0;
+%     time = GetSecs + 5;
+%     nTrialsPerBlock = 16;
+%     propOmission.prob = 0;
+%     propOmission.alwaysValid = true;
+%     trialSequence = getTrialStructure(nTrialsPerBlock, propOmission);
+%     feedback = true;
+%     practice = 3;
+%     data = practiceBlock(gratingContrast, noiseContrast, nTrialsPerBlock, time, toneOrientation, trialSequence, background, Lmin, volume, false, feedback, practice);
+%     
+%     %What the trials are like
+%     text = sprintf('You responded correctly on %d out of %d trials.\n\n',data.nCorrect,nTrialsPerBlock);
+%     if data.nCorrect/nTrialsPerBlock < 0.75
+%         text = [text 'Is the task clear? If not, please ask the experimenter to explain.\n\nPress the left button to practice again.'];
+%     else
+%         text = [text 'Well done. Press the left button if you want to practice again, or press the right button to continue.'];
+%     end
+%     DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
+%     Screen('Flip',window);
+%     WaitSecs(1);
+%     FlushEvents('keyDown');
+%     
+%     [repeatDecision, ~] = getResponse(Inf);
+%     if repeatDecision == 1
+%         practiceStage3 = true;
+%     elseif repeatDecision == 2
+%         practiceStage3 = false;
+%     end
+%     Screen('Flip',window);
+% end
 
 % Explain that gratings will be embedded in noise, and therefore harder to
 % see.
@@ -247,39 +247,39 @@ FlushEvents('keyDown');
 KbWait(buttonDeviceID);
 Screen('Flip',window);
 
-practiceStage4 = true;
-while practiceStage4
-    gratingContrast = 0.4;
-    noiseContrast = 0.2;
-    time = GetSecs + 5;
-    nTrialsPerBlock = 16;
-    propOmission.prob = 0;
-    propOmission.alwaysValid = true;
-    trialSequence = getTrialStructure(nTrialsPerBlock, propOmission);
-    feedback = true;
-    practice = 4;
-    data = practiceBlock(gratingContrast, noiseContrast, nTrialsPerBlock, time, toneOrientation, trialSequence, background, Lmin, volume, false, feedback, practice);
-    
-    %What the trials are like
-    text = sprintf('You responded correctly on %d out of %d trials.\n\n',data.nCorrect,nTrialsPerBlock);
-    if data.nCorrect/nTrialsPerBlock < 0.75
-        text = [text 'Is the task clear? If not, please ask the experimenter to explain.\n\nPress the left button to practice again.'];
-    else
-        text = [text 'Well done. Press the left button if you want to practice again, or press the right button to continue.'];
-    end
-    DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
-    Screen('Flip',window);
-    WaitSecs(1);
-    FlushEvents('keyDown');
-    
-    [repeatDecision, ~] = getResponse(Inf);
-    if repeatDecision == 1
-        practiceStage4 = true;
-    elseif repeatDecision == 2
-        practiceStage4 = false;
-    end
-    Screen('Flip',window);
-end
+% practiceStage4 = true;
+% while practiceStage4
+%     gratingContrast = 0.4;
+%     noiseContrast = 0.2;
+%     time = GetSecs + 5;
+%     nTrialsPerBlock = 16;
+%     propOmission.prob = 0;
+%     propOmission.alwaysValid = true;
+%     trialSequence = getTrialStructure(nTrialsPerBlock, propOmission);
+%     feedback = true;
+%     practice = 4;
+%     data = practiceBlock(gratingContrast, noiseContrast, nTrialsPerBlock, time, toneOrientation, trialSequence, background, Lmin, volume, false, feedback, practice);
+%     
+%     %What the trials are like
+%     text = sprintf('You responded correctly on %d out of %d trials.\n\n',data.nCorrect,nTrialsPerBlock);
+%     if data.nCorrect/nTrialsPerBlock < 0.75
+%         text = [text 'Is the task clear? If not, please ask the experimenter to explain.\n\nPress the left button to practice again.'];
+%     else
+%         text = [text 'Well done. Press the left button if you want to practice again, or press the right button to continue.'];
+%     end
+%     DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
+%     Screen('Flip',window);
+%     WaitSecs(1);
+%     FlushEvents('keyDown');
+%     
+%     [repeatDecision, ~] = getResponse(Inf);
+%     if repeatDecision == 1
+%         practiceStage4 = true;
+%     elseif repeatDecision == 2
+%         practiceStage4 = false;
+%     end
+%     Screen('Flip',window);
+% end
 
 % Explain that gratings will be embedded in noise, and therefore harder to
 % see.
@@ -292,39 +292,39 @@ FlushEvents('keyDown');
 KbWait(buttonDeviceID);
 Screen('Flip',window);
 
-practiceStage4 = true;
-while practiceStage4
-    gratingContrast = 0.2;
-    noiseContrast = 0.2;
-    time = GetSecs + 5;
-    nTrialsPerBlock = 16;
-    propOmission.prob = 0;
-    propOmission.alwaysValid = true;
-    trialSequence = getTrialStructure(nTrialsPerBlock, propOmission);
-    feedback = true;
-    practice = 4;
-    data = practiceBlock(gratingContrast, noiseContrast, nTrialsPerBlock, time, toneOrientation, trialSequence, background, Lmin, volume, false, feedback, practice);
-    
-    %What the trials are like
-    text = sprintf('You responded correctly on %d out of %d trials.\n\n',data.nCorrect,nTrialsPerBlock);
-    if data.nCorrect/nTrialsPerBlock < 0.75
-        text = [text 'Is the task clear? If not, please ask the experimenter to explain.\n\nPress the left button to practice again.'];
-    else
-        text = [text 'Well done. Press the left button if you want to practice again, or press the right button to continue.'];
-    end
-    DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
-    Screen('Flip',window);
-    WaitSecs(1);
-    FlushEvents('keyDown');
-    
-    [repeatDecision, ~] = getResponse(Inf);
-    if repeatDecision == 1
-        practiceStage4 = true;
-    elseif repeatDecision == 2
-        practiceStage4 = false;
-    end
-    Screen('Flip',window);
-end
+% practiceStage4 = true;
+% while practiceStage4
+%     gratingContrast = 0.2;
+%     noiseContrast = 0.2;
+%     time = GetSecs + 5;
+%     nTrialsPerBlock = 16;
+%     propOmission.prob = 0;
+%     propOmission.alwaysValid = true;
+%     trialSequence = getTrialStructure(nTrialsPerBlock, propOmission);
+%     feedback = true;
+%     practice = 4;
+%     data = practiceBlock(gratingContrast, noiseContrast, nTrialsPerBlock, time, toneOrientation, trialSequence, background, Lmin, volume, false, feedback, practice);
+%     
+%     %What the trials are like
+%     text = sprintf('You responded correctly on %d out of %d trials.\n\n',data.nCorrect,nTrialsPerBlock);
+%     if data.nCorrect/nTrialsPerBlock < 0.75
+%         text = [text 'Is the task clear? If not, please ask the experimenter to explain.\n\nPress the left button to practice again.'];
+%     else
+%         text = [text 'Well done. Press the left button if you want to practice again, or press the right button to continue.'];
+%     end
+%     DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
+%     Screen('Flip',window);
+%     WaitSecs(1);
+%     FlushEvents('keyDown');
+%     
+%     [repeatDecision, ~] = getResponse(Inf);
+%     if repeatDecision == 1
+%         practiceStage4 = true;
+%     elseif repeatDecision == 2
+%         practiceStage4 = false;
+%     end
+%     Screen('Flip',window);
+% end
 
 % Explain that they won't get trial-by-trial feedback
 text = 'Great job. Over the course of the experiment, the gratings will become more and more difficult to detect.';
@@ -338,39 +338,39 @@ FlushEvents('keyDown');
 KbWait(buttonDeviceID);
 Screen('Flip',window);
 
-practiceStage4 = true;
-while practiceStage4
-    gratingContrast = 0.2;
-    noiseContrast = 0.2;
-    time = GetSecs + 5;
-    nTrialsPerBlock = 16;
-    propOmission.prob = 0;
-    propOmission.alwaysValid = true;    
-    trialSequence = getTrialStructure(nTrialsPerBlock, propOmission);
-    feedback = false;
-    practice = 4;
-    data = practiceBlock(gratingContrast, noiseContrast, nTrialsPerBlock, time, toneOrientation, trialSequence, background, Lmin, volume, false, feedback, practice);
-    
-    %What the trials are like
-    text = sprintf('You responded correctly on %d out of %d trials.\n\n',data.nCorrect,nTrialsPerBlock);
-    if data.nCorrect/nTrialsPerBlock < 0.75
-        text = [text 'Is the task clear? If not, please ask the experimenter to explain.\n\nPress the left button to practice again.'];
-    else
-        text = [text 'Well done. Press the left button if you want to practice again, or press the right button to continue.'];
-    end
-    DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
-    Screen('Flip',window);
-    WaitSecs(1);
-    FlushEvents('keyDown');
-    
-    [repeatDecision, ~] = getResponse(Inf);
-    if repeatDecision == 1
-        practiceStage4 = true;
-    elseif repeatDecision == 2
-        practiceStage4 = false;
-    end
-    Screen('Flip',window);
-end
+% practiceStage4 = true;
+% while practiceStage4
+%     gratingContrast = 0.2;
+%     noiseContrast = 0.2;
+%     time = GetSecs + 5;
+%     nTrialsPerBlock = 16;
+%     propOmission.prob = 0;
+%     propOmission.alwaysValid = true;    
+%     trialSequence = getTrialStructure(nTrialsPerBlock, propOmission);
+%     feedback = false;
+%     practice = 4;
+%     data = practiceBlock(gratingContrast, noiseContrast, nTrialsPerBlock, time, toneOrientation, trialSequence, background, Lmin, volume, false, feedback, practice);
+%     
+%     %What the trials are like
+%     text = sprintf('You responded correctly on %d out of %d trials.\n\n',data.nCorrect,nTrialsPerBlock);
+%     if data.nCorrect/nTrialsPerBlock < 0.75
+%         text = [text 'Is the task clear? If not, please ask the experimenter to explain.\n\nPress the left button to practice again.'];
+%     else
+%         text = [text 'Well done. Press the left button if you want to practice again, or press the right button to continue.'];
+%     end
+%     DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
+%     Screen('Flip',window);
+%     WaitSecs(1);
+%     FlushEvents('keyDown');
+%     
+%     [repeatDecision, ~] = getResponse(Inf);
+%     if repeatDecision == 1
+%         practiceStage4 = true;
+%     elseif repeatDecision == 2
+%         practiceStage4 = false;
+%     end
+%     Screen('Flip',window);
+% end
 
 % Introduce the confidence response
 text = 'We will now introduce one final aspect of the experiment. As you''ve seen, the gratings are sometimes very difficult to detect, and this will become even harder as the experiment progresses.';
@@ -390,39 +390,39 @@ FlushEvents('keyDown');
 KbWait(buttonDeviceID);
 Screen('Flip',window);
 
-practiceStage5 = true;
-while practiceStage5
-    gratingContrast = 0.2;
-    noiseContrast = 0.2;
-    time = GetSecs + 5;
-    nTrialsPerBlock = 16;
-    propOmission.prob = 0;
-    propOmission.alwaysValid = true;
-    trialSequence = getTrialStructure(nTrialsPerBlock, propOmission);
-    feedback = false;
-    practice = 5;
-    data = practiceBlock(gratingContrast, noiseContrast, nTrialsPerBlock, time, toneOrientation, trialSequence, background, Lmin, volume, false, feedback, practice);
-    
-    %What the trials are like
-    text = sprintf('You responded correctly on %d out of %d trials.\n\n',data.nCorrect,nTrialsPerBlock);
-    if data.nCorrect/nTrialsPerBlock < 0.75
-        text = [text 'Is the task clear? If not, please ask the experimenter to explain.\n\nPress the left button to practice again.'];
-    else
-        text = [text 'Well done. Press the left button if you want to practice again, or press the right button to continue.'];
-    end
-    DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
-    Screen('Flip',window);
-    WaitSecs(1);
-    FlushEvents('keyDown');
-    
-    [repeatDecision, ~] = getResponse(Inf);
-    if repeatDecision == 1
-        practiceStage5 = true;
-    elseif repeatDecision == 2
-        practiceStage5 = false;
-    end
-    Screen('Flip',window);
-end
+% practiceStage5 = true;
+% while practiceStage5
+%     gratingContrast = 0.2;
+%     noiseContrast = 0.2;
+%     time = GetSecs + 5;
+%     nTrialsPerBlock = 16;
+%     propOmission.prob = 0;
+%     propOmission.alwaysValid = true;
+%     trialSequence = getTrialStructure(nTrialsPerBlock, propOmission);
+%     feedback = false;
+%     practice = 5;
+%     data = practiceBlock(gratingContrast, noiseContrast, nTrialsPerBlock, time, toneOrientation, trialSequence, background, Lmin, volume, false, feedback, practice);
+%     
+%     %What the trials are like
+%     text = sprintf('You responded correctly on %d out of %d trials.\n\n',data.nCorrect,nTrialsPerBlock);
+%     if data.nCorrect/nTrialsPerBlock < 0.75
+%         text = [text 'Is the task clear? If not, please ask the experimenter to explain.\n\nPress the left button to practice again.'];
+%     else
+%         text = [text 'Well done. Press the left button if you want to practice again, or press the right button to continue.'];
+%     end
+%     DrawFormattedText(window, text, width/2 - 800, 'center', 0, wrapat,0,0,vspacing);
+%     Screen('Flip',window);
+%     WaitSecs(1);
+%     FlushEvents('keyDown');
+%     
+%     [repeatDecision, ~] = getResponse(Inf);
+%     if repeatDecision == 1
+%         practiceStage5 = true;
+%     elseif repeatDecision == 2
+%         practiceStage5 = false;
+%     end
+%     Screen('Flip',window);
+% end
 
 %What the trials are like
 text = 'Excellent, you have now been introduced to all aspects of the experiment. If you have any questions, please alert the experimenter.\n\n';
