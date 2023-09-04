@@ -1,4 +1,4 @@
-function presentation = oneBlock(time, volume, training, nTrials, sampleRate)
+function presentation = oneBlock(time, volume, training, nTrials, sampleRate, sizemult, distancemult, pitch)
 
 global environment window width height;
 global background Lmax mriTiming;
@@ -11,11 +11,9 @@ PsychPortAudio('RunMode', pahandle, 1);
 
 % data{1}.tempPresentationTime(:,1) - data{1}.presentationTime(:,2)
 
-size_mult = 1
-distance_mult = 1
-visStimWidth = degrees2pixels(0.28)*size_mult; % 14; %28% calculated from degrees of flash size width
-visStimLength = degrees2pixels(1.2)*size_mult; %%118% calculated from degrees of flash size length
-visStimEcc = degrees2pixels(1.42)*distance_mult; %degrees2pixels(2 * 1.42); %140% calculated from degrees from center, horizontal
+visStimWidth = degrees2pixels(0.28)*sizemult; % 14; %28% calculated from degrees of flash size width
+visStimLength = degrees2pixels(1.2)*sizemult; %%118% calculated from degrees of flash size length
+visStimEcc = degrees2pixels(1.42)*distancemult; %degrees2pixels(2 * 1.42); %140% calculated from degrees from center, horizontal
 FixMarkHeight = 0; % fixation mark seems to be quite high
 visStimHeight = degrees2pixels(4.3);% - FixMarkHeight; % 10 degrees under fixation mark = 986 pixels
 stimColour = Lmax; %[230 230 230];
@@ -28,10 +26,10 @@ stimInterval = 3/60; %2/60; %0.030; % 52ms inbetween stimuli
 %audioInterval = 0.13; % 130ms audio interval
 toneDur = 0.007; % 7ms
 halfframe = 1/120;
-toneFreqs = 2000; % 800hz postdiction % A4 C#5 E5
+toneFreqs = pitch; % 800hz postdiction % A4 C#5 E5
 if training
     flash_text = 'How many flashes did you see?';
-    conf_text = 'If three, how clear was the middle flash?';
+    conf_text = 'How confident are you in your answer?';
     responseTime = 1.5;
     confidenceTime = 1.5;
 else
