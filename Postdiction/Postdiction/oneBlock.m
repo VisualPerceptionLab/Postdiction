@@ -11,9 +11,11 @@ PsychPortAudio('RunMode', pahandle, 1);
 
 % data{1}.tempPresentationTime(:,1) - data{1}.presentationTime(:,2)
 
-visStimWidth = degrees2pixels(0.28); % 14; %28% calculated from degrees of flash size width
-visStimLength = degrees2pixels(1.2); %%118% calculated from degrees of flash size length
-visStimEcc = degrees2pixels(1.42); %degrees2pixels(2 * 1.42); %140% calculated from degrees from center, horizontal
+size_mult = 1
+distance_mult = 1
+visStimWidth = degrees2pixels(0.28)*size_mult; % 14; %28% calculated from degrees of flash size width
+visStimLength = degrees2pixels(1.2)*size_mult; %%118% calculated from degrees of flash size length
+visStimEcc = degrees2pixels(1.42)*distance_mult; %degrees2pixels(2 * 1.42); %140% calculated from degrees from center, horizontal
 FixMarkHeight = 0; % fixation mark seems to be quite high
 visStimHeight = degrees2pixels(4.3);% - FixMarkHeight; % 10 degrees under fixation mark = 986 pixels
 stimColour = Lmax; %[230 230 230];
@@ -49,7 +51,7 @@ PsychPortAudio('RunMode', pahandle, 1);
 % hack wavedata to make it a square wave
 wavedata(wavedata<0) = -1;
 wavedata(wavedata>0) = 1;
-wavedata = wavedata * volume;
+wavedata = wavedata %* volume;
 
 currentTime = round(clock);
 resultDir = fullfile(pwd,'Results',sprintf('S%02d',subjID));
@@ -86,7 +88,7 @@ for iTrial=1:nTrials
     % duration
     % 1st stimulus time shown
     %startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, time ,0);
-    time = presentationTime(iTrial,1) 
+    time = presentationTime(iTrial,1) + preOnset;
     startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, time ,1);
     presentationTime(iTrial,2) = Screen('Flip', window, startAudioTime(iTrial, 1) - halfframe);
     

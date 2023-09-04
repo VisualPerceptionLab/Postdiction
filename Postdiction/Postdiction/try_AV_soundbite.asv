@@ -1,0 +1,3 @@
+[soundData freq  ] = audioread('The Rabbit Illusion_soundbite.wav');
+% loads data into buffer
+%PsychPortAudio('FillBuffer', pahandle, soundData');
