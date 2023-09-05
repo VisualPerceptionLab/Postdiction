@@ -102,9 +102,9 @@ try
     data = [];
     %Display blocks
     for iBlock = 1:nBlocks
-        sizemult_list = [1.5 1]; %1 1 1.5
-        distancemult_list = [1.5 1.5]; %1 1 1
-        pitch_list = [2000 2000];% 2000 4000 2000
+        sizemult_list = [1 1 1.5 1.5 1]; %
+        distancemult_list = [1 1 1 1.5 1.5]; %
+        pitch_list = [2000 4000 2000 2000 2000];% 
         sizemult = sizemult_list(iBlock);
         distancemult = distancemult_list(iBlock);
         pitch = pitch_list(iBlock);

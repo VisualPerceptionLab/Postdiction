@@ -49,7 +49,7 @@ PsychPortAudio('RunMode', pahandle, 1);
 % hack wavedata to make it a square wave
 wavedata(wavedata<0) = -1;
 wavedata(wavedata>0) = 1;
-wavedata = wavedata %* volume;
+wavedata = wavedata * volume;
 
 currentTime = round(clock);
 resultDir = fullfile(pwd,'Results',sprintf('S%02d',subjID));
