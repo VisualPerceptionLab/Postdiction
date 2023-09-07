@@ -34,7 +34,7 @@ try
         nTrialsPerBlock = 16;
     else 
         nBlocks = 5;
-        nTrialsPerBlock = 64;
+        nTrialsPerBlock = 16;
     end
     nTrialsTotal = nBlocks*nTrialsPerBlock;
     feedback = 0;
@@ -102,10 +102,6 @@ try
     data = [];
     %Display blocks
     for iBlock = 1:nBlocks
-        if (iBlock == 3) || (iBlock == 5)
-            time = waitForTrigger(waitTime,[],fixColour);
-            time = waitForTrigger(waitTime,[],fixColour);
-        end
         sizemult_list =     [1 1   1.5 1.5 1]; %Aaron[1 1 1.5 1.5 1];
         distancemult_list = [1 1.5 1.5 1 1]; % Aaron [1 1 1   1.5 1.5]
         pitch_list = [2000 2000 2000 2000 4000];% 
