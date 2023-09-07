@@ -33,8 +33,8 @@ try
         nBlocks = 1;
         nTrialsPerBlock = 16;
     else 
-        nBlocks = 2;
-        nTrialsPerBlock = 64;
+        nBlocks = 1;
+        nTrialsPerBlock = 16;
     end
     nTrialsTotal = nBlocks*nTrialsPerBlock;
     feedback = 0;

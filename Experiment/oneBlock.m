@@ -9,7 +9,7 @@ global buttonDeviceID;
 
 PsychPortAudio('RunMode', pahandle, 1);
 
-% data{1}.tempPresentationTime(:,1) - data{1}.presentationTime(:,2)
+% data{1}.endPresentationTime(:,1) - data{1}.presentationTime(:,2)
 
 visStimWidth = degrees2pixels(0.28)*sizemult; % 14; %28% calculated from degrees of flash size width
 visStimLength = degrees2pixels(1.2)*sizemult; %%118% calculated from degrees of flash size length
@@ -26,10 +26,10 @@ stimInterval = 3/60; %2/60; %0.030; % 52ms inbetween stimuli
 %audioInterval = 0.13; % 130ms audio interval
 toneDur = 0.007; % 7ms
 halfframe = 1/120;
-toneFreqs = pitch; % 800hz postdiction % A4 C#5 E5
+toneFreqs = pitch; % postdiction % A4 C#5 E5
 if training
-    flash_text = 'How many flashes did you see?';
-    conf_text = 'How confident are you in your answer?';
+    flash_text = 'How many flashes (2 or 3)?';
+    conf_text = 'Confidence?';
     responseTime = 1.5;
     confidenceTime = 1.5;
 else
@@ -38,6 +38,8 @@ else
     responseTime = 1;
     confidenceTime = 1;
 end
+
+params = struct("visStimWidth", visStimWidth, "visStimLength", visStimLength, "visStimEcc", visStimEcc, "visStimHeight", visStimHeight, "stimColour", stimColour, "preOnset", preOnset, "stimDur", stimDur, "stimInterval", stimInterval, "toneDur", toneDur, "toneFreqs", toneFreqs, "responseTime", responseTime);
 
 design = repmat([1 2 3 4],1,nTrials/4);
 ExpDesign = design(randperm(nTrials));
@@ -54,7 +56,7 @@ wavedata = wavedata * volume;
 currentTime = round(clock);
 resultDir = fullfile(pwd,'Results',sprintf('S%02d',subjID));
 if ~exist(resultDir,'dir'); mkdir(resultDir); end
-resultFile = sprintf('results_mainexp_%d_%d_%d_%d_%d_%d.mat',currentTime);
+resultFile = sprintf('backup_results_mainexp_%d_%d_%d_%d_%d_%d.mat',currentTime);
 resultFile = fullfile(resultDir,resultFile);
 
 vis_stim1_coord = [width/2-visStimEcc-(1/2)*visStimWidth height/2+visStimHeight-(1/2)*visStimLength width/2-visStimEcc+(1/2)*visStimWidth height/2+visStimHeight+(1/2)*visStimLength];
@@ -168,20 +170,20 @@ for iTrial=1:nTrials
     
     % question 1
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
-    DrawFormattedText(window, flash_text, 'center', height/2-70, [0 0 0]);
+    DrawFormattedText(window, flash_text, 'center', height/2-40, [0 0 0]);
 
     tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
     time = tempPresentationTime(1) + responseTime;
 
     [flashAnswer, flashRespTime] = getResponse(time-halfframe);
     %time = flashRespTime + 1;
-    %Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
+    Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     tempPresentationTime(1) = Screen('Flip', window, time-halfframe);
     %time = tempPresentationTime(1) + 1;
     
     % question 2
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
-    DrawFormattedText(window, conf_text, 'center', height/2-70, [0 0 0]);
+    DrawFormattedText(window, conf_text, 'center', height/2-40, [0 0 0]);
 
     tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
     time = tempPresentationTime(1) + confidenceTime;
@@ -224,6 +226,7 @@ for iTrial=1:nTrials
     presentation.startAudioTime = startAudioTime
     presentation.endPresentationTime = endPresentationTime
     presentation.presentationTime = presentationTime
+    presentation.params = params;
     % random iti for decorrelation fmri signal
     %time = presentationTime(1) + ITI + (2*rand);
 
