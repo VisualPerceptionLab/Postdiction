@@ -33,7 +33,7 @@ try
         nBlocks = 1;
         nTrialsPerBlock = 16;
     else 
-        nBlocks = 5;
+        nBlocks = 1;
         nTrialsPerBlock = 64;
     end
     nTrialsTotal = nBlocks*nTrialsPerBlock;
@@ -106,9 +106,9 @@ try
             time = waitForTrigger(waitTime,[],fixColour);
             time = waitForTrigger(waitTime,[],fixColour);
         end
-        sizemult_list =     [1 1   1.5 1.5 1]; %Aaron[1 1 1.5 1.5 1];
-        distancemult_list = [1 1.5 1.5 1 1]; % Aaron [1 1 1   1.5 1.5]
-        pitch_list = [2000 2000 2000 2000 4000];% 
+        sizemult_list =      [1 1 1 1.5 1.5]; %Aaron[1 1 1.5 1.5 1]; %Dot [1 1   1.5 1.5 1];
+        distancemult_list = [1 1 1.5 1 1.5]; % Aaron [1 1 1   1.5 1.5] %Dot [1 1.5 1.5 1 1];
+        pitch_list = [4000 2000 2000 2000 2000]; % Aaron [2000 4000 2000 2000 2000]; % Dot [2000 2000 2000 2000 4000];
         sizemult = sizemult_list(iBlock);
         distancemult = distancemult_list(iBlock);
         pitch = pitch_list(iBlock);
