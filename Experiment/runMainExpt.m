@@ -34,7 +34,7 @@ try
         nTrialsPerBlock = 32;
     else 
         nBlocks = 6;
-        nTrialsPerBlock = 4;
+        nTrialsPerBlock = 64;
     end
     nTrialsTotal = nBlocks*nTrialsPerBlock;
     feedback = 0;
@@ -109,7 +109,7 @@ try
         sizemult_list =      [1   1.5 1   1.5 1.5 1]; %Aaron[1 1 1.5 1.5 1]; %Dot/Doug [1 1   1.5 1.5 1];
         distancemult_list =  [1.5 1.5 1.5 1.5 1.5 1.5]; % Aaron [1 1 1   1.5 1.5] %Dot/Doug [1 1.5 1.5 1 1];
         % contrasts
-        contrasts =          [1.5 1 0.5 0.5 1.5 1];
+        contrasts =          [1.5 1 0.5 0.5 1 1.5];
         [background,Lmin,Lmax] = calibrateLum(contrasts(iBlock)); 
         %pitch_list = [2000 2000 2000 2000]; % Aaron [2000 4000 2000 2000 2000]; % Dot/Doug [2000 2000 2000 2000 4000];
         sizemult = sizemult_list(iBlock);
