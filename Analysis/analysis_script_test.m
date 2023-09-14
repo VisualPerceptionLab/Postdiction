@@ -2,7 +2,7 @@
 % mydata{1}.startAudioTime(ver3,2) - mydata{1}.presentationTime(ver3,3)
 
 results_path = "D:\Documents\MATLAB\Postdiction_git\Experiment\Results";
-path = fullfile(results_path, "practice_Dot_behav/results_mainexp_2023_9_7_14_17_60.mat");
+path = fullfile(results_path, "Doug_behav\results_mainexp_2023_9_12_15_41_55");
 data_file = load(path);
 results = data_file.data;
 

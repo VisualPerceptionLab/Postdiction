@@ -33,8 +33,8 @@ try
         nBlocks = 1;
         nTrialsPerBlock = 16;
     else 
-        nBlocks = 5;
-        nTrialsPerBlock = 64;
+        nBlocks = 6;
+        nTrialsPerBlock = 4;
     end
     nTrialsTotal = nBlocks*nTrialsPerBlock;
     feedback = 0;
@@ -106,12 +106,15 @@ try
             time = waitForTrigger(waitTime,[],fixColour);
             time = waitForTrigger(waitTime,[],fixColour);
         end
-        sizemult_list =      [1 1 1 1.5 1.5]; %Aaron[1 1 1.5 1.5 1]; %Dot [1 1   1.5 1.5 1];
-        distancemult_list = [1 1 1.5 1 1.5]; % Aaron [1 1 1   1.5 1.5] %Dot [1 1.5 1.5 1 1];
-        pitch_list = [4000 2000 2000 2000 2000]; % Aaron [2000 4000 2000 2000 2000]; % Dot [2000 2000 2000 2000 4000];
+        sizemult_list =      [1   1.5 1   1.5 1   1.5]; %Aaron[1 1 1.5 1.5 1]; %Dot/Doug [1 1   1.5 1.5 1];
+        distancemult_list =  [1.5 1.5 1.5 1.5 1.5 1.5]; % Aaron [1 1 1   1.5 1.5] %Dot/Doug [1 1.5 1.5 1 1];
+        % contrasts
+        contrasts =          [1.5 1 0.5 0.5 1 1.5];
+        [background,Lmin,Lmax] = calibrateLum(contrasts(iBlock)); 
+        %pitch_list = [2000 2000 2000 2000]; % Aaron [2000 4000 2000 2000 2000]; % Dot/Doug [2000 2000 2000 2000 4000];
         sizemult = sizemult_list(iBlock);
         distancemult = distancemult_list(iBlock);
-        pitch = pitch_list(iBlock);
+        pitch = 2000
         % Create trial sequence for the block
 %         trialSequence = trialStructure(randperm(nTrialsPerBlock),:);
         % Hack it so that there are no more than 5 omissions in a row,

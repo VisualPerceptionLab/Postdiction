@@ -10,7 +10,7 @@ global pahandle;
 global TR;
 global mriTiming;
 
-environmentID = input('Which environment? (mri = 1, mri_offline = 2, testingroom4 = 3, macbook = 4, FILworkstation = 5): ');
+environmentID = input('Which environment? (mri = 1, mri_offline = 2, testingroom = 3, macbook = 4, FILworkstation = 5): ');
 
 %devices = PsychPortAudio('GetDevices')
 
