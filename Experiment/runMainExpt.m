@@ -111,7 +111,7 @@ try
 %         sizemult_list =      [1   1.5 1   1.5 1.5 1]; %Aaron[1 1 1.5 1.5 1]; %Dot/Doug [1 1   1.5 1.5 1];
 %         distancemult_list =  [1.5 1.5 1.5 1.5 1.5 1.5]; % Aaron [1 1 1   1.5 1.5] %Dot/Doug [1 1.5 1.5 1 1];
 %         % contrasts
-%         contrasts =          [1.5 1 0.5 0.5 1 1.5];
+%         contrasts =          [1.5 1   0.5 0.5 1 1.5];
         
         % Yan params
         sizemult_list =      [1   1.5 1   1.5 1   1.5]; %Aaron[1 1 1.5 1.5 1]; %Dot/Doug [1 1   1.5 1.5 1];

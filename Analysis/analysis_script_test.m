@@ -2,12 +2,12 @@
 % mydata{1}.startAudioTime(ver3,2) - mydata{1}.presentationTime(ver3,3)
 
 results_path = "D:\Documents\MATLAB\Postdiction_git\Experiment\Results";
-path = fullfile(results_path, "Doug_behav\results_mainexp_2023_9_12_15_41_55");
+path = fullfile(results_path, "Yan_behav\results_mainexp_2023_9_14_14_10_20.mat");
 data_file = load(path);
 results = data_file.data;
 
 pitchres = results([1,5]);
-paramres = results([1,2,3,4]);
+paramres = results([1,2,3,4, 5, 6]);
 
 % pitch analysis
 conf2000 = pitchres{1}.confAnswer;
