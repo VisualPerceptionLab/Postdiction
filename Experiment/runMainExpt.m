@@ -33,8 +33,8 @@ try
         nBlocks = 1;
         nTrialsPerBlock = 32;
     else 
-        nBlocks = 6;
-        nTrialsPerBlock = 64;
+        nBlocks = 4;
+        nTrialsPerBlock = 100;
     end
     nTrialsTotal = nBlocks*nTrialsPerBlock;
     feedback = 0;
@@ -102,10 +102,10 @@ try
     data = [];
     %Display blocks
     for iBlock = 1:nBlocks
-        if (iBlock == 3) || (iBlock == 5)
-            time = waitForTrigger(waitTime,[],fixColour);
-            time = waitForTrigger(waitTime,[],fixColour);
-        end
+%         if (iBlock == 3) || (iBlock == 5)
+%             time = waitForTrigger(waitTime,[],fixColour);
+%             time = waitForTrigger(waitTime,[],fixColour);
+%         end
         
         % alice params
 %         sizemult_list =      [1   1.5 1   1.5 1.5 1]; %Aaron[1 1 1.5 1.5 1]; %Dot/Doug [1 1   1.5 1.5 1];
@@ -162,12 +162,13 @@ try
 %         missedConfText = sprintf('\nYou were too slow in reporting your confidence on %d percent of trials.', missedConfResp);
 %        performanceText = [accuracyText missedOrientText missedConfText];
        % time = endOfBlock(iBlock,nBlocks,performanceText,time,wrapat,vspacing);
-        
+        breakEndTime(iBlock, 1) = WaitSecs(30);
     end
     
     % Take the time when the program was stopped
     finishTime = GetSecs;
     data{1}.finishTime = finishTime;
+    data{1}.breakEndTime = breakEndTime;
     data{1}.initialTime = initialTime;
     
     % Save the results

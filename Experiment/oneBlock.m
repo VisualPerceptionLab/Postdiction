@@ -11,11 +11,11 @@ PsychPortAudio('RunMode', pahandle, 1);
 
 % data{1}.endPresentationTime(:,1) - data{1}.presentationTime(:,2)
 
-visStimWidth = degrees2pixels(0.28)*sizemult; % 14; %28% calculated from degrees of flash size width
-visStimLength = degrees2pixels(1.2)*sizemult; %%118% calculated from degrees of flash size length
-visStimEcc = degrees2pixels(1.42)*distancemult; %degrees2pixels(2 * 1.42); %140% calculated from degrees from center, horizontal
+visStimWidth = degrees2pixels(0.28)*sizemult; % .28 measured as .33 % 14; %28% calculated from degrees of flash size width
+visStimLength = degrees2pixels(1.2)*sizemult; % 1.2 measured as 1.24 %118% calculated from degrees of flash size length
+visStimEcc = degrees2pixels(1.42)*distancemult; % outside: 1.42*2*1.5+1xstim = 4.53  measured as 4.42 %degrees2pixels(2 * 1.42); %140% calculated from degrees from center, horizontal
 FixMarkHeight = 0; % fixation mark seems to be quite high
-visStimHeight = degrees2pixels(4.3);% - FixMarkHeight; % 10 degrees under fixation mark = 986 pixels
+visStimHeight = degrees2pixels(4.3);% measured as middle stim: 4.00, bottom stim with size 1: 4.62, so with size 1.5: 4.92 - FixMarkHeight; % 10 degrees under fixation mark = 986 pixels
 stimColour = Lmax; %[230 230 230];
 
 % Durations
