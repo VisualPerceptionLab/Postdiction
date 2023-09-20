@@ -31,12 +31,12 @@ while GetSecs < endTime
         if keyCode(flash_key_1)
             answer = 2;
             break;
-        elseif keyCode(up_arrow)
-            answer = 21;
-            break;
-        elseif keyCode(down_arrow)
-            answer = 20;
-            break;
+%         elseif keyCode(up_arrow)
+%             answer = 21;
+%             break;
+%         elseif keyCode(down_arrow)
+%             answer = 20;
+%             break;
         elseif keyCode(flash_key_2)
             answer = 3;
             break;

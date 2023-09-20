@@ -68,16 +68,16 @@ end
 % Skip the annoying blue flickering warning
 Screen('Preference','SkipSyncTests',0);
 
-displayID.oldGamma = Screen('ReadNormalizedGammaTable', displayID.screenNumber);
-try
-    Screen('LoadNormalizedGammaTable', displayID.screenNumber,displayID.gamma);
-catch
-    % displayID.gamma may be 10bit in that case reduce to 8 spanning entire
-    % range
-    fprintf(1,'[%s]:error load 10bit lookup table, reverting to 8bit.',mfilename);
-    putgamma = displayID.gamma(round(linspace(1,size(displayID.gamma,1),256)),:);
-    Screen('LoadNormalizedGammaTable', displayID.screenNumber,putgamma);
-end;
+% displayID.oldGamma = Screen('ReadNormalizedGammaTable', displayID.screenNumber);
+% try
+%     Screen('LoadNormalizedGammaTable', displayID.screenNumber,displayID.gamma);
+% catch
+%     % displayID.gamma may be 10bit in that case reduce to 8 spanning entire
+%     % range
+%     fprintf(1,'[%s]:error load 10bit lookup table, reverting to 8bit.',mfilename);
+%     putgamma = displayID.gamma(round(linspace(1,size(displayID.gamma,1),256)),:);
+%     Screen('LoadNormalizedGammaTable', displayID.screenNumber,putgamma);
+% end;
 
 % Open the screen and save the window pointer and rect
 numBuffers = 2;

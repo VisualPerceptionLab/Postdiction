@@ -17,12 +17,12 @@ environmentID = input('Which environment? (mri = 1, mri_offline = 2, testingroom
 switch environmentID
     case 1
         environment = 'mri'
-        distFromScreen = 91; % prev 90 + 5
-        pixelsPerCm = 1920/31; % prev 1920/44.5
-        TR = 0.073*48 %0.080*48 for sequence with initial volume in opposite PE dir
+        distFromScreen = 113; % prev 90 + 5
+        pixelsPerCm = (1920/35.5 + 1200/22)/2; % prev 1920/44.5
+        TR = 3.264; %0.080*48 for sequence with initial volume in opposite PE dir
         
         mriTiming = true
-        waitTime = 2*TR
+        waitTime = 1*TR
         
         audioDeviceID = [] % Which audio device?
         Screen('Preference', 'SkipSyncTests', 1);

@@ -28,7 +28,7 @@ if strcmp(environment,'mri')
     
     %Wait for the first scanner pulse
     DrawFormattedText(window, text, 'center', height/2-200, textColour);
-    text = 'Waiting for scanner';
+    text = 'Waiting for experiment';
     DrawFormattedText(window, text, 'center', height/2+100, textColour);
     Screen('Flip',window);
     

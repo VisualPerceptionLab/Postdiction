@@ -129,7 +129,7 @@ try,
 catch,
     % clean up if error occurred
     Screen('CloseAll');
-    setGamma(0);
+    %setGamma(0);
     Priority(0);
     ShowCursor;
     rethrow(lasterror);

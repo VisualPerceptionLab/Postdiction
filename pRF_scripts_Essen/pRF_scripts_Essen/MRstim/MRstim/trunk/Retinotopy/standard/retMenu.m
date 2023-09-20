@@ -100,7 +100,7 @@ try,
 catch,
     set(handles.calibration,'String','None');
 end;
-set(handles.stimSize,      'String','6');%'max');
+set(handles.stimSize,      'String','5.5');%'max');
 
 % default command line output for retMenu = menuparams
 tmp      = get(handles.experiment,'String');
@@ -218,11 +218,11 @@ switch handles.data.experiment,
         % 12*8*TR + 4*ceil(10.5/TR)*TR
         handles.data.savestimparams = 1;
         set(handles.savestimparams, 'Value',1); 
-        handles.data.tr = 3.5832; %1.8
+        handles.data.tr = 3.264; %1.8
         set(handles.tr, 'String',num2str(handles.data.tr));
         handles.data.numCycles = 1;
         set(handles.numCycles, 'String','1');    %#
-        handles.data.period    = 10*8*handles.data.tr + 4*ceil(10.5/handles.data.tr)*handles.data.tr; %112*3.408; %331.2
+        handles.data.period    = 11*8*handles.data.tr + 4*ceil(10.5/handles.data.tr)*handles.data.tr; %112*3.408; %331.2
         set(handles.period,    'String',num2str(handles.data.period));   %seconds
         handles.data.prescanDuration = handles.data.tr*4; %13.632; %12.6; (should be at least 12)
         set(handles.prescanDuration,    'String',num2str(handles.data.prescanDuration));   %seconds

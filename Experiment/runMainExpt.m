@@ -33,8 +33,8 @@ try
         nBlocks = 1;
         nTrialsPerBlock = 32;
     else 
-        nBlocks = 4;
-        nTrialsPerBlock = 100;
+        nBlocks = 1;
+        nTrialsPerBlock = 16;
     end
     nTrialsTotal = nBlocks*nTrialsPerBlock;
     feedback = 0;
@@ -56,7 +56,7 @@ try
     %         staircaseFile = sprintf('staircase_mainexp_runType%d_%d_%d_%d_%d_%d_%d.mat',runType,currentTime);
     %         staircaseFile = fullfile(resultDir,staircaseFile);
     %     end
-    %     getStaircases(subjID,resultDir,runType);
+    %     getStaircases(subjID,resultDir,runType);5
     
     if exist(fullfile(resultDir,'volume.mat'),'file')
         load(fullfile(resultDir,'volume.mat'),'volume');
@@ -66,7 +66,7 @@ try
     end
     %Open window and do useful stuff
     if strcmp(environment,'mri') || strcmp(environment,'mri_offline')
-        [window,width,height] = openScreen(0);
+        [window,width,height] = openScreen();
     else
         [window,width,height] = openScreen();
     end
@@ -98,7 +98,7 @@ try
     
     % store the time at which the experiment actually starts - i.e. the
     % start of the first trial.
-    initialTime = time + 1;
+    initialTime = time;
     data = [];
     %Display blocks
     for iBlock = 1:nBlocks
@@ -114,10 +114,10 @@ try
 %         contrasts =          [1.5 1   0.5 0.5 1 1.5];
         
         % Yan params
-        sizemult_list =      [1   1.5 1   1.5 1   1.5]; %Aaron[1 1 1.5 1.5 1]; %Dot/Doug [1 1   1.5 1.5 1];
+        sizemult_list =      [1 1 1 1 1 1 ]; %Aaron[1 1 1.5 1.5 1]; %Dot/Doug [1 1   1.5 1.5 1];
         distancemult_list =  [1.5 1.5 1.5 1.5 1.5 1.5]; % Aaron [1 1 1   1.5 1.5] %Dot/Doug [1 1.5 1.5 1 1];
         % contrasts
-        contrasts =          [0.5 1   1.5 1.5 1   0.5];
+        contrasts =          [1 1 1 1 1 1];
         [background,Lmin,Lmax] = calibrateLum(contrasts(iBlock)); 
         %pitch_list = [2000 2000 2000 2000]; % Aaron [2000 4000 2000 2000 2000]; % Dot/Doug [2000 2000 2000 2000 4000];
         sizemult = sizemult_list(iBlock);
@@ -157,18 +157,19 @@ try
        % missedOrientResp = round(100*mean(data{iBlock}.orientAnswer == -10));
       %  missedConfResp = round(100*mean(data{iBlock}.confAnswer == -10));
         
-%         accuracyText = sprintf('You answered correctly on %d percent of trials.', performance);
-%         missedOrientText = sprintf('\nYou were too slow in reporting the tilt of the grating on %d percent of trials.', missedOrientResp);
-%         missedConfText = sprintf('\nYou were too slow in reporting your confidence on %d percent of trials.', missedConfResp);
-%        performanceText = [accuracyText missedOrientText missedConfText];
-       % time = endOfBlock(iBlock,nBlocks,performanceText,time,wrapat,vspacing);
-        breakEndTime(iBlock, 1) = WaitSecs(30);
+      %         accuracyText = sprintf('You answered correctly on %d percent of trials.', performance);
+      %         missedOrientText = sprintf('\nYou were too slow in reporting the tilt of the grating on %d percent of trials.', missedOrientResp);
+      %         missedConfText = sprintf('\nYou were too slow in reporting your confidence on %d percent of trials.', missedConfResp);
+      %        performanceText = [accuracyText missedOrientText missedConfText];
+      performanceText = '';
+      time = endOfBlock(iBlock,nBlocks,performanceText,time,wrapat,vspacing);
+      %breakEndTime(iBlock, 1) = WaitSecs(30);
     end
     
     % Take the time when the program was stopped
     finishTime = GetSecs;
     data{1}.finishTime = finishTime;
-    data{1}.breakEndTime = breakEndTime;
+    %data{1}.breakEndTime = breakEndTime;
     data{1}.initialTime = initialTime;
     
     % Save the results
