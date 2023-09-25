@@ -41,8 +41,8 @@ switch environmentID
         
     case 2
         environment = 'mri_offline'
-        distFromScreen = 91; % prev 90 + 5
-        pixelsPerCm = 1920/31; % prev 1920/44.5
+        distFromScreen = 113; % prev 90 + 5
+        pixelsPerCm = (1920/35.5 + 1200/22)/2; % prev 1920/44.5
         mriTiming = false
         waitTime = 4
         

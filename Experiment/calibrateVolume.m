@@ -75,11 +75,11 @@ try
             switch answer
                 case 20
                     % turn volume down
-                    volume = 0.95*volume
+                    volume = 0.995*volume % 0.95
                     FlushEvents('keyDown');
                 case 21
                     % turn volume up
-                    volume = 1.05*volume
+                    volume = 1.005*volume % 1.05
                     FlushEvents('keyDown');
             end
             % adjust volume of tones
