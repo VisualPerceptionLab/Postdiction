@@ -22,7 +22,9 @@ try
     %% This might be a safer way to ensure consistency in omissions&contrast across participants.
     training = input('1 = Behavourial Training 0 = Scanning');
     % creates a practice block
-    if ~mriTiming
+    if mriTiming
+        showInstructions = 2;
+    else
         showInstructions = input('Show instructions? (1: yes or 2: no): ');
     end
     %BlockNumber = input('Blocknumber?: (1,2,3 or 4)');

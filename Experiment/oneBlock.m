@@ -203,7 +203,8 @@ for iTrial=1:nTrials
     end
     
     % Duration of just ITI fixation mark
-    ITI = 0;
+    % trials are 3.36-6.18s: increase by 1.7s
+    ITI = 1.7; %0
     if mriTiming
         intLengths = [0 1.5 3];
         intProps =   [0.5 0.3 0.2];

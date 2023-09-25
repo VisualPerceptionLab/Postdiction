@@ -1,8 +1,8 @@
 % latency for second beep
 % mydata{1}.startAudioTime(ver3,2) - mydata{1}.presentationTime(ver3,3)
 
-results_path = "D:\Documents\MATLAB\Postdiction_git\Experiment\Results";
-path = fullfile(results_path, "Gina_behav\results_mainexp_2023_9_20_16_40_9.mat");
+results_path = "C:\Users\pbarkema\Downloads\technical pilot data\postdiction_git\technicalpilot\Experiment\Results\S09";
+path = fullfile(results_path, "results_mainexp_2023_9_18_16_21_38.mat");
 data_file = load(path);
 results = data_file.data;
 
@@ -12,6 +12,50 @@ paramres = results([1,2,3,4, 5, 6]);
 % pitch analysis
 conf2000 = pitchres{1}.confAnswer;
 conf4000 = pitchres{2}.confAnswer;
+
+% timing measurements:
+
+% between trial timing
+
+nBlocks = 1;
+nTrials = 16;
+for iBlock = 1:nBlocks
+    for nTrial =1: nTrials
+        initialTimings(nTrial) = results{iBlock}.presentationTime(nTrial,1);
+      
+    end
+    initialTimings(2:nTrials) - initialTimings(1:nTrials-1)
+end
+
+% between auditory and visual
+nBlocks = 1;
+nTrials = 16;
+for iBlock = 1:nBlocks
+    results{1}.startAudioTime(:,1) - results{1}.presentationTime(:,2)
+    results{1}.startAudioTime(:,2) - results{1}.presentationTime(:,3)
+    results{1}.startAudioTime(:,3) - results{1}.presentationTime(:,4)
+end
+
+% between block timing - untested
+nBlocks = 1;
+for iBlock = 1:nBlocks
+    initialTimings(iBlock) = results{iBlock}.initialTime;
+
+    initialTimings(2:nBlocks) - initialTimings(1:nBlocks-1)
+end
+%     initialTimings(:)
+%     results{iBlock}.initialTime(ver3) - results{1}.presentationTime(ver3,3)
+
+    
+
+
+results{1}.startAudioTime(ver3,2) - results{1}.presentationTime(ver3,3)
+% within trial spacing of visual and auditory timing
+% timing between auditory and visual stimulus
+% time of total experiment
+
+
+
 
 % is confidence higher for 4k AV?
 
