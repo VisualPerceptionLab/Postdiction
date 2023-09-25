@@ -69,7 +69,7 @@ set(handles.prescanDuration,'String','12');   %seconds
 set(handles.period,         'String','24');   %seconds
 set(handles.numCycles,      'String','6');    %#
 set(handles.interleaves,    'String','N/A');    %#
-set(handles.tr,             'String','1.5');  %seconds
+set(handles.tr,             'String','3.264');  %seconds
 % all .mat files where retMenu lives are considered potentials
 tmpdir = which(mfilename);
 tmpdir = fileparts(tmpdir);
@@ -198,8 +198,8 @@ switch handles.data.experiment,
      case {'Translating Bars 1', 'Translating Bars 2', 'Translating Bars 3'},
         handles.data.savestimparams = 1;
         set(handles.savestimparams, 'Value',1); 
-        handles.data.tr = 1.5;
-        set(handles.tr, 'String','1.5');  
+        handles.data.tr = 3.264;
+        set(handles.tr, 'String','3.264');  
         handles.data.numCycles = 1;
         set(handles.numCycles, 'String','1');    %#
         handles.data.period    = 180;

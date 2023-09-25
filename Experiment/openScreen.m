@@ -13,7 +13,10 @@ function [window,width,height] = openScreen(windowPtrOrScreenNumber)
 global environment
 
 %%%%% open window
-if ~exist('windowPtrOrScreenNumber','var') || isempty(windowPtrOrScreenNumber)
+% hardcode so that mri uses extended screen 2
+if strcmp(environment,'mri') || strcmp(environment,'mri_offline')
+    windowPtrOrScreenNumber = 2;
+elseif ~exist('windowPtrOrScreenNumber','var') || isempty(windowPtrOrScreenNumber)
     windowPtrOrScreenNumber = max(Screen('Screens'));
 end
 

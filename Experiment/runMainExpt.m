@@ -22,7 +22,9 @@ try
     %% This might be a safer way to ensure consistency in omissions&contrast across participants.
     training = input('1 = Behavourial Training 0 = Scanning');
     % creates a practice block
-    showInstructions = input('Show instructions? (1: yes or 2: no): ');
+    if ~mriTiming
+        showInstructions = input('Show instructions? (1: yes or 2: no): ');
+    end
     %BlockNumber = input('Blocknumber?: (1,2,3 or 4)');
     %toneOrientation = input('Cue map? (1 or 2): ');
    
@@ -34,7 +36,14 @@ try
         nTrialsPerBlock = 32;
     else 
         nBlocks = 1;
-        nTrialsPerBlock = 16;
+        nTrialsPerBlock = 4;
+    end
+    if mod(nTrialsPerBlock,4) ~= 0
+        disp('WARNING: nTrialsPerBlock is not a multiple of 4, counterbalancing will fail!');
+        abort = input('Abort experiment?: (1: yes, 2: no): ');
+        if abort == 1
+            abort = aaa; % force error
+        end
     end
     nTrialsTotal = nBlocks*nTrialsPerBlock;
     feedback = 0;
