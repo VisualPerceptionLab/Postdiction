@@ -10,6 +10,7 @@ global fixCrossTexture fixRect fixCrossTexture_ITI;
 global TR;
 
 % Show 'end of block' screen
+% show performance text?
 text = sprintf('End of block %d/%d',iBlock,nBlocks);
 DrawFormattedText(window, text, 'center', height/2-75, 0, wrapat,0,0,vspacing);
 DrawFormattedText(window, extraText, 'center', height/2, 0, wrapat,0,0,vspacing);

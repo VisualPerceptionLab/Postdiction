@@ -6,8 +6,8 @@ global buttonDeviceID environment;
 if strcmp(environment,'mri') || strcmp(environment,'mri_offline')
     flash_key_1 = KbName('1!');
     flash_key_2 = KbName('2@');
-    volume_up   = KbName('');
-    volume_down = KbName('');
+    volume_up   = KbName('3#');
+    volume_down = KbName('4$');
     conf_key_1 = KbName('6^');
     conf_key_2 = KbName('7&');
     conf_key_3 = KbName('8*');
