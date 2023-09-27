@@ -2,13 +2,15 @@
 % Open screen, on the 2nd monitor (if available)
 % flip screen, play sound
 % Close screen
+clear all
 
 %% Parameters
-nstim = 10000;
+nstim = 1000;
 f = 440;                                        % sound frequency
-duration = 0.008;                               % sound duration
+duration = 0.007;                               % sound duration
 port = hex2dec('3ff8');                         % parallel port address
 uselpt = true;                                  % use parallel port?
+scnlatency = 0.048;                             % varies? between 40~56ms
 
 %% Parallel port setup
 if uselpt
@@ -31,6 +33,7 @@ KbQueueCreate                                   % create a keyboard queue
 KbQueueStart                                    % start the keyboard queue recording
 
 %% Audio setup
+devices = PsychPortAudio('GetDevices');
 if PsychPortAudio('GetOpenDeviceCount')         % check to see if a PortAudio device is still open...
     PsychPortAudio('Close');                    % ...and close it if necessary
 end
@@ -64,23 +67,36 @@ taud.stop  = zeros(nstim,1);
 
 %% main loop
 for n=1:nstim
-    % frame 1 (& prepare frame 2)
-    tvis(n,1) = Screen('Flip',pWin);
-    if uselpt; io64(io,port,255); end
-    % startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, time ,1);
-    startTime(n) = PsychPortAudio('Start',paudio, 1,tvis(n,1),1);
-    Screen('FillRect', pWin);
-    Screen('DrawText',pWin,'+',x0,y0);
-    [taud.start(n),~,~,taud.stop(n)] = PsychPortAudio('Stop',paudio,3,1);
-    % frame 2
-    tvis(n,2) = Screen('Flip',pWin);
-    if uselpt; io64(io,port,0); end
-    % frame 3 (& prepare next frame 1)
-    tvis(n,3) = Screen('Flip',pWin);
-    Screen('FillRect', pWin);
-    Screen('DrawText',pWin,'+',x0,y0);
-    Screen('FillRect', pWin, [0 0 0], [0 0 50 50]);
+    % frame 1
     
+    Screen('FillRect', pWin);
+    Screen('DrawText',pWin,'+',x0,y0);
+    Screen('FillRect', pWin, [0 0 0], [0 0 150 150]);
+    tvis(n,1) = Screen('Flip',pWin);
+    if uselpt; io64(io,port,0); end
+    taud.start(n) = PsychPortAudio('Start', paudio, 1, tvis(n,1)+scnlatency, 1);
+    
+    % frame 2
+    Screen('FillRect', pWin);
+    Screen('DrawText',pWin,'+',x0,y0);
+%     [taud.start(n),~,~,taud.stop(n)] = PsychPortAudio('Stop',paudio,3,1);
+    tvis(n,2) = Screen('Flip',pWin);
+    if uselpt; io64(io,port,255); end
+    WaitSecs(2*0.016);
+% 
+%     % frame 3 
+%     Screen('FillRect', pWin);
+%     Screen('DrawText',pWin,'+',x0,y0);
+%     tvis(n,3) = Screen('Flip',pWin);
+% %     startTime(n) = PsychPortAudio('Start',paudio, 1,tvis(n,3),1);
+%     
+%     Screen('FillRect', pWin);
+%     Screen('DrawText',pWin,'+',x0,y0);
+%     Screen('Flip',pWin);
+%     Screen('FillRect', pWin);
+%     Screen('DrawText',pWin,'+',x0,y0);
+%     Screen('Flip',pWin);
+
     [keypressed,~,~,~,~] = KbQueueCheck;        % ...read the keyboard queue
     if keypressed
         break
@@ -94,7 +110,11 @@ PsychPortAudio('Close');                        % close audio
 sca;                                            % close screen
 if uselpt; clear io; end                        % close paralle port
 
+save('vis_audio_test_timestamps','taud','tvis')
+
 % stats
 min(diff(tvis(:))*1000)
 max(diff(tvis(:))*1000)
-taud.start(:)-tvis(:,1)
+min(taud.start(:)-tvis(:,1))
+max(taud.start(:)-tvis(:,1))
+

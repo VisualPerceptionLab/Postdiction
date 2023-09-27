@@ -40,7 +40,7 @@ for iBlock = 1:nBlocks
 end
 
 % between visual (given condition)
-presentationTimesAV=results{1}.presentationTime(find(results{1}.condition==1),:);
+presentationTimesAV=results{1}.presentationTime(find(results{1}.condition==3))
 nBlocks = 1;
 nTrials = 16;
 for iBlock = 1:nBlocks

@@ -7,7 +7,7 @@ function [time] = waitForTrigger(waitTime,text,taskColour)
 % Time between scanner trigger and 'time' is determined by input argument
 % 'waitTime'.
 
-global window width height;
+global window width height fixCrossTexture fixRect;
 global environment buttonDeviceID scanPulseDeviceID;
 
 scanPulseDeviceID
@@ -27,9 +27,11 @@ if strcmp(environment,'mri')
     scannerTrigger = KbName('5%');
     
     %Wait for the first scanner pulse
-    DrawFormattedText(window, text, 'center', height/2-200, textColour);
-    text = 'Waiting for experiment';
-    DrawFormattedText(window, text, 'center', height/2+100, textColour);
+    % show fixation cross or not?
+    Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 0 width height]));
+%     DrawFormattedText(window, text, 'center', height/2-200, textColour);
+%     text = 'Waiting for experiment';
+%     DrawFormattedText(window, text, 'center', height/2+100, textColour);
     Screen('Flip',window);
     
     FlushEvents('keyDown');

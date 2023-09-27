@@ -38,7 +38,7 @@ try
         nTrialsPerBlock = 32;
     else 
         nBlocks = 1;
-        nTrialsPerBlock = 4;
+        nTrialsPerBlock = 32;
     end
     if mod(nTrialsPerBlock,4) ~= 0
         disp('WARNING: nTrialsPerBlock is not a multiple of 4, counterbalancing will fail!');
@@ -149,8 +149,11 @@ try
 %         
         %Present a block of trials
         %trialSequence
-        data{iBlock} = oneBlock(time, volume, training, nTrialsPerBlock, sampleRate, sizemult, distancemult, pitch);
-
+        if mriTiming
+            data{iBlock} = oneBlockScanner(time, volume, training, nTrialsPerBlock, sampleRate, sizemult, distancemult, pitch);
+        else 
+            data{iBlock} = oneBlock(time, volume, training, nTrialsPerBlock, sampleRate, sizemult, distancemult, pitch);
+        end
         
         %Save the data
         save(resultFile, 'data');

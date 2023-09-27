@@ -6,6 +6,8 @@ global buttonDeviceID environment;
 if strcmp(environment,'mri') || strcmp(environment,'mri_offline')
     flash_key_1 = KbName('1!');
     flash_key_2 = KbName('2@');
+    volume_up   = KbName('');
+    volume_down = KbName('');
     conf_key_1 = KbName('6^');
     conf_key_2 = KbName('7&');
     conf_key_3 = KbName('8*');
@@ -18,8 +20,8 @@ else
     conf_key_2 = KbName('e');
     conf_key_3 = KbName('w');
     conf_key_4 = KbName('q');
-    up_arrow = KbName('UpArrow');
-    down_arrow = KbName('DownArrow');
+    volume_up = KbName('UpArrow');
+    volume_down = KbName('DownArrow');
     escape = KbName('escape');
 end
 
@@ -32,10 +34,10 @@ while GetSecs < endTime
             answer = 2;
             break;
         elseif not (strcmp(environment,'mri') || strcmp(environment,'mri_offline'))
-            if keyCode(up_arrow)
+            if keyCode(volume_up)
                 answer = 21;
                 break;
-            elseif keyCode(down_arrow)
+            elseif keyCode(volume_down)
                 answer = 20;
                 break;
             end

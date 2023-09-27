@@ -20,6 +20,8 @@ stimColour = Lmax; %[230 230 230];
 
 % Durations
 preOnset = 1;% 23ms before first stimulus presentation
+% tested with Erik
+beamer_latency = 0.048;
 postOnset = preOnset; % same before as after
 stimDur = 1/60; %2/60;%2 % 0.039; %0.017% 17ms show flash
 stimInterval = 3/60; %2/60; %0.030; % 52ms inbetween stimuli
@@ -89,9 +91,10 @@ for iTrial=1:nTrials
     % 1st stimulus time shown
     %startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, time ,0);
     time = presentationTime(iTrial,1) + preOnset;
-    startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, time - halfframe ,1);
-    %presentationTime(iTrial,2) = Screen('Flip', window, startAudioTime(iTrial, 1) - halfframe);
     presentationTime(iTrial,2) = Screen('Flip', window, time - halfframe);
+    startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, presentationTime(iTrial,2) - halfframe + beamer_latency,1);
+    %presentationTime(iTrial,2) = Screen('Flip', window, startAudioTime(iTrial, 1) - halfframe);
+    
     
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     endPresentationTime(iTrial, 1) = Screen('Flip', window, presentationTime(iTrial,2) + stimDur - halfframe);
@@ -130,9 +133,10 @@ for iTrial=1:nTrials
     if thisCondition == 4 
     % Visual cue 2
     Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], vis_stim2_coord));
-    startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, time - halfframe ,1);
-    %presentationTime(iTrial,3) = Screen('Flip', window, startAudioTime(iTrial, 2) - halfframe);
     presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe);
+    startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, presentationTime(iTrial,3) - halfframe + beamer_latency ,1);
+    %presentationTime(iTrial,3) = Screen('Flip', window, startAudioTime(iTrial, 2) - halfframe);
+    
     end
 
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
@@ -160,9 +164,10 @@ for iTrial=1:nTrials
     Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], vis_stim3_coord));
     % interspace with some time
     % follow with visual stimulus one frame later
-    startAudioTime(iTrial, 3) = PsychPortAudio('Start', pahandle, 1, time - halfframe ,1);
+    
     %presentationTime(iTrial,4) = Screen('Flip', window, startAudioTime(iTrial, 3) - halfframe);
     presentationTime(iTrial,4) = Screen('Flip', window, startAudioTime(iTrial, 3) - halfframe);
+    startAudioTime(iTrial, 3) = PsychPortAudio('Start', pahandle, 1, presentationTime(iTrial, 4) - halfframe + beamer_latency ,1);
     % flip to empty after 17ms
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     
@@ -275,248 +280,4 @@ presentation.IVscore = IVscore
 presentation.AVscore = AVscore
 presentation.conditionConf = conditionConf
 
-%Screen('CloseAll')
-
 end
-% 
-%     reqPresentationTime(1) = time;
-%     time = presentationTime(1) + fixCueInt;
-%     
-%     %% Present the auditory cue.
-%     if isnan(cue) || strcmp(practice,'stage1')
-%         % no auditory cue; just update 'time' and set some variables (to
-%         % avoid errors).
-%         time = time + cueStimSOA;
-%         reqCueTime = NaN;
-%         cueTime = NaN;
-%     else
-%         % present the auditory cue
-%         reqCueTime = time;
-%         % Fill the audio playback buffer with the audio data 'wavedata':
-%         PsychPortAudio('FillBuffer', pahandle, wavedata{tonePresented});
-%         % Start audio playback at time 'time', return onset timestamp.
-%         cueTime = PsychPortAudio('Start', pahandle, 1, reqCueTime, 1);
-%         
-%         time = cueTime + cueStimSOA; % Present the stimulus after the cue
-%         
-% %         if strcmp(environment,'mri') || strcmp(environment,'mri_offline')
-% %             % send a message to the eyetracker
-% %             text = sprintf('CUE%d',cue);
-% %             Eyelink('Message', text);
-% %         end
-%     end
-%     
-%     %% Prepare and show the grating (or noise) stimulus
-%     noisePatch = trialSequence(iTrial,4);
-%     if ~isnan(gratingOrientation)
-%         stimulusMatrix = makeStimulus(gratingContrast,noiseContrast,noisePatch,gratingSize_degrees,gratingPhase,spatFreq,innerDegree);
-%     else
-%         stimulusMatrix = makeStimulus(0,noiseContrast,noisePatch,gratingSize_degrees,gratingPhase,spatFreq,innerDegree);
-%     end
-%     readyStimulus = Screen('MakeTexture', window, stimulusMatrix);
-%     Screen('DrawTexture', window, readyStimulus, [], destSquare, gratingRotAngle);
-%     Screen('Close',readyStimulus);
-%     %Screen('FrameOval', window, placeholderColour, placeholderDestSquare, lineWidth);
-%     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 0 width height]));
-%     presentationTime(2) = Screen('Flip', window, time - halfFrame);
-%     reqPresentationTime(2) = time;
-%     time = presentationTime(2) + gratingDur;
-%     
-%     if saveStim
-%         imageArray = Screen('GetImage', window);
-%         stimName = sprintf('oneBlock_stim_trial%d.tiff',iTrial);
-%         imwrite(imageArray, stimName)
-%     end
-%     
-%     %% Remove the stimulus and display the fixation bull's eye again
-%     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 0 width height]));
-%     presentationTime(3) = Screen('Flip', window, time - halfFrame);
-%     reqPresentationTime(3) = time;
-%     time = presentationTime(3) + respDelay;
-% 
-%     % Remove any keypresses that occured before presentation of the grating.
-%     FlushEvents('keyDown');
-%     
-%     %% Present orientation response options
-%     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 0 width height]));
-%     respMap = trialSequence(iTrial,3);
-% 
-%     if respMap == 1
-%         %Screen('DrawLine', window, [0 0 0], width/2-respMap_Xoffset-respMap_lineSize, height/2+respMap_Yoffset+respMap_lineSize, width/2-respMap_Xoffset, height/2+respMap_Yoffset, respMap_lineWidth);
-%         %Screen('DrawLine', window, [0 0 0], width/2+respMap_Xoffset+respMap_lineSize, height/2+respMap_Yoffset+respMap_lineSize, width/2+respMap_Xoffset, height/2+respMap_Yoffset, respMap_lineWidth);
-%         %DrawFormattedText(window, '<', width/2-respMap_Xoffset, 'center', [0 0 0]);
-%         %DrawFormattedText(window, '>', width/2+respMap_Xoffset, 'center', [0 0 0]);
-%         %DrawFormattedText(window, 'A    B', 'center', height/2+respMap_Yoffset, [0 0 0]);
-%         %DrawFormattedText(window, 'A                               B', 'center', height/2+respMap_Yoffset, [0 0 0]);
-%          DrawFormattedText(window, '<         >', 'center', 'center', [0 0 0]);
-%     elseif respMap == 0
-%         %Screen('DrawLine', window, [0 0 0], width/2-respMap_Xoffset-respMap_lineSize, height/2+respMap_Yoffset, width/2-respMap_Xoffset, height/2+respMap_Yoffset+respMap_lineSize, respMap_lineWidth);
-%         %Screen('DrawLine', window, [0 0 0], width/2+respMap_Xoffset+respMap_lineSize, height/2+respMap_Yoffset, width/2+respMap_Xoffset, height/2+respMap_Yoffset+respMap_lineSize, respMap_lineWidth);
-%         %DrawFormattedText(window, '>', width/2-respMap_Xoffset, 'center', [0 0 0]);
-%         %DrawFormattedText(window, '<', width/2+respMap_Xoffset, 'center', [0 0 0]);
-%         %DrawFormattedText(window, 'B    A', 'center', height/2+respMap_Yoffset, [0 0 0]);
-%         %DrawFormattedText(window, 'B                               A', 'center', height/2+respMap_Yoffset, [0 0 0]);
-%          DrawFormattedText(window, '>         <', 'center', 'center', [0 0 0]);
-%     end
-%     
-%     presentationTime(4) = Screen('Flip', window, time - halfFrame);
-%     startRespInterval = presentationTime(4);
-%     time = presentationTime(4) + orientRespInt;
-%     
-%     % Check for responses.
-%     % at 'time', the second grating needs to be removed; check for
-%     % responses until within one refresh of that time.
-%     [orientAnswer, orientRespTime] = getResponse(time - 2*halfFrame);
-%     orientRT = orientRespTime - startRespInterval;
-%     
-%     % Remove any remaining keypresses
-%     FlushEvents('keyDown');
-%     
-%     %% Present confidence response prompt
-%     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 0 width height]));
-%     DrawFormattedText(window, 'CONF?', 'center', height/2+respMap_Yoffset, [0 0 0]);
-%     presentationTime(5) = Screen('Flip', window, time - halfFrame);
-%     startConfRespInterval = presentationTime(5);
-%     time = presentationTime(5) + confRespInt;
-%     
-%     % Check for responses.
-%     % at 'time', the second grating needs to be removed; check for
-%     % responses until within one refresh of that time.
-%     [confAnswer, confRespTime] = getResponse(time - 2*halfFrame);
-%     confRT = confRespTime - startConfRespInterval;
-%     
-%     % After the response interval, present the fixation point without
-%     % the circle around it, as a cue that the trial has ended.
-%     Screen('DrawTexture', window, fixCrossTexture_ITI, fixRect, CenterRect(fixRect, [0 0 width height]));
-%     presentationTime(6) = Screen('Flip', window, time - halfFrame);
-%     reqPresentationTime(6) = time;
-%     
-%     % If there was no (timely/valid) response, flicker the bull's eye
-%     if (orientAnswer == -10) || (confAnswer == -10)
-%         % Present bull's eye
-%         Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 0 width height]));
-%         fixFlicker_time = Screen('Flip', window, time + 0.1 - halfFrame);
-%         % Replace by fixation point
-%         Screen('DrawTexture', window, fixCrossTexture_ITI, fixRect, CenterRect(fixRect, [0 0 width height]));
-%         Screen('Flip', window, fixFlicker_time + 0.1 - halfFrame);
-%     end
-%     
-%     % Check if the response was correct
-%     if respMap == 1
-%         correct = gratingOrientation == orientAnswer;
-%     elseif respMap == 0
-%         correct = gratingOrientation == 3-orientAnswer;
-%     end
-% %     fprintf('orient = %d\n',gratingOrientation);
-% %     fprintf('respMap = %d\n',respMap);
-% %     fprintf('answer = %d\n',orientAnswer);
-% %     fprintf('correct = %d\n',correct);
-% %     fprintf('confidence = %d\n',confAnswer);
-%     
-%     %         % update Quest
-%     %         if ~practice
-%     %             % Update the relevant Quest structure.
-%     %             % Only update if there was a response.
-%     %             if answer ~= -10
-%     %                 if runType == 1  || runType == 3
-%     %                     orientationQ = QuestUpdate(orientationQ,(log10(abs(orientationDiff))),correct);
-%     %                     qMean_updated = QuestMean(orientationQ);
-%     %                     qSD_updated = QuestSd(orientationQ);
-%     %                 elseif runType == 2  || runType == 4
-%     %                     contrastQ = QuestUpdate(contrastQ,(log10(abs(contrastDiff))),correct);
-%     %                     qMean_updated = QuestMean(contrastQ);
-%     %                     qSD_updated = QuestSd(contrastQ);
-%     %                 else % what happened?
-%     %                     answer = aaa;
-%     %                 end
-%     %             else
-%     %                 qMean_updated = NaN;
-%     %                 qSD_updated = NaN;
-%     %             end
-%     %         end
-%     
-%     %Give feedback
-%     if feedback == 1
-%         if correct == 1
-%             textColour = [0 255 0];
-%             text = 'CORRECT!';
-%         elseif orientAnswer == -10
-%             textColour = [255 0 0];
-%             text = 'TOO SLOW!';
-%         else
-%             textColour = [255 0 0];
-%             text = 'WRONG!';
-%         end
-%         DrawFormattedText(window, text, 'center', height/2+50, textColour);
-%         Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 0 width height]));
-%         time = Screen('Flip',window);
-%         
-%         %remove feedback after 1 second
-%         Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 0 width height]));
-%         Screen('Flip', window, time + 1 - halfFrame);
-%     end
-%     
-%     %Update the number of incorrect responses and time
-%     nCorrect = nCorrect + correct;
-%     
-%     %Update time
-%     ITI = 1.4;
-%     if mriTiming
-%         % add jitter
-%         intLengths = [0 1.5 3];
-%         intProps =   [0.5 0.3 0.2];
-%         x = rand;
-%         if x < intProps(1)
-%             intLength = intLengths(1);
-%         elseif x < intProps(1) + intProps(2)
-%             intLength = intLengths(2);
-%         else
-%             intLength = intLengths(3);
-%         end
-%         ITI = ITI + intLength;
-%     end
-%     time = time + ITI;
-%     
-%     %Save data
-%     presentation.cue(iTrial) = cue;
-%     presentation.tonePresented{iTrial} = tonePresented;
-%     presentation.predOrientation(iTrial) = predOrientation;
-%     presentation.gratingOrientation(iTrial) = gratingOrientation;
-%     presentation.gratingRotAngle(iTrial) = gratingRotAngle;
-%     presentation.gratingContrast(iTrial) = gratingContrast;
-%     presentation.gratingPhase(iTrial) = gratingPhase;
-%     presentation.noisePatch(iTrial) = noisePatch;
-%     presentation.respMap(iTrial) = respMap;
-%     presentation.orientAnswer(iTrial) = orientAnswer;
-%     presentation.confAnswer(iTrial) = confAnswer;
-%     presentation.orientRT(iTrial) = orientRT;
-%     presentation.confRT(iTrial) = confRT;
-%     presentation.answeredCorrect(iTrial) = correct;
-%     presentation.cueTime{iTrial} = cueTime;
-%     presentation.reqCueTime{iTrial} = reqCueTime;
-%     presentation.presentationTime{iTrial} = presentationTime;
-%     presentation.reqPresentationTime{iTrial} = reqPresentationTime;
-%     presentation.ITI(iTrial) = ITI;
-%     %     if ~practice
-%     %         presentation.qMean_updated(iTrial) = qMean_updated;
-%     %         presentation.qSD_updated(iTrial) = qSD_updated;
-%     %     end
-%     
-%     clear presentationTime reqPresentationTime
-%     
-% end
-% 
-% presentation.nTrialsPerBlock = nTrialsPerBlock;
-% presentation.nOrientations = nOrientations;
-% presentation.rotAngles = rotAngles;
-% presentation.orients = orients;
-% presentation.trialSequence = trialSequence;
-% presentation.toneOrientation = toneOrientation;
-% presentation.cueStimSOA = cueStimSOA;
-% presentation.feedback = feedback;
-% presentation.nCorrect = nCorrect;
-% presentation.time = time;
-% 
-% %KbQueueRelease(buttonDeviceID);
-% 
-% end
