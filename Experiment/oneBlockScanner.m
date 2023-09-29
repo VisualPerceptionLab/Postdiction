@@ -29,17 +29,10 @@ stimInterval = 3/60; %2/60; %0.030; % 52ms inbetween stimuli
 toneDur = 0.007; % 7ms
 halfframe = 1/120;
 toneFreqs = pitch; % postdiction % A4 C#5 E5
-if training
-    flash_text = 'How many flashes (2 or 3)?';
-    conf_text = 'Confidence?';
-    responseTime = 1.5;
-    confidenceTime = 1.5;
-else
-    flash_text = '';
-    conf_text = 'C?';
-    responseTime = 1;
-    confidenceTime = 1;
-end
+flash_text = '';
+conf_text = 'C?';
+responseTime = 1;
+confidenceTime = 1;
 
 params = struct("visStimWidth", visStimWidth, "visStimLength", visStimLength, "visStimEcc", visStimEcc, "visStimHeight", visStimHeight, "stimColour", stimColour, "preOnset", preOnset, "stimDur", stimDur, "stimInterval", stimInterval, "toneDur", toneDur, "toneFreqs", toneFreqs, "responseTime", responseTime);
 
@@ -166,7 +159,7 @@ for iTrial=1:nTrials
     % follow with visual stimulus one frame later
     
     %presentationTime(iTrial,4) = Screen('Flip', window, startAudioTime(iTrial, 3) - halfframe);
-    presentationTime(iTrial,4) = Screen('Flip', window, startAudioTime(iTrial, 3) - halfframe);
+    presentationTime(iTrial,4) = Screen('Flip', window, time - halfframe);
     startAudioTime(iTrial, 3) = PsychPortAudio('Start', pahandle, 1, presentationTime(iTrial, 4) - halfframe + beamer_latency ,1);
     % flip to empty after 17ms
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
