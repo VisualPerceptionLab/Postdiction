@@ -178,7 +178,7 @@ for iTrial=1:nTrials
     
     % question 1
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
-    DrawFormattedText(window, flash_text, 'center', height/2-40, [0 0 0]);
+    DrawFormattedText(window, flash_text, 'center', height/2-50, [0 0 0]);
 
     tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
     time = tempPresentationTime(1) + responseTime;
@@ -191,7 +191,7 @@ for iTrial=1:nTrials
     
     % question 2
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
-    DrawFormattedText(window, conf_text, 'center', height/2-40, [0 0 0]);
+    DrawFormattedText(window, conf_text, 'center', height/2-50, [0 0 0]);
 
     tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
     time = tempPresentationTime(1) + confidenceTime;
