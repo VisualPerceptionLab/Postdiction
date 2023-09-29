@@ -13,7 +13,7 @@ elseif isunix
     addpath(spmDir)
 end
 
-TR = (48*74.65)/1000
+TR = 3.264;
 dt = 32;
 
 SOAbase = 5/TR % base SOA between trials, in TRs
