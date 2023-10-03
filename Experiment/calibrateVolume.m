@@ -73,11 +73,11 @@ try
         while GetSecs < time - 0.050;
             [answer, respTime] = getResponse(GetSecs + 0.050); % look for responses
             switch answer
-                case 20
+                case 1
                     % turn volume down
                     volume = 0.995*volume % 0.95
                     FlushEvents('keyDown');
-                case 21
+                case 2
                     % turn volume up
                     volume = 1.005*volume % 1.05
                     FlushEvents('keyDown');

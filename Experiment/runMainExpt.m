@@ -37,8 +37,8 @@ try
         nBlocks = 1;
         nTrialsPerBlock = 32;
     else 
-        nBlocks = 1;
-        nTrialsPerBlock = 32;
+        nBlocks = 2;
+        nTrialsPerBlock = 52;
     end
     if mod(nTrialsPerBlock,4) ~= 0
         disp('WARNING: nTrialsPerBlock is not a multiple of 4, counterbalancing will fail!');

@@ -57,6 +57,7 @@ try,
     AssertOpenGL;
     
     % to skip annoying warning message on display (but not terminal)
+    
     Screen('Preference','SkipSyncTests', 1);
     
     % Open the screen
