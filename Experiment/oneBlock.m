@@ -19,7 +19,7 @@ visStimHeight = degrees2pixels(4.3);% measured as middle stim: 4.00, bottom stim
 stimColour = Lmax; %[230 230 230];
 
 % Durations
-preOnset = 1;% 23ms before first stimulus presentation
+preOnset = 2;% 23ms before first stimulus presentation
 postOnset = preOnset; % same before as after
 stimDur = 1/60; %2/60;%2 % 0.039; %0.017% 17ms show flash
 stimInterval = 3/60; %2/60; %0.030; % 52ms inbetween stimuli

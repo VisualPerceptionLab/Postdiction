@@ -22,7 +22,7 @@ switch environmentID
         TR = 3.264; %0.080*48 for sequence with initial volume in opposite PE dir
         
         mriTiming = true
-        waitTime = 1*TR
+        waitTime = 0*TR
         
         audioDeviceID = [] % Which audio device?
         Screen('Preference', 'SkipSyncTests', 1);
