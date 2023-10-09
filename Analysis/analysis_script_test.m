@@ -2,26 +2,53 @@
 % mydata{1}.startAudioTime(ver3,2) - mydata{1}.presentationTime(ver3,3)
 
 % laptop
-results_path = 'C:\Users\PBarkema\Documents\MATLAB\Postdiction_git\Experiment\Results\S09'
+results_path = 'D:\Documents\MATLAB\Postdiction_git\Experiment\Results\S13'
 % desktop
 %results_path = "C:\Users\pbarkema\Downloads\technical pilot data\postdiction_git\technicalpilot\Experiment\Results\S09";
-path = fullfile(results_path, "results_mainexp_2023_9_18_16_21_38.mat");
+path = fullfile(results_path, "results_mainexp_2023_9_29_11_45_49.mat");
 data_file = load(path);
-results = data_file.data;
+results = data_file.results;
+nTrials = 52
 
-pitchres = results([1,5]);
-paramres = results([1,2,3,4, 5, 6]);
+% pitchres = results([1,5]);
+% paramres = results([1,2,3,4, 5, 6]);
+% 
+% % pitch analysis
+% conf2000 = pitchres{1}.confAnswer;
+% conf4000 = pitchres{2}.confAnswer;
 
-% pitch analysis
-conf2000 = pitchres{1}.confAnswer;
-conf4000 = pitchres{2}.confAnswer;
+% correcting scores - save this code for calculating scores
+% block = 2;
+% % for calculating illusion scores
+% hypothesisAns = [2 3 2 3];
+% ExpDesign = results{block}.condition
+% results{block}.AVscore
+% results{block}.IVscore
+% results{block}.twoVeridicalscore
+% results{block}.threeVeridicalscore
+% for i=1:4
+%     expectedAns(ExpDesign==i) = hypothesisAns(i);
+% end
+% asExpected = results{block}.flashAnswer == expectedAns;
+% succesfulTrials = asExpected .* ExpDesign;
+% twoVeridicalscore = numel(find(succesfulTrials==1)) / (nTrials/4);
+% AVscore = numel(find(succesfulTrials==2)) / (nTrials/4);
+% IVscore = numel(find(succesfulTrials==3)) / (nTrials/4);
+% threeVeridicalscore = numel(find(succesfulTrials==4)) / (nTrials/4);
+% results{block}.AVscore = AVscore
+% results{block}.IVscore = IVscore
+% results{block}.twoVeridicalscore = twoVeridicalscore
+% results{block}.threeVeridicalscore = threeVeridicalscore
+% save(path,'results')
+% TO-DO: false confidence and ignore -10s
+% TO-DO: correct confidence and ignore -10s
 
 % timing measurements:
 
 % between trial timing
 
 nBlocks = 1;
-nTrials = 16;
+
 for iBlock = 1:nBlocks
     for nTrial =1: nTrials
         initialTimings(nTrial) = results{iBlock}.presentationTime(nTrial,1);
