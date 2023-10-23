@@ -6,7 +6,7 @@ clear all; close all;
 results_path = 'D:\Documents\MATLAB\Postdiction_git\Experiment\Results\Oliver_humanpilot'
 % desktop
 %results_path = "C:\Users\pbarkema\Downloads\technical pilot data\postdiction_git\technicalpilot\Experiment\Results\S09";
-path = fullfile(results_path, "results_mainexp_2023_9_29_12_0_48.mat");
+path = fullfile(results_path, "results_mainexp_2023_9_29_11_30_48.mat");
 data_file = load(path);
 results = data_file.data;
 nTrials = size(results{1}.condition, 2);
@@ -93,7 +93,7 @@ results{1}.startAudioTime(ver3,2) - results{1}.presentationTime(ver3,3)
 % timing between auditory and visual stimulus
 % time of total experiment
 iBlock = 1
-
+confpercond = 
 for iBlock = iBlock:nBlocks
    % select desired answers
    cond1_correct = find(results{iBlock}.condition==1 & results{iBlock}.flashAnswer==2);
