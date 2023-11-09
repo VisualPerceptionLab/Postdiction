@@ -5,7 +5,7 @@
 
 clear all; close all;
 
-rng('default') % re5set the state of the random number generator.
+rng('shuffle') % re5set the state of the random number generator.
 
 global window width height;
 global environment;

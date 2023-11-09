@@ -114,7 +114,7 @@ for iTrial=1:nTrials
     % calculate when new audio should come
     startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, time - halfframe ,1);
     %presentationTime(iTrial,3) = Screen('Flip', window, startAudioTime(iTrial, 2) - halfframe);
-    presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe)
+    presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe);
     end
 
     % if condition 3: rect
@@ -162,7 +162,7 @@ for iTrial=1:nTrials
     % follow with visual stimulus one frame later
     startAudioTime(iTrial, 3) = PsychPortAudio('Start', pahandle, 1, time - halfframe ,1);
     %presentationTime(iTrial,4) = Screen('Flip', window, startAudioTime(iTrial, 3) - halfframe);
-    presentationTime(iTrial,4) = Screen('Flip', window, startAudioTime(iTrial, 3) - halfframe);
+    presentationTime(iTrial,4) = Screen('Flip', window, time - halfframe);
     % flip to empty after 17ms
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     
@@ -206,7 +206,7 @@ for iTrial=1:nTrials
     end
     
     % Duration of just ITI fixation mark
-    % trials are 3.36-6.18s: increase by 1.7s
+    % trials are 3.36-6.18s: increase by about 1.7s
     ITI = 1.8; %0
     if mriTiming
         intLengths = [0 1.5 3];
