@@ -33,28 +33,8 @@ while GetSecs < endTime
         if keyCode(flash_key_1)
             answer = 2;
             break;
-        elseif not (strcmp(environment,'mri') || strcmp(environment,'mri_offline'))
-            if keyCode(volume_up)
-                answer = 21;
-                break;
-            elseif keyCode(volume_down)
-                answer = 20;
-                break;
-            end
         elseif keyCode(flash_key_2)
             answer = 3;
-            break;
-        elseif keyCode(conf_key_1)
-            answer = 11;
-            break;
-        elseif keyCode(conf_key_2)
-            answer = 12;
-            break;
-        elseif keyCode(conf_key_3)
-            answer = 13;
-            break;
-        elseif keyCode(conf_key_4)
-            answer = 14;
             break;
         elseif keyCode(escape)
             answer = bbb; % forcefully break out

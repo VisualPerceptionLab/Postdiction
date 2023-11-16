@@ -21,7 +21,7 @@ stimColour = Lmax; %[230 230 230];
 % Durations
 preOnset = 1;% 23ms before first stimulus presentation
 % tested with Erik
-beamer_latency = 0; % just 0 for testing with joost, change back % 0.048;
+beamer_latency = 0.048; % just 0 for testing with joost, change back % 0.048;
 postOnset = preOnset; % same before as after
 stimDur = 1/60; %2/60;%2 % 0.039; %0.017% 17ms show flash
 stimInterval = 3/60; %2/60; %0.030; % 52ms inbetween stimuli
@@ -192,11 +192,13 @@ for iTrial=1:nTrials
 % 
 %     tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
 %     time = tempPresentationTime(1) + confidenceTime;
-    remainderRespTime = responseTime - (flashRespTime - time); 
-    [confAnswer, confRespTime] = getResponse_conf(flashRespTime + remainderRespTime);
-    remainderRespTime = remainderRespTime - (confRespTime-flashRespTime);
+    %remainderRespTime = responseTime - (flashRespTime - time); 
+    [confAnswer, confRespTime] = getResponse_conf(time+responseTime);
+    %remainderRespTime = remainderRespTime - (confRespTime-flashRespTime);
+    
+    
     % wait for the remainder of the response time
-    time = confRespTime + remainderRespTime;
+    time = time+responseTime;
      % If there was no (timely/valid) response, flicker the bull's eye
     if (flashAnswer == -10) || (confAnswer == -10)
         % Present red bull's eye dot.
