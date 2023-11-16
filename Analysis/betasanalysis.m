@@ -1,0 +1,99 @@
+clear all;
+spm = 'D:\spm12';
+addpath(spm)
+Xhead = spm_vol('D:\Documents\MATLAB\PRF\pRF_analysis\pRF_analysis\petkok_analysis_2016_PB\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\sx0.nii');
+Xvol = spm_read_vols(Xhead);
+Yhead = spm_vol('D:\Documents\MATLAB\PRF\pRF_analysis\pRF_analysis\petkok_analysis_2016_PB\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\sy0.nii');
+Yvol = spm_read_vols(Yhead);
+%Sighead = spm_vol('D:\Documents\MATLAB\PRF\pRF_analysis\pRF_analysis\petkok_analysis_2016\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\x0.nii');
+%Sigvol = spm_read_vols(Sighead);
+Varhead = spm_vol('D:\Documents\MATLAB\PRF\pRF_analysis\pRF_analysis\petkok_analysis_2016_PB\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\svarexp.nii');
+Varvol = spm_read_vols(Varhead);
+Sighead = spm_vol('D:\Documents\MATLAB\PRF\pRF_analysis\pRF_analysis\petkok_analysis_2016_PB\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\sigma.nii');
+Sigvol = spm_read_vols(Sighead);
+% Make this the beta per condition, so first four betas
+Mainhead1 = spm_vol('D:\Documents\MATLAB\LayerfMRI_Hallucinations\Subject_data\techpilot5\FirstLevelModel\beta_0001.nii');
+Mainhead2 = spm_vol('D:\Documents\MATLAB\LayerfMRI_Hallucinations\Subject_data\techpilot5\FirstLevelModel\beta_0002.nii');
+Mainhead3 = spm_vol('D:\Documents\MATLAB\LayerfMRI_Hallucinations\Subject_data\techpilot5\FirstLevelModel\beta_0003.nii');
+Mainhead4 = spm_vol('D:\Documents\MATLAB\LayerfMRI_Hallucinations\Subject_data\techpilot5\FirstLevelModel\beta_0004.nii');
+Mainvol1 = spm_read_vols(Mainhead1);
+Mainvol2 = spm_read_vols(Mainhead2);
+Mainvol3 = spm_read_vols(Mainhead3);
+Mainvol4 = spm_read_vols(Mainhead4);
+
+step = .2; % Resolution of your receptive field map. Lower means higher resolution. However, with higher size of window, this will be somewhat lost. 
+Resolution = 1; % Size of window. Making this bigger effectively smooths the data, but loosing resolution
+x = [-5.5:step:5.5]; % -11 to 11 seems to be the range of x and y values roughly
+y = [-5.5:step:5.5];
+visStimWidth = 0.28; 
+visStimLength =1.2; 
+visStimEcc = 1.42;
+visStimHeight = 4.3;
+
+% ROI 1 - left flash
+flash1.xmin = 0 - visStimEcc-(1/2)*visStimWidth;
+flash1.xmax = 0 - visStimEcc+(1/2)*visStimWidth;
+flash1.ymin = 0 - visStimHeight-(1/2)*visStimLength;
+flash1.ymax = 0 - visStimHeight+(1/2)*visStimLength;
+% ROI 2 - middle flash
+flash2.xmin = 0 -(1/2)*visStimWidth;
+flash2.xmax = 0 +(1/2)*visStimWidth;
+flash2.ymin = 0 - visStimHeight-(1/2)*visStimLength;
+flash2.ymax = 0 - visStimHeight+(1/2)*visStimLength;
+% ROI 3 - right flash
+flash3.xmin = 0 + visStimEcc-(1/2)*visStimWidth;
+flash3.xmax = 0 + visStimEcc+(1/2)*visStimWidth;
+flash3.ymin = 0 - visStimHeight-(1/2)*visStimLength;
+flash3.ymax = 0 - visStimHeight+(1/2)*visStimLength;
+% ROI 4 - top-half visual field flash
+control.xmin = 0 -(1/2)*visStimWidth;
+control.xmax = 0 +(1/2)*visStimWidth;
+control.ymin = 0 + visStimHeight-(1/2)*visStimLength;
+control.ymax = 0 + visStimHeight+(1/2)*visStimLength;
+% for xi = 1:length(x)
+%             fractionComplete = xi/length(x) % Keeps track of how far the code is in fractions. Low step variable means longer processing time. 
+%     for yi = 1:length(y)
+Roi1_beta1  = Mainvol1(Xvol>= flash1.xmin - Sigvol & Xvol<= flash1.xmax + Sigvol & Yvol >= flash1.ymin - Sigvol & Yvol <= flash1.ymax + Sigvol & Varvol > .25 & Sigvol < 2);
+Roi1_beta2  = Mainvol2(Xvol>= flash1.xmin - Sigvol & Xvol<= flash1.xmax + Sigvol & Yvol >= flash1.ymin - Sigvol & Yvol <= flash1.ymax + Sigvol & Varvol > .25 & Sigvol < 2);
+Roi1_beta3  = Mainvol3(Xvol>= flash1.xmin - Sigvol & Xvol<= flash1.xmax + Sigvol & Yvol >= flash1.ymin - Sigvol & Yvol <= flash1.ymax + Sigvol & Varvol > .25 & Sigvol < 2);
+Roi1_beta4  = Mainvol4(Xvol>= flash1.xmin - Sigvol & Xvol<= flash1.xmax + Sigvol & Yvol >= flash1.ymin - Sigvol & Yvol <= flash1.ymax + Sigvol & Varvol > .25 & Sigvol < 2);
+Roi1_beta1_mean = nanmean(Roi1_beta1);
+Roi1_beta2_mean = nanmean(Roi1_beta2);
+Roi1_beta3_mean = nanmean(Roi1_beta3);
+Roi1_beta4_mean = nanmean(Roi1_beta4);
+
+Roi2_beta1 = Mainvol1(Xvol>= flash2.xmin - Sigvol & Xvol<= flash2.xmax + Sigvol & Yvol >= flash2.ymin -  Sigvol & Yvol <= flash2.ymax + Sigvol & Varvol > .2 & Sigvol < 2);   
+Roi2_beta2 = Mainvol2(Xvol>= flash2.xmin - Sigvol & Xvol<= flash2.xmax + Sigvol & Yvol >= flash2.ymin -  Sigvol & Yvol <= flash2.ymax + Sigvol & Varvol > .2 & Sigvol < 2); 
+Roi2_beta3 = Mainvol3(Xvol>= flash2.xmin - Sigvol & Xvol<= flash2.xmax + Sigvol & Yvol >= flash2.ymin -  Sigvol & Yvol <= flash2.ymax + Sigvol & Varvol > .2 & Sigvol < 2); 
+Roi2_beta4 = Mainvol4(Xvol>= flash2.xmin - Sigvol & Xvol<= flash2.xmax + Sigvol & Yvol >= flash2.ymin -  Sigvol & Yvol <= flash2.ymax + Sigvol & Varvol > .2 & Sigvol < 2); 
+Roi2_beta1_mean = nanmean(Roi2_beta1);
+Roi2_beta2_mean = nanmean(Roi2_beta2);
+Roi2_beta3_mean = nanmean(Roi2_beta3);
+Roi2_beta4_mean = nanmean(Roi2_beta4);
+
+Roi3_beta1 = Mainvol1(Xvol>= flash3.xmin - Sigvol & Xvol<= flash3.xmax + Sigvol & Yvol >= flash3.ymin - Sigvol & Yvol <= flash3.ymax + Sigvol  & Varvol > .2 & Sigvol < 2);
+Roi3_beta2 = Mainvol2(Xvol>= flash3.xmin - Sigvol & Xvol<= flash3.xmax + Sigvol & Yvol >= flash3.ymin - Sigvol & Yvol <= flash3.ymax + Sigvol  & Varvol > .2 & Sigvol < 2);
+Roi3_beta3 = Mainvol3(Xvol>= flash3.xmin - Sigvol & Xvol<= flash3.xmax + Sigvol & Yvol >= flash3.ymin - Sigvol & Yvol <= flash3.ymax + Sigvol  & Varvol > .2 & Sigvol < 2);
+Roi3_beta4 = Mainvol4(Xvol>= flash3.xmin - Sigvol & Xvol<= flash3.xmax + Sigvol & Yvol >= flash3.ymin - Sigvol & Yvol <= flash3.ymax + Sigvol  & Varvol > .2 & Sigvol < 2);
+Roi3_beta1_mean = nanmean(Roi3_beta1);
+Roi3_beta2_mean = nanmean(Roi3_beta2);
+Roi3_beta3_mean = nanmean(Roi3_beta3);
+Roi3_beta4_mean = nanmean(Roi3_beta4);
+
+Roi4_beta1 = Mainvol1(Xvol>= control.xmin - Sigvol & Xvol<= control.xmax + Sigvol & Yvol >= control.ymin - Sigvol & Yvol <= control.ymax + Sigvol & Varvol > .2);
+Roi4_beta2 = Mainvol2(Xvol>= control.xmin - Sigvol & Xvol<= control.xmax + Sigvol & Yvol >= control.ymin - Sigvol & Yvol <= control.ymax + Sigvol & Varvol > .2);
+Roi4_beta3 = Mainvol3(Xvol>= control.xmin - Sigvol & Xvol<= control.xmax + Sigvol & Yvol >= control.ymin - Sigvol & Yvol <= control.ymax + Sigvol & Varvol > .2);
+Roi4_beta4 = Mainvol4(Xvol>= control.xmin - Sigvol & Xvol<= control.xmax + Sigvol & Yvol >= control.ymin - Sigvol & Yvol <= control.ymax + Sigvol & Varvol > .2);
+Roi4_beta1_mean = nanmean(Roi4_beta1);
+Roi4_beta2_mean = nanmean(Roi4_beta2);
+Roi4_beta3_mean = nanmean(Roi4_beta3);
+Roi4_beta4_mean = nanmean(Roi4_beta4);
+
+Roi1_mean = mean([Roi1_beta1_mean, Roi1_beta2_mean, Roi1_beta3_mean, Roi1_beta4_mean])
+Roi2_mean = mean([Roi2_beta1_mean, Roi2_beta2_mean, Roi2_beta3_mean, Roi2_beta4_mean])
+Roi3_mean = mean([Roi3_beta1_mean, Roi3_beta2_mean, Roi3_beta3_mean, Roi3_beta4_mean])
+Roi4_mean = mean([Roi4_beta1_mean, Roi4_beta2_mean, Roi4_beta3_mean, Roi4_beta4_mean])
+%Roi = (Xvol >= x(xi) & Xvol <= x(xi)+Resolution) & (Yvol >= y(yi) & Yvol <= y(yi)+Resolution) & Varvol > .3;
+        %RecepMapMain(xi,yi) = mean(mean(mean(Mainvol(Roi))));
+%     end
+% end

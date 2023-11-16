@@ -2,7 +2,7 @@ function presentation = oneBlock(time, volume, training, nTrials, sampleRate, si
 
 global environment window width height;
 global background Lmax mriTiming;
-global fixCrossTexture fixRect fixCrossTexture_ITI;
+global fixCrossTexture fixRect fixCrossTexture_dim fixCrossTexture_miss fixCrossTexture_ITI;
 %global Q;
 global pahandle subjID;
 global buttonDeviceID;
@@ -21,7 +21,7 @@ stimColour = Lmax; %[230 230 230];
 % Durations
 preOnset = 1;% 23ms before first stimulus presentation
 % tested with Erik
-beamer_latency = 0.048;
+beamer_latency = 0; % just 0 for testing with joost, change back % 0.048;
 postOnset = preOnset; % same before as after
 stimDur = 1/60; %2/60;%2 % 0.039; %0.017% 17ms show flash
 stimInterval = 3/60; %2/60; %0.030; % 52ms inbetween stimuli
@@ -29,10 +29,9 @@ stimInterval = 3/60; %2/60; %0.030; % 52ms inbetween stimuli
 toneDur = 0.007; % 7ms
 halfframe = 1/120;
 toneFreqs = pitch; % postdiction % A4 C#5 E5
-flash_text = '';
-conf_text = 'C?';
-responseTime = 1;
-confidenceTime = 1;
+%flash_text = '';
+%conf_text = '';
+responseTime = 2;
 
 params = struct("visStimWidth", visStimWidth, "visStimLength", visStimLength, "visStimEcc", visStimEcc, "visStimHeight", visStimHeight, "stimColour", stimColour, "preOnset", preOnset, "stimDur", stimDur, "stimInterval", stimInterval, "toneDur", toneDur, "toneFreqs", toneFreqs, "responseTime", responseTime);
 
@@ -85,12 +84,13 @@ for iTrial=1:nTrials
     %startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, time ,0);
     time = presentationTime(iTrial,1) + preOnset;
     presentationTime(iTrial,2) = Screen('Flip', window, time - halfframe);
-    startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, presentationTime(iTrial,2) - halfframe + beamer_latency,1);
+    
     %presentationTime(iTrial,2) = Screen('Flip', window, startAudioTime(iTrial, 1) - halfframe);
     
     
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     endPresentationTime(iTrial, 1) = Screen('Flip', window, presentationTime(iTrial,2) + stimDur - halfframe);
+    startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, presentationTime(iTrial,2) + beamer_latency,1);
     % Start audio playback at time 'time', return onset timestamp.
     
     % Duration between stimuli
@@ -101,6 +101,8 @@ for iTrial=1:nTrials
     % just flip to keep timing right
     if thisCondition == 1
     presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe);
+    Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
+    endPresentationTime(iTrial, 2) = Screen('Flip', window, presentationTime(iTrial,3) + stimDur - halfframe);
     end
     
     % if condition 2: flip and sound
@@ -108,9 +110,11 @@ for iTrial=1:nTrials
     % Audio cue 2
     % Start audio playback at time 'time', return onset timestamp.
     % calculate when new audio should come
-    startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, time - halfframe ,1);
     %presentationTime(iTrial,3) = Screen('Flip', window, startAudioTime(iTrial, 2) - halfframe);
-    presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe)
+    presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe);
+    Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
+    endPresentationTime(iTrial, 2) = Screen('Flip', window, presentationTime(iTrial,3) + stimDur - halfframe);
+    startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, presentationTime(iTrial,3) + beamer_latency,1);
     end
 
     % if condition 3: rect
@@ -119,6 +123,8 @@ for iTrial=1:nTrials
     % Visual cue 2
     Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], vis_stim2_coord));
     presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe);
+    Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
+    endPresentationTime(iTrial, 2) = Screen('Flip', window, presentationTime(iTrial,3) + stimDur - halfframe);
     %Show first visual stimulus one frame flip later for its indended
     end
     
@@ -127,13 +133,12 @@ for iTrial=1:nTrials
     % Visual cue 2
     Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], vis_stim2_coord));
     presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe);
-    startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, presentationTime(iTrial,3) - halfframe + beamer_latency ,1);
-    %presentationTime(iTrial,3) = Screen('Flip', window, startAudioTime(iTrial, 2) - halfframe);
-    
-    end
-
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     endPresentationTime(iTrial, 2) = Screen('Flip', window, presentationTime(iTrial,3) + stimDur - halfframe);
+    startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, presentationTime(iTrial,3) + beamer_latency, 1);
+    %presentationTime(iTrial,3) = Screen('Flip', window, startAudioTime(iTrial, 2) - halfframe);
+    end
+
     time = endPresentationTime(iTrial, 2) + stimInterval;
 
 %     % Stimulus (Pair) 2
@@ -160,49 +165,49 @@ for iTrial=1:nTrials
     
     %presentationTime(iTrial,4) = Screen('Flip', window, startAudioTime(iTrial, 3) - halfframe);
     presentationTime(iTrial,4) = Screen('Flip', window, time - halfframe);
-    startAudioTime(iTrial, 3) = PsychPortAudio('Start', pahandle, 1, presentationTime(iTrial, 4) - halfframe + beamer_latency ,1);
     % flip to empty after 17ms
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
-    
     endPresentationTime(iTrial, 3) = Screen('Flip', window, presentationTime(iTrial,4) + stimDur - halfframe);
+    startAudioTime(iTrial, 3) = PsychPortAudio('Start', pahandle, 1, presentationTime(iTrial, 4) + beamer_latency ,1);
     % Start audio playback at time 'time', return onset timestamp.
     % wait before going to question
     time = endPresentationTime(iTrial, 3);%+ postOnset;
     
     % question 1
-    Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
-    DrawFormattedText(window, flash_text, 'center', height/2-50, [0 0 0]);
+    %Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
+%     DrawFormattedText(window, flash_text, 'center', height/2-50, [0 0 0]);
+% 
+%     tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
+%     time = tempPresentationTime(1) + responseTime;
 
-    tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
-    time = tempPresentationTime(1) + responseTime;
-
-    [flashAnswer, flashRespTime] = getResponse(time-halfframe);
+    [flashAnswer, flashRespTime] = getResponse(time+responseTime);
     %time = flashRespTime + 1;
-    Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
-    tempPresentationTime(1) = Screen('Flip', window, time-halfframe);
+%     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
+%     tempPresentationTime(1) = Screen('Flip', window, time-halfframe);
     %time = tempPresentationTime(1) + 1;
     
     % question 2
-    Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
-    DrawFormattedText(window, conf_text, 'center', height/2-50, [0 0 0]);
-
-    tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
-    time = tempPresentationTime(1) + confidenceTime;
-    [confAnswer, confRespTime] = getResponse(time-halfframe);
-    
-    Screen('DrawTexture', window, fixCrossTexture_ITI, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
-    tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
-    time = tempPresentationTime(1);
+%     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
+%     DrawFormattedText(window, conf_text, 'center', height/2-50, [0 0 0]);
+% 
+%     tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
+%     time = tempPresentationTime(1) + confidenceTime;
+    remainderRespTime = responseTime - (flashRespTime - time); 
+    [confAnswer, confRespTime] = getResponse_conf(flashRespTime + remainderRespTime);
+    remainderRespTime = remainderRespTime - (confRespTime-flashRespTime);
+    % wait for the remainder of the response time
+    time = confRespTime + remainderRespTime;
      % If there was no (timely/valid) response, flicker the bull's eye
     if (flashAnswer == -10) || (confAnswer == -10)
-        % Present bull's eye
-        Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 0 width height]));
-        fixFlicker_time = Screen('Flip', window, time + 0.1 - halfframe);
-        % Replace by fixation point
-        Screen('DrawTexture', window, fixCrossTexture_ITI, fixRect, CenterRect(fixRect, [0 0 width height]));
-        Screen('Flip', window, fixFlicker_time + 0.1 - halfframe);
+        % Present red bull's eye dot.
+        Screen('DrawTexture', window, fixCrossTexture_miss, fixRect, CenterRect(fixRect, [0 0 width height]));
+        Screen('Flip', window, time + 0.3 - halfframe);
     end
     
+    Screen('DrawTexture', window, fixCrossTexture_dim, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
+    tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
+    time = tempPresentationTime(1);
+
     % Duration of just ITI fixation mark
     % trials are 3.36-6.18s: increase by 1.7s
     ITI = 1.8; %0
@@ -222,6 +227,8 @@ for iTrial=1:nTrials
     time = time + ITI;
     
     presentation.confAnswer(iTrial) = confAnswer;
+    presentation.flashRespTime(iTrial) = flashRespTime;
+    presentation.confRespTime(iTrial) = confRespTime;
     presentation.flashAnswer(iTrial) = flashAnswer;
     presentation.condition(iTrial) = thisCondition;
     presentation.time = time;

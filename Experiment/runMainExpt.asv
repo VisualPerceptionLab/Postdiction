@@ -5,7 +5,7 @@
 
 clear all; close all;
 
-rng('default') % re5set the state of the random number generator.
+rng('shuffle') % re5set the state of the random number generator.
 
 global window width height;
 global environment;
@@ -36,10 +36,9 @@ try
     if showInstructions == 1
         nBlocks = 1;
         nTrialsPerBlock = 32;
-        %
     else 
-        nBlocks = 2;
-        nTrialsPerBlock = 52;
+        nBlocks = 1;
+        nTrialsPerBlock = 16;
     end
     if mod(nTrialsPerBlock,4) ~= 0
         disp('WARNING: nTrialsPerBlock is not a multiple of 4, counterbalancing will fail!');
@@ -134,7 +133,7 @@ try
         %pitch_list = [2000 2000 2000 2000]; % Aaron [2000 4000 2000 2000 2000]; % Dot/Doug [2000 2000 2000 2000 4000];
         sizemult = sizemult_list(iBlock);
         distancemult = distancemult_list(iBlock);
-        pitch = 2000;
+        pitch = 800;
         % Create trial sequence for the block
 %         trialSequence = trialStructure(randperm(nTrialsPerBlock),:);
         % Hack it so that there are no more than 5 omissions in a row,
@@ -150,6 +149,7 @@ try
 %         
         %Present a block of trials
         %trialSequence
+        mriTiming = true
         if mriTiming
             data{iBlock} = oneBlockScanner(time, volume, training, nTrialsPerBlock, sampleRate, sizemult, distancemult, pitch);
         else 

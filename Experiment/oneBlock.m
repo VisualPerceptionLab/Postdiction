@@ -89,7 +89,7 @@ for iTrial=1:nTrials
     % 1st stimulus time shown
     %startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, time ,0);
     time = presentationTime(iTrial,1) + preOnset;
-    startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, time - halfframe ,1);
+    startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, time ,1);
     %presentationTime(iTrial,2) = Screen('Flip', window, startAudioTime(iTrial, 1) - halfframe);
     presentationTime(iTrial,2) = Screen('Flip', window, time - halfframe);
     
@@ -112,7 +112,7 @@ for iTrial=1:nTrials
     % Audio cue 2
     % Start audio playback at time 'time', return onset timestamp.
     % calculate when new audio should come
-    startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, time - halfframe ,1);
+    startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, time,1);
     %presentationTime(iTrial,3) = Screen('Flip', window, startAudioTime(iTrial, 2) - halfframe);
     presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe);
     end
@@ -130,7 +130,7 @@ for iTrial=1:nTrials
     if thisCondition == 4 
     % Visual cue 2
     Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], vis_stim2_coord));
-    startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, time - halfframe ,1);
+    startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, time,1);
     %presentationTime(iTrial,3) = Screen('Flip', window, startAudioTime(iTrial, 2) - halfframe);
     presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe);
     end
@@ -160,7 +160,7 @@ for iTrial=1:nTrials
     Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], vis_stim3_coord));
     % interspace with some time
     % follow with visual stimulus one frame later
-    startAudioTime(iTrial, 3) = PsychPortAudio('Start', pahandle, 1, time - halfframe ,1);
+    startAudioTime(iTrial, 3) = PsychPortAudio('Start', pahandle, 1, time,1);
     %presentationTime(iTrial,4) = Screen('Flip', window, startAudioTime(iTrial, 3) - halfframe);
     presentationTime(iTrial,4) = Screen('Flip', window, time - halfframe);
     % flip to empty after 17ms

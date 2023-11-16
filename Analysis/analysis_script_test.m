@@ -92,9 +92,9 @@ results{1}.startAudioTime(ver3,2) - results{1}.presentationTime(ver3,3)
 % within trial spacing of visual and auditory timing
 % timing between auditory and visual stimulus
 % time of total experiment
-iBlock = 1
 
-for iBlock = iBlock:nBlocks
+
+for iBlock = 1:nBlocks
    % select desired answers
    cond1_correct = find(results{iBlock}.condition==1 & results{iBlock}.flashAnswer==2);
    cond2_correct = find(results{iBlock}.condition==2 & results{iBlock}.flashAnswer==3);
@@ -104,8 +104,8 @@ for iBlock = iBlock:nBlocks
    cond1_correct_conf = results{iBlock}.confAnswer(cond1_correct);
    cond1_correct_conf = mean(cond1_correct_conf(cond1_correct_conf>10))- 10;
 
-   cond2_correct_conf = results{iBlock}.confAnswer(cond2_correct);
-   cond2_correct_conf = mean(cond2_correct_conf(cond2_correct_conf>10))- 10;
+   cond2_correct_conf_all = results{iBlock}.confAnswer(cond2_correct)
+   cond2_correct_conf = mean(cond2_correct_conf_all(cond2_correct_conf_all>10))- 10;
 
    cond3_correct_conf = results{iBlock}.confAnswer(cond3_correct);
    cond3_correct_conf = mean(cond3_correct_conf(cond3_correct_conf>10))- 10;
@@ -113,7 +113,7 @@ for iBlock = iBlock:nBlocks
    cond4_correct_conf = results{iBlock}.confAnswer(cond4_correct);
    cond4_correct_conf = mean(cond4_correct_conf(cond4_correct_conf>10)) - 10;
 
-   confpercond{iBlock} = [cond1_correct_conf cond2_correct_conf cond3_correct_conf cond4_correct_conf]
+   confpercond{iBlock} = [cond1_correct_conf cond2_correct_conf cond3_correct_conf cond4_correct_conf];
 end
 % is confidence higher for 4k AV?
 
