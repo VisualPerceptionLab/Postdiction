@@ -38,7 +38,7 @@ try
         nTrialsPerBlock = 32;
     else 
         nBlocks = 1;
-        nTrialsPerBlock = 16;
+        nTrialsPerBlock = 12;
     end
     if mod(nTrialsPerBlock,4) ~= 0
         disp('WARNING: nTrialsPerBlock is not a multiple of 4, counterbalancing will fail!');
@@ -113,57 +113,28 @@ try
     data = [];
     %Display blocks
     for iBlock = 1:nBlocks
-%         if (iBlock == 3) || (iBlock == 5)
-%             time = waitForTrigger(waitTime,[],fixColour);
-%             time = waitForTrigger(waitTime,[],fixColour);
-%         end
-        
-        % alice params
-%         sizemult_list =      [1   1.5 1   1.5 1.5 1]; %Aaron[1 1 1.5 1.5 1]; %Dot/Doug [1 1   1.5 1.5 1];
-%         distancemult_list =  [1.5 1.5 1.5 1.5 1.5 1.5]; % Aaron [1 1 1   1.5 1.5] %Dot/Doug [1 1.5 1.5 1 1];
-%         % contrasts
-%         contrasts =          [1.5 1   0.5 0.5 1 1.5];
-        
-        % Yan params
-        sizemult_list =      [1 1 1 1 1 1 ]; %Aaron[1 1 1.5 1.5 1]; %Dot/Doug [1 1   1.5 1.5 1];
-        distancemult_list =  [1.5 1.5 1.5 1.5 1.5 1.5]; % Aaron [1 1 1   1.5 1.5] %Dot/Doug [1 1.5 1.5 1 1];
         % contrasts
         contrasts =          [1 1 1 1 1 1];
         [background,Lmin,Lmax] = calibrateLum(contrasts(iBlock)); 
-        %pitch_list = [2000 2000 2000 2000]; % Aaron [2000 4000 2000 2000 2000]; % Dot/Doug [2000 2000 2000 2000 4000];
-        sizemult = sizemult_list(iBlock);
-        distancemult = distancemult_list(iBlock);
         pitch = 800;
         % Create trial sequence for the block
 %         trialSequence = trialStructure(randperm(nTrialsPerBlock),:);
         % Hack it so that there are no more than 5 omissions in a row,
         % and that the first trial is always a valid trial.
         % Show example gratings (and tone-orientation contingency if applicable)
-%         if strcmp(environment,'mri') && iBlock == 1
-%             % present the example shapes while waiting for the scanner to
-%             % stabilise.
-%             showExampleGratings(time-waitTime+1, background, Lmin, false);
-%         else
-%             time = showExampleGratings(time, background, Lmin, false);
-%         end
+
 %         
         %Present a block of trials
         %trialSequence
-        mriTiming = true
+        %mriTiming = false;
         if mriTiming
-            data{iBlock} = oneBlockScanner(time, volume, training, nTrialsPerBlock, sampleRate, sizemult, distancemult, pitch);
+            data{iBlock} = oneBlockScanner(time, volume, training, nTrialsPerBlock, sampleRate);
         else 
-            data{iBlock} = oneBlock(time, volume, training, nTrialsPerBlock, sampleRate, sizemult, distancemult, pitch);
+            data{iBlock} = oneBlock(time, volume, training, nTrialsPerBlock, sampleRate);
         end
         
         %Save the data
         save(resultFile, 'data');
-        
-        %         if ~practice
-        %             % Save the staircases
-        %             save(staircaseFile, 'orientationQ', 'contrastQ');
-        %             save(fullfile(resultDir,'curStaircases.mat'), 'orientationQ', 'contrastQ');
-        %         end
         
         %Update the time
         time = data{iBlock}.time;
