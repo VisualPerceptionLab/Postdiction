@@ -3,14 +3,52 @@
 
 % laptop
 clear all; close all;
-results_path = 'D:\Documents\MATLAB\Postdiction_git\Experiment\Results\Oliver_humanpilot'
+results_path = 'D:\Documents\MATLAB\postdiction_results\S21'
 % desktop
 %results_path = "C:\Users\pbarkema\Downloads\technical pilot data\postdiction_git\technicalpilot\Experiment\Results\S09";
-path = fullfile(results_path, "results_mainexp_2023_9_29_12_0_48.mat");
+path = fullfile(results_path, "results_mainexp_2023_11_28_12_4_18.mat");
 data_file = load(path);
 results = data_file.data;
 nTrials = size(results{1}.condition, 2);
 nBlocks = size(results, 2);
+conditions = 4;
+for i=1:nBlocks
+    all_scores(i,1) = results{i}.twoVeridicalscore
+    all_scores(i,2) = results{i}.AVscore
+    all_scores(i,3) = results{i}.IVscore
+    all_scores(i,4) = results{i}.threeVeridicalscore
+end
+
+for i=1:conditions
+    mean(all_scores(:,i))
+end
+
+
+for iBlock = 1:nBlocks
+   % select desired answers
+   cond1_correct = find(results{iBlock}.condition==1 & results{iBlock}.flashAnswer==3);
+   cond2_correct = find(results{iBlock}.condition==2 & results{iBlock}.flashAnswer==2);
+   cond3_correct = find(results{iBlock}.condition==3 & results{iBlock}.flashAnswer==3);
+   cond4_correct = find(results{iBlock}.condition==4 & results{iBlock}.flashAnswer==2);
+
+   cond1_correct_conf = results{iBlock}.confAnswer(cond1_correct);
+   cond1_correct_conf = mean(cond1_correct_conf(cond1_correct_conf>10))- 10;
+
+   cond2_correct_conf_all = results{iBlock}.confAnswer(cond2_correct)
+   cond2_correct_conf = mean(cond2_correct_conf_all(cond2_correct_conf_all>10))- 10;
+
+   cond3_correct_conf = results{iBlock}.confAnswer(cond3_correct);
+   cond3_correct_conf = mean(cond3_correct_conf(cond3_correct_conf>10))- 10;
+
+   cond4_correct_conf = results{iBlock}.confAnswer(cond4_correct);
+   cond4_correct_conf = mean(cond4_correct_conf(cond4_correct_conf>10)) - 10;
+
+   confpercond{iBlock} = [cond1_correct_conf cond2_correct_conf cond3_correct_conf cond4_correct_conf]
+
+end
+
+% for i = 1:conditions
+%     results{:}.
 % pitchres = results([1,5]);
 % paramres = results([1,2,3,4, 5, 6]);
 % 
@@ -94,27 +132,6 @@ results{1}.startAudioTime(ver3,2) - results{1}.presentationTime(ver3,3)
 % time of total experiment
 
 
-for iBlock = 1:nBlocks
-   % select desired answers
-   cond1_correct = find(results{iBlock}.condition==1 & results{iBlock}.flashAnswer==2);
-   cond2_correct = find(results{iBlock}.condition==2 & results{iBlock}.flashAnswer==3);
-   cond3_correct = find(results{iBlock}.condition==3 & results{iBlock}.flashAnswer==2);
-   cond4_correct = find(results{iBlock}.condition==4 & results{iBlock}.flashAnswer==3);
-
-   cond1_correct_conf = results{iBlock}.confAnswer(cond1_correct);
-   cond1_correct_conf = mean(cond1_correct_conf(cond1_correct_conf>10))- 10;
-
-   cond2_correct_conf_all = results{iBlock}.confAnswer(cond2_correct)
-   cond2_correct_conf = mean(cond2_correct_conf_all(cond2_correct_conf_all>10))- 10;
-
-   cond3_correct_conf = results{iBlock}.confAnswer(cond3_correct);
-   cond3_correct_conf = mean(cond3_correct_conf(cond3_correct_conf>10))- 10;
-
-   cond4_correct_conf = results{iBlock}.confAnswer(cond4_correct);
-   cond4_correct_conf = mean(cond4_correct_conf(cond4_correct_conf>10)) - 10;
-
-   confpercond{iBlock} = [cond1_correct_conf cond2_correct_conf cond3_correct_conf cond4_correct_conf];
-end
 % is confidence higher for 4k AV?
 
 % % find conditions AV is correct

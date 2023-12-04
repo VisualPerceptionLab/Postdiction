@@ -110,7 +110,6 @@ for iTrial=1:nTrials
     presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe);
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     endPresentationTime(iTrial, 2) = Screen('Flip', window, presentationTime(iTrial,3) + stimDur - halfframe);
-    
     end
 
     % if condition 3: rect

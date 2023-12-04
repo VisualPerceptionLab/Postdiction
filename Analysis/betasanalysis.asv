@@ -100,10 +100,10 @@ for cond=1:conditions
     ROI3_mean = nanmean(Roi{3,cond});
     ROI4_mean = nanmean(Roi{4,cond});
     
-    ROI1_ste = nanstd(Roi{1,cond}) / sqrt(length(Roi{1,cond}(~isnan(Roi{1,cond}))));
-    ROI2_ste = nanstd(Roi{2,cond}) / sqrt(length(Roi{2,cond}(~isnan(Roi{2,cond}))));
-    ROI3_ste = nanstd(Roi{3,cond}) / sqrt(length(Roi{3,cond}(~isnan(Roi{3,cond}))));
-    ROI4_ste = nanstd(Roi{4,cond}) / sqrt(length(Roi{4,cond}(~isnan(Roi{4,cond}))));
+    ROI1_ste = std(Roi{1,cond}) / sqrt(length(Roi{1,cond}));
+    ROI2_ste = std(Roi{2,cond}) / sqrt(length(Roi{2,cond}));
+    ROI3_ste = std(Roi{3,cond}) / sqrt(length(Roi{3,cond}));
+    ROI4_ste = std(ROI4) / sqrt(length(ROI4));
     
     values = [ROI1_mean, ROI2_mean, ROI3_mean, ROI4_mean];
     errors = [ROI1_ste, ROI2_ste, ROI3_ste, ROI4_ste];
@@ -124,11 +124,10 @@ for cond=1:conditions
     
     % Show the plot
     
-    hold off; % Release the hold
-    grid on;
+    hold on; % Release the hold
 end
-
-
+grid on;
+hold off
 % Roi1_mean = mean([Roi1_beta1_mean, Roi1_beta2_mean, Roi1_beta3_mean, Roi1_beta4_mean])
 % Roi2_mean = mean([Roi2_beta1_mean, Roi2_beta2_mean, Roi2_beta3_mean, Roi2_beta4_mean])
 % Roi3_mean = mean([Roi3_beta1_mean, Roi3_beta2_mean, Roi3_beta3_mean, Roi3_beta4_mean])

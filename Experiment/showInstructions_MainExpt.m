@@ -19,12 +19,12 @@ spatFreq = 0.5
 %Show instructions on screen
 
 %% What the gratings look like
-text = 'Thank you for participating in our study!\n\nIn this study you will be asked to report on the number of visual flashes you see while hearing simultaneous sounds. ';
+text = 'Thank you for participating in our study!\nIn this study you will be asked to report on the number of visual flashes you see while hearing simultaneous sounds. ';
 text = [text 'Each trial will start with a fixation point, which will be presented in the middle of the screen. It is very important that you keep your eyes fixated on this point. '];
 text = [text 'Under the fixation mark, flashes will be presented. '];
 text = [text 'On each trial, your task will be to report how many flashes you saw and how confident you are in your response.\n\n'];
 text = [text 'Please indicate whether you saw two or three flashes using "u" for 2 and "i" for 3. Place your index finger on "u" and middle finger on "i". '];
-text = [text 'For indicating how confident you are in your response, please use "r" (very confident), "e" (quite confident), "w" (not so confident)", "q" (not confident at all). Please place the four fingers of the left hand on "qwer". You have two seconds to respond to both questions.\n\n'];
+text = [text 'For indicating how confident you are in your response, please use "r" (very confident), "e" (quite confident), "w" (not so confident)", "q" (not confident at all). Please place the four fingers of the left hand on "qwer". You have two seconds to respond to both questions. Please first indicate how many flashes you saw, and then the confidence in your answer.\n\n'];
 text = [text 'It is very important to keep looking at the fixation point while doing the task, and in the MRI scanner we will be using an eye tracker to check that this has been done successfully. '];
 text = [text 'If no answer is given for either question, the fixation point will briefly flash red to make you aware of the missed answer. Be aware that the response window is quite short and the time to respond immediately starts after the flashes dissapear, so make sure to respond quickly.\n\n'];
 text = [text 'Is the task clear? If not, please ask the experimenter to explain. If all is clear, press any key to practice the task.'];
@@ -114,7 +114,7 @@ KbWait(buttonDeviceID);
 % KbWait(buttonDeviceID);
 
 %What the task is like
-text = 'Okay great, a block of 16 practice trials will start now!';
+text = 'Okay great, two blocks of 16 practice trials will start now!';
 DrawFormattedText(window, text, width/2 - 400, 'center', 0, wrapat,0,0,vspacing);
 Screen('Flip',window);
 WaitSecs(3);
