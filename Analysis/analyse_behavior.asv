@@ -1,0 +1,235 @@
+%function experiment_checks = analyse_behavior(subjects)
+% TO-DO:
+% Average confidence undesired, desired and both. What analysis?
+% Scores. Inclusion criteria checker?
+% Checks for time.
+% which answers are missed? 
+
+% Main script can:
+% Plot the scores per block with average. 4 subbars are blocks, 4 bars are
+% conditions.
+% Build a plot of timings versus the times it should have
+% Plots of confidence per condition, for desired and undesired. subbars are
+% conditions, bars are des/undes?
+
+clear all; close all;
+subjects = {'S00'};
+% Find out which operating system we're running on
+if ispc
+    % set the path to SPM
+    results_path = 'C:\Users\PBarkema\OneDrive - University College London\Documents\MATLAB\Postdiction_git\Experiment\Results';
+    addpath(spmDir)
+elseif isunix
+    % set the path to SPM
+    spmDir = 'D:/something';
+end
+path = dir(fullfile(results_path, subjects{1}), 'results_mainexp_*');
+results = load(path.name).data;
+nTrials = size(results{1}.condition, 2);
+nBlocks = size(results, 2);
+conditions = 4;
+
+% Collect results, confidence per condition depending on desired or
+% undesired or average.
+
+for i=1:nBlocks
+    all_scores(i,1) = results{i}.twoVeridicalscore
+    all_scores(i,2) = results{i}.AVscore
+    all_scores(i,3) = results{i}.IVscore
+    all_scores(i,4) = results{i}.threeVeridicalscore
+    % can probably be written shorter
+    misses(i) = length(results{i}.flashAnswer(results{i}.flashAnswer<0));
+end
+
+trial_scores.all_scores = all_scores;
+% Get average of blocks per condition
+for i=1:conditions
+    average_scores(i) = mean(all_scores(:,i));
+    
+end
+trial_scores.average_scores = average_scores;
+trial_scores.misses = misses;
+
+behav_results.trial_scores = trial_scores;
+
+% Average confidence per condition for desired, undesired, and both.
+% also do standard deviation and misses.
+for iBlock = 1:nBlocks
+   % select desired answers
+   cond1_des = find(results{iBlock}.condition==1 & results{iBlock}.flashAnswer==2);
+   cond2_des = find(results{iBlock}.condition==2 & results{iBlock}.flashAnswer==3);
+   cond3_des = find(results{iBlock}.condition==3 & results{iBlock}.flashAnswer==2);
+   cond4_des = find(results{iBlock}.condition==4 & results{iBlock}.flashAnswer==3);
+   
+   confidences.desired.cond1.all(iBlock) = results{iBlock}.confAnswer(cond1_des);
+   confidences.desired.cond1.mean(iBlock) = mean(confidences.desired.cond1.all(confidences.desired.cond1.all>10)) - 10;
+   confidences.desired.cond1.std(iBlock) = std(confidences.desired.cond1.all(confidences.desired.cond1.all>10)) - 10;
+
+   confidences.desired.cond2.all(iBlock) = results{iBlock}.confAnswer(cond2_des);
+   confidences.desired.cond2.mean(iBlock) = mean(confidences.desired.cond2.all(confidences.desired.cond2.all>10)) - 10;
+   confidences.desired.cond2.std(iBlock) = std(confidences.desired.cond2.all(confidences.desired.cond2.all>10)) - 10;
+
+   confidences.desired.cond3.all(iBlock) = results{iBlock}.confAnswer(cond3_des_all);
+   confidences.desired.cond3.mean(iBlock) = mean(confidences.desired.cond3.all(confidences.desired.cond3.all>10)) - 10;
+   confidences.desired.cond3.std(iBlock) = std(confidences.desired.cond3.all(confidences.desired.cond3.all>10)) - 10;
+
+   confidences.desired.cond4.all(iBlock) = results{iBlock}.confAnswer(cond4_des);
+   confidences.desired.cond4.mean(iBlock) = mean(confidences.desired.cond4.all(confidences.desired.cond4.all>10)) - 10;
+   confidences.desired.cond4.std(iBlock) = std(confidences.desired.cond4.all(confidences.desired.cond4.all>10)) - 10;
+
+   cond1_undes = find(results{iBlock}.condition==1 & results{iBlock}.flashAnswer==3);
+   cond2_undes = find(results{iBlock}.condition==2 & results{iBlock}.flashAnswer==2);
+   cond3_undes = find(results{iBlock}.condition==3 & results{iBlock}.flashAnswer==3);
+   cond4_undes = find(results{iBlock}.condition==4 & results{iBlock}.flashAnswer==2);
+
+   confidences.undesired.cond1.all(iBlock) = results{iBlock}.confAnswer(cond1_undes);
+   confidences.undesired.cond1.mean(iBlock) = mean(confidences.undesired.cond1.all(confidences.undesired.cond1.all>10)) - 10;
+   confidences.undesired.cond1.std(iBlock) = std(confidences.undesired.cond1.all(confidences.undesired.cond1.all>10)) - 10;
+
+   confidences.undesired.cond2.all(iBlock) = results{iBlock}.confAnswer(cond2_undes);
+   confidences.undesired.cond2.mean(iBlock) = mean(confidences.undesired.cond2.all(confidences.undesired.cond2.all>10)) - 10;
+   confidences.undesired.cond2.std(iBlock) = std(confidences.undesired.cond2.all(confidences.undesired.cond2.all>10)) - 10;
+
+   confidences.undesired.cond3.all(iBlock) = results{iBlock}.confAnswer(cond3_undes_all);
+   confidences.undesired.cond3.mean(iBlock) = mean(confidences.undesired.cond3.all(confidences.undesired.cond3.all>10)) - 10;
+   confidences.undesired.cond3.std(iBlock) = std(confidences.undesired.cond3.all(confidences.undesired.cond3.all>10)) - 10;
+
+   confidences.undesired.cond4.all(iBlock) = results{iBlock}.confAnswer(cond4_undes);
+   confidences.undesired.cond4.mean(iBlock) = mean(confidences.undesired.cond4.all(confidences.undesired.cond4.all>10)) - 10;
+   confidences.undesired.cond4.std(iBlock) = std(confidences.undesired.cond4.all(confidences.undesired.cond4.all>10)) - 10;
+   
+   % surely this can be written shorter
+   confidences.misses(iBlock) = length(results{iBlock}.confAnswer(results{iBlock}.confAnswer<10));
+end
+
+behav_results.confidences = confidences;
+
+% timing measurements:
+
+% between trial timing in time_intervals, per block. Maybe plot with
+% boundaries 5s and 8s.
+for iBlock = 1:nBlocks
+    for nTrial =1: nTrials
+        % can this be simplified with (:,)?
+        initialTimings(nTrial) = results{iBlock}.presentationTime(nTrial,1);
+    end
+    conditions(iBlock) = results{iBlock}.conditions;
+    time_intervals.trial_length(iBlock) = initialTimings(2:nTrials) - initialTimings(1:nTrials-1);
+end
+
+% between auditory and visual
+for iBlock = 1:nBlocks
+    withinstim(iBlock,1) = results{iBlock}.startAudioTime(:,1) - results{iBlock}.presentationTime(:,2);
+    withinstim(iBlock,2) = results{iBlock}.startAudioTime(:,2) - results{iBlock}.presentationTime(:,3);
+    withinstim(iBlock,3) = results{iBlock}.startAudioTime(:,3) - results{iBlock}.presentationTime(:,4);
+end
+time_intervals.withinstim = withinstim;
+
+% between visual, can analyze per condition here with presentationTimes.
+for iBlock = 1:nBlocks
+    presentationTimes=results{iBlock}.presentationTime(iBlock,:);
+    betweenvis(iBlock,1) = presentationTimes(:,2) - presentationTimes(:,1);
+    betweenvis(iBlock,2) = presentationTimes(:,3) - presentationTimes(:,2);
+    betweenvis(iBlock,3) = presentationTimes(:,4) - presentationTimes(:,3);
+end
+time_intervals.betweenvis = betweenvis;
+
+% between block timing - untested
+for iBlock = 1:nBlocks
+    initialTimings(iBlock) = results{iBlock}.initialTime;
+    betweenBlock(iBinitialTimings(2:nBlocks) - initialTimings(1:nBlocks-1);
+end
+%     initialTimings(:)
+%     results{iBlock}.initialTime(ver3) - results{1}.presentationTime(ver3,3)
+
+    
+
+
+results{1}.startAudioTime(ver3,2) - results{1}.presentationTime(ver3,3)
+% within trial spacing of visual and auditory timing
+% timing between auditory and visual stimulus
+% time of total experiment
+
+
+% is confidence higher for 4k AV?
+
+% % find conditions AV is correct
+% ill2000 = find(pitchres{1}.condition==2 & pitchres{1}.flashAnswer==3);
+% ill4000 = find(pitchres{2}.condition==2 & pitchres{2}.flashAnswer==3);
+% AVconf2000 = conf2000(ill2000);
+% AVconf2000 = mean(AVconf2000(AVconf2000>9))
+% AVconf4000 = conf4000(ill4000);
+% AVconf4000 = mean(AVconf4000(AVconf4000>9))
+% % find 
+% % 
+% % % is confidence in AV higher for paramres?
+% 
+% baseline = paramres{1}.confAnswer(find(paramres{1}.condition==2 & paramres{1}.flashAnswer==3));
+% baseline = mean(baseline(baseline>9))
+% size15dis1 = paramres{1}.confAnswer(find(paramres{4}.condition==2 & paramres{2}.flashAnswer==3));
+% size15dis1 = mean(size15dis1(size15dis1>9))
+% size15dis15 = paramres{1}.confAnswer(find(paramres{3}.condition==2 & paramres{3}.flashAnswer==3));
+% size15dis15 = mean(size15dis15(size15dis15>9))
+% size1dis15 = paramres{1}.confAnswer(find(paramres{2}.condition==2 & paramres{4}.flashAnswer==3));
+% size1dis15 = mean(size1dis15(size1dis15>9))
+
+
+%%%%%%%%% Invisible
+%is confidence higher for 4k IV?
+
+% find conditions AV is correct
+% ill2000 = find(pitchres{1}.condition==3 & pitchres{1}.flashAnswer==2);
+% ill4000 = find(pitchres{2}.condition==3 & pitchres{2}.flashAnswer==2);
+% IVconf2000 = conf2000(ill2000);
+% IVconf2000 = mean(IVconf2000(IVconf2000>9))
+% IVconf4000 = conf4000(ill4000);
+% IVconf4000 = mean(IVconf4000(IVconf4000>9))
+% 
+% baseline = paramres{1}.confAnswer(find(paramres{1}.condition==3 & paramres{1}.flashAnswer==2));
+% baseline = mean(baseline(baseline>9))
+% size15dis1 = paramres{1}.confAnswer(find(paramres{4}.condition==3 & paramres{2}.flashAnswer==2));
+% size15dis1 = mean(size15dis1(size15dis1>9))
+% size15dis15 = paramres{1}.confAnswer(find(paramres{3}.condition==3 & paramres{3}.flashAnswer==2));
+% size15dis15 = mean(size15dis15(size15dis15>9))
+% size1dis15 = paramres{1}.confAnswer(find(paramres{2}.condition==3 & paramres{4}.flashAnswer==2));
+% size1dis15 = mean(size1dis15(size1dis15>9))
+% 
+% % %%%%%%%%% Ver 2
+% % % is confidence higher for 4k ver2?
+% 
+% % find conditions AV is correct
+ill2000 = find(pitchres{1}.condition==4 & pitchres{1}.flashAnswer==3);
+ill4000 = find(pitchres{2}.condition==4 & pitchres{2}.flashAnswer==3);
+ver2conf2000 = conf2000(ill2000);
+ver2conf2000 = mean(ver2conf2000(ver2conf2000>9))
+ver2conf4000 = conf4000(ill4000);
+ver2conf4000 = mean(ver2conf4000(ver2conf4000>9))
+
+% % is confidence in ver2 higher for paramres?
+% 
+baseline = paramres{1}.confAnswer(find(paramres{1}.condition==1 & paramres{1}.flashAnswer==2));
+baseline = mean(baseline(baseline>9))
+size15dis1 = paramres{1}.confAnswer(find(paramres{4}.condition==1 & paramres{2}.flashAnswer==2));
+size15dis1 = mean(size15dis1(size15dis1>9))
+size15dis15 = paramres{1}.confAnswer(find(paramres{3}.condition==1 & paramres{3}.flashAnswer==2));
+size15dis15 = mean(size15dis15(size15dis15>9))
+size1dis15 = paramres{1}.confAnswer(find(paramres{2}.condition==1 & paramres{4}.flashAnswer==2));
+size1dis15 = mean(size1dis15(size1dis15>9))
+
+% Ver3 confidence
+ill2000 = find(pitchres{1}.condition==4 & pitchres{1}.flashAnswer==3);
+ill4000 = find(pitchres{2}.condition==4 & pitchres{2}.flashAnswer==3);
+ver3conf2000 = conf2000(ill2000);
+ver3conf2000 = mean(ver3conf2000(ver3conf2000>9))
+ver3conf4000 = conf4000(ill4000);
+ver3conf4000 = mean(ver3conf4000(ver3conf4000>9))
+
+% is confidence in ver3 higher for paramres?
+baseline = paramres{1}.confAnswer(find(paramres{1}.condition==4 & paramres{1}.flashAnswer==3));
+baseline = mean(baseline(baseline>9))
+size15dis1 = paramres{1}.confAnswer(find(paramres{4}.condition==4 & paramres{2}.flashAnswer==3));
+size15dis1 = mean(size15dis1(size15dis1>9))
+size15dis15 = paramres{1}.confAnswer(find(paramres{3}.condition==4 & paramres{3}.flashAnswer==3));
+size15dis15 = mean(size15dis15(size15dis15>9))
+size1dis15 = paramres{1}.confAnswer(find(paramres{2}.condition==4 & paramres{4}.flashAnswer==3));
+size1dis15 = mean(size1dis15(size1dis15>9))

@@ -1,0 +1,157 @@
+clear all;
+spm = 'D:\spm12';
+addpath(spm)
+Xhead = spm_vol('D:\Documents\MATLAB\PRF\pRF_analysis\pRF_analysis\petkok_analysis_2016_PB\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\x0.nii');
+Xvol = spm_read_vols(Xhead);
+Yhead = spm_vol('D:\Documents\MATLAB\PRF\pRF_analysis\pRF_analysis\petkok_analysis_2016_PB\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\y0.nii');
+Yvol = spm_read_vols(Yhead);
+%Sighead = spm_vol('D:\Documents\MATLAB\PRF\pRF_analysis\pRF_analysis\petkok_analysis_2016\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\x0.nii');
+%Sigvol = spm_read_vols(Sighead);
+Varhead = spm_vol('D:\Documents\MATLAB\PRF\pRF_analysis\pRF_analysis\petkok_analysis_2016_PB\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\varexp.nii');
+Varvol = spm_read_vols(Varhead);
+Sighead = spm_vol('D:\Documents\MATLAB\PRF\pRF_analysis\pRF_analysis\petkok_analysis_2016_PB\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\sigma.nii');
+Sigvol = spm_read_vols(Sighead);
+% Make this the beta per condition, so first four betas
+Mainhead1 = spm_vol('D:\Documents\MATLAB\LayerfMRI_Hallucinations\Subject_data\techpilot5\FirstLevelModelSmooth\beta_0001.nii');
+Mainhead2 = spm_vol('D:\Documents\MATLAB\LayerfMRI_Hallucinations\Subject_data\techpilot5\FirstLevelModelSmooth\beta_0002.nii');
+Mainhead3 = spm_vol('D:\Documents\MATLAB\LayerfMRI_Hallucinations\Subject_data\techpilot5\FirstLevelModelSmooth\beta_0003.nii');
+Mainhead4 = spm_vol('D:\Documents\MATLAB\LayerfMRI_Hallucinations\Subject_data\techpilot5\FirstLevelModelSmooth\beta_0004.nii');
+
+Mainvols = {spm_read_vols(Mainhead1), spm_read_vols(Mainhead2), spm_read_vols(Mainhead3), spm_read_vols(Mainhead4)};
+
+% step = .1; % Resolution of your receptive field map. Lower means higher resolution. However, with higher size of window, this will be somewhat lost. 
+% Resolution = 1; % Size of window. Making this bigger effectively smooths the data, but loosing resolution
+% x = [-5.5:step:5.5]; % -11 to 11 seems to be the range of x and y values roughly
+% y = [-5.5:step:5.5];
+visStimWidth = 0.28; 
+visStimLength = 1.2; 
+visStimHorizEcc = 1.42;
+visStimVertEcc = 4.3;
+
+% ROI 1 - left flash
+flash1.xmin = 0 - visStimHorizEcc-(1/2)*visStimWidth;
+flash1.xmax = 0 - visStimHorizEcc+(1/2)*visStimWidth;
+flash1.ymin = 0 - visStimVertEcc-(1/2)*visStimLength;
+flash1.ymax = 0 - visStimVertEcc+(1/2)*visStimLength;
+flash1.center = (abs(flash1.xmin) + abs(flash1.xmax))/2;
+% ROI 2 - middle flash
+flash2.xmin = 0 -(1/2)*visStimWidth;
+flash2.xmax = 0 +(1/2)*visStimWidth;
+flash2.ymin = 0 - visStimVertEcc-(1/2)*visStimLength;
+flash2.ymax = 0 - visStimVertEcc+(1/2)*visStimLength;
+flash2.center = (abs(flash2.xmin) + abs(flash2.xmax))/2;
+% ROI 3 - right flash
+flash3.xmin = 0 + visStimHorizEcc-(1/2)*visStimWidth;
+flash3.xmax = 0 + visStimHorizEcc+(1/2)*visStimWidth;
+flash3.ymin = 0 - visStimVertEcc-(1/2)*visStimLength;
+flash3.ymax = 0 - visStimVertEcc+(1/2)*visStimLength;
+flash3.center = (abs(flash3.xmin) + abs(flash3.xmax))/2;
+% ROI 4 - top-half visual field flash
+control.xmin = 0 -(1/2)*visStimWidth;
+control.xmax = 0 +(1/2)*visStimWidth;
+control.ymin = 0 + visStimVertEcc-(1/2)*visStimLength;
+control.ymax = 0 + visStimVertEcc+(1/2)*visStimLength;
+control.center = (abs(control.xmin) + abs(control.xmax))/2;
+
+% Roi_ind: ROI x condition indices
+Sigmax = 1.5;%1.42 - (1/2)*visStimWidth;
+varexpmax = .1;
+Roi = cell(4, 4);
+Roi{1,1} = Mainvols{1}(Xvol>= flash1.xmin - Sigvol & Xvol<= flash1.xmax + visStimHorizEcc/2 - visStimWidth/2 & Yvol >= flash1.ymin - Sigvol & Yvol <= flash1.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax);
+Roi{1,2} = Mainvols{2}(Xvol>= flash1.xmin - Sigvol & Xvol<= flash1.xmax + visStimHorizEcc/2 - visStimWidth/2 & Yvol >= flash1.ymin - Sigvol & Yvol <= flash1.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax);
+Roi{1,3} = Mainvols{3}(Xvol>= flash1.xmin - Sigvol & Xvol<= flash1.xmax + visStimHorizEcc/2 - visStimWidth/2 & Yvol >= flash1.ymin - Sigvol & Yvol <= flash1.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax);
+Roi{1,4} = Mainvols{4}(Xvol>= flash1.xmin - Sigvol & Xvol<= flash1.xmax + visStimHorizEcc/2 - visStimWidth/2 & Yvol >= flash1.ymin - Sigvol & Yvol <= flash1.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax);
+
+Roi{2,1} = Mainvols{1}(Xvol>= flash2.xmin - visStimHorizEcc/2 + visStimWidth/2 & Xvol<= flash2.xmax + visStimHorizEcc/2 - visStimWidth/2 & Yvol >= flash2.ymin -  Sigvol & Yvol <= flash2.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax);   
+Roi{2,2} = Mainvols{2}(Xvol>= flash2.xmin - visStimHorizEcc/2 + visStimWidth/2 & Xvol<= flash2.xmax + visStimHorizEcc/2 - visStimWidth/2 & Yvol >= flash2.ymin -  Sigvol & Yvol <= flash2.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax); 
+Roi{2,3} = Mainvols{3}(Xvol>= flash2.xmin - visStimHorizEcc/2 + visStimWidth/2 & Xvol<= flash2.xmax + visStimHorizEcc/2 - visStimWidth/2 & Yvol >= flash2.ymin -  Sigvol & Yvol <= flash2.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax); 
+Roi{2,4} = Mainvols{4}(Xvol>= flash2.xmin - visStimHorizEcc/2 + visStimWidth/2 & Xvol<= flash2.xmax + visStimHorizEcc/2 - visStimWidth/2 & Yvol >= flash2.ymin -  Sigvol & Yvol <= flash2.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax); 
+
+Roi{3,1} = Mainvols{1}(Xvol>= flash3.xmin - visStimHorizEcc/2 + visStimWidth/2 & Xvol<= flash3.xmax + Sigvol & Yvol >= flash3.ymin - Sigvol & Yvol <= flash3.ymax + Sigvol  & Varvol > varexpmax & Sigvol < Sigmax);
+Roi{3,2} = Mainvols{2}(Xvol>= flash3.xmin - visStimHorizEcc/2 + visStimWidth/2 & Xvol<= flash3.xmax + Sigvol & Yvol >= flash3.ymin - Sigvol & Yvol <= flash3.ymax + Sigvol  & Varvol > varexpmax & Sigvol < Sigmax);
+Roi{3,3} = Mainvols{3}(Xvol>= flash3.xmin - visStimHorizEcc/2 + visStimWidth/2 & Xvol<= flash3.xmax + Sigvol & Yvol >= flash3.ymin - Sigvol & Yvol <= flash3.ymax + Sigvol  & Varvol > varexpmax & Sigvol < Sigmax);
+Roi{3,4} = Mainvols{4}(Xvol>= flash3.xmin - visStimHorizEcc/2 + visStimWidth/2 & Xvol<= flash3.xmax + Sigvol & Yvol >= flash3.ymin - Sigvol & Yvol <= flash3.ymax + Sigvol  & Varvol > varexpmax & Sigvol < Sigmax);
+
+Roi{4,1} = Mainvols{1}(Xvol>= control.xmin - Sigvol & Xvol<= control.xmax + Sigvol & Yvol >= control.ymin - Sigvol & Yvol <= control.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax);
+Roi{4,2} = Mainvols{2}(Xvol>= control.xmin - Sigvol & Xvol<= control.xmax + Sigvol & Yvol >= control.ymin - Sigvol & Yvol <= control.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax);
+Roi{4,3} = Mainvols{3}(Xvol>= control.xmin - Sigvol & Xvol<= control.xmax + Sigvol & Yvol >= control.ymin - Sigvol & Yvol <= control.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax);
+Roi{4,4} = Mainvols{4}(Xvol>= control.xmin - Sigvol & Xvol<= control.xmax + Sigvol & Yvol >= control.ymin - Sigvol & Yvol <= control.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax);
+
+for ROI=1:3
+    for ROI_other=ROI+1:4
+        j=intersect(Roi{ROI,4},Roi{ROI_other,4});
+        disp(j)
+    end
+end
+
+% Create a barplot for each condition, where the betas per ROI are
+% displayed.
+conditions = 4;
+plotmeans = cell(4,4);
+ploterrors = cell(4,4);
+for cond=1:conditions
+    % ROI(roi,cond)
+    ROI1_mean = nanmean(Roi{1,cond});
+    ROI2_mean = nanmean(Roi{2,cond});
+    ROI3_mean = nanmean(Roi{3,cond});
+    ROI4_mean = nanmean(Roi{4,cond});
+    
+    ROI1_ste = nanstd(Roi{1,cond}) / sqrt(length(Roi{1,cond}(~isnan(Roi{1,cond}))));
+    ROI2_ste = nanstd(Roi{2,cond}) / sqrt(length(Roi{2,cond}(~isnan(Roi{2,cond}))));
+    ROI3_ste = nanstd(Roi{3,cond}) / sqrt(length(Roi{3,cond}(~isnan(Roi{3,cond}))));
+    ROI4_ste = nanstd(Roi{4,cond}) / sqrt(length(Roi{4,cond}(~isnan(Roi{4,cond}))));
+    plotmeans(:,cond) = {ROI1_mean, ROI2_mean, ROI3_mean, ROI4_mean};
+    ploterrors(:,cond) = {ROI1_ste, ROI2_ste, ROI3_ste, ROI4_ste};
+end
+figure;
+
+% Create a subplot in the 4x4 grid
+
+% Plot a bar chart for the corresponding data
+bar(cell2mat(plotmeans));
+hold on;
+for cond = 1:4
+    x = (1:4) - .48 + cond*0.19;  % Adjust x-coordinates for each set of bars
+    errorbar(x, cell2mat(plotmeans(:,cond)), cell2mat(ploterrors(:,cond)), '.', 'LineWidth', 1.5);
+end
+hold off;
+
+% hold on;
+% errorbar(1:4, cell2mat(plotmeans), cell2mat(ploterrors), 'k.', 'LineWidth', 1.5);
+% hold off;
+% Customize subplot appearance if needed
+%title(['Row ' num2str(i) ', Col ' num2str(j)]);
+title('Bar Plot with ROIs and Conditions');
+xlabel('ROIs');
+ylabel('Beta');
+legend('Ver2', 'AV', 'IV', 'Ver3');
+%set(gca, 'xticklabel', categories); % Set x-axis labels
+hold off; % Release the hold
+grid on;
+    
+
+
+ROI1_coord_ind= find(Xvol>= flash1.xmin - Sigvol & Xvol<= flash1.xmax + visStimHorizEcc/2 - visStimWidth/2 & Yvol >= flash1.ymin - Sigvol & Yvol <= flash1.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax);
+
+ROI2_coord_ind = find(Xvol>= flash2.xmin - visStimHorizEcc/2 + visStimWidth/2 & Xvol<= flash2.xmax + visStimHorizEcc/2 - visStimWidth/2 & Yvol >= flash2.ymin -  Sigvol & Yvol <= flash2.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax); 
+
+ROI3_coord_ind = find(Xvol>= flash3.xmin - visStimHorizEcc/2 + visStimWidth/2 & Xvol<= flash3.xmax + Sigvol & Yvol >= flash3.ymin - Sigvol & Yvol <= flash3.ymax + Sigvol  & Varvol > varexpmax & Sigvol < Sigmax);
+
+ROI4_coord_ind = find(Xvol>= control.xmin - Sigvol & Xvol<= control.xmax + Sigvol & Yvol >= control.ymin - Sigvol & Yvol <= control.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax);
+
+X=Xvol(ROI1_coord_ind);
+Y=Yvol(ROI1_coord_ind);
+
+% Create a scatter plot
+figure;
+%scatter(X, Y, 'DisplayName', 'Dataset 1', 'Marker', 'o');
+scatter(Xvol(ROI1_coord_ind), Yvol(ROI1_coord_ind), 'DisplayName', 'Dataset 1', 'Marker', 'o');
+hold on;
+scatter(Xvol(ROI2_coord_ind), Yvol(ROI2_coord_ind), 'DisplayName', 'Dataset 2','Marker', 'x');
+scatter(Xvol(ROI3_coord_ind), Yvol(ROI3_coord_ind), 'DisplayName', 'Dataset 3', 'Marker', 'o');
+scatter(Xvol(ROI4_coord_ind), Yvol(ROI4_coord_ind), 'DisplayName', 'Dataset 3', 'Marker', '+');
+xlim([-5.5 5.5]);
+ylim([-5.5 5.5]);
+% Customize plot appearance
+title('Scatter Plot of X and Y');
+hold off;

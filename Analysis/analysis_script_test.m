@@ -1,17 +1,26 @@
-% latency for second beep
-% mydata{1}.startAudioTime(ver3,2) - mydata{1}.presentationTime(ver3,3)
+%function experiment_checks = analyse_experiment(path)
+% 
 
-% laptop
 clear all; close all;
-results_path = 'D:\Documents\MATLAB\postdiction_results\S21'
-% desktop
-%results_path = "C:\Users\pbarkema\Downloads\technical pilot data\postdiction_git\technicalpilot\Experiment\Results\S09";
-path = fullfile(results_path, "results_mainexp_2023_11_28_12_4_18.mat");
-data_file = load(path);
-results = data_file.data;
+subjects = {'S00'};
+% Find out which operating system we're running on
+if ispc
+    % set the path to SPM
+    results_path = 'C:\Users\PBarkema\OneDrive - University College London\Documents\MATLAB\Postdiction_git\Experiment\Results';
+    addpath(spmDir)
+elseif isunix
+    % set the path to SPM
+    spmDir = 'D:/something';
+end
+path = dir(fullfile(results_path, subjects{1}), 'results_mainexp_*');
+results = load(path.name).data;
 nTrials = size(results{1}.condition, 2);
 nBlocks = size(results, 2);
 conditions = 4;
+
+% Collect results, confidence per condition depending on desired or
+% undesired or average.
+
 for i=1:nBlocks
     all_scores(i,1) = results{i}.twoVeridicalscore
     all_scores(i,2) = results{i}.AVscore
