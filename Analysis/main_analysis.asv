@@ -90,14 +90,14 @@ for iSubject=1:nSubjects
     bar(conf_data, 'LineWidth', 2);
 
     % Calculate x-coordinates for error bars
-    groupWidth = 0.6;  % Adjust this value based on your preference
+    groupWidth = 0.8;  % Adjust this value based on your preference
     numGroups = 4;
     numBars = 2;
     barWidth = groupWidth / numBars;
     
     x = zeros(numGroups, numBars);
     for i = 1:numBars
-        x(:,i) = (1:numGroups) - (groupWidth / 2) + (i-0.5) * groupWidth / numBars;
+        x(:,i) = (1:numGroups) - (groupWidth / 2) + (i - 1) * groupWidth / numGroups;
     end
     hold on;
 %     for cond = 1:4

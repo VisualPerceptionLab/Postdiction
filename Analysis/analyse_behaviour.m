@@ -1,4 +1,4 @@
-function behaviour = analyse_behaviour(subject)
+function all_runs_behaviour = analyse_behaviour(subject)
 % TO-DO:
 % Average confidence undesired, desired and both. What analysis?
 % Scores. Inclusion criteria checker?
@@ -10,13 +10,11 @@ function behaviour = analyse_behaviour(subject)
 
 % Find out which operating system we're running on
 if ispc
-    % set the path to SPM
     results_path = 'C:\Users\PBarkema\OneDrive - University College London\Documents\MATLAB\Postdiction_git\Experiment\Results';
 elseif isunix
-    % set the path to SPM
     results_path = 'D:/something';
 end
-%subject= 'Oliver_humanpilot';
+
 path = dir(fullfile(results_path, subject, 'results_mainexp_*'));
 % Create results, fill results with each iBlock
 for run=1:length(path)
@@ -52,6 +50,7 @@ for run=1:length(path)
     % also do standard deviation and misses.
     for iBlock = 1:nBlocks
        % select desired answers
+       % maybe first cond, then desired/undesired?
        cond1_des = find(results{iBlock}.condition==1 & results{iBlock}.flashAnswer==2);
        cond2_des = find(results{iBlock}.condition==2 & results{iBlock}.flashAnswer==3);
        cond3_des = find(results{iBlock}.condition==3 & results{iBlock}.flashAnswer==2);
