@@ -35,9 +35,9 @@ try
      %2
     if showInstructions == 1
         nBlocks = 2;
-        nTrialsPerBlock = 16;
+        nTrialsPerBlock = 32;
     else 
-        nBlocks = 3;
+        nBlocks = 4;
         nTrialsPerBlock = 52;
     end
     if mod(nTrialsPerBlock,4) ~= 0
@@ -81,7 +81,7 @@ try
     else
         [window,width,height] = openScreen();
     end
-    
+    volume = 1;
     widthRatioDifference = width/1322;
     heightRatioDifference = height/768;
     

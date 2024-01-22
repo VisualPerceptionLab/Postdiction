@@ -10,7 +10,7 @@ global buttonDeviceID;
 PsychPortAudio('RunMode', pahandle, 1);
 
 % data{1}.endPresentationTime(:,1) - data{1}.presentationTime(:,2)
-sizemult = 1;
+sizemult = 1.5;
 distancemult = 1.5;
 pitch = 800;
 visStimWidth = degrees2pixels(0.28)*sizemult; % .28 measured as .33 % 14; %28% calculated from degrees of flash size width

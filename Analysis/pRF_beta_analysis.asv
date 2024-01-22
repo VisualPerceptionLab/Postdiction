@@ -156,7 +156,7 @@ Y=Yvol(ROI1_coord_ind);
 % Create a scatter plot
 figure;
 %scatter(X, Y, 'DisplayName', 'Dataset 1', 'Marker', 'o');
-scatter(Xvol(:,:), Yvol(:,:), 2, 'filled');
+scatter(Xvol(:,:), Yvol(:,:), 'DisplayName', 'Dataset 1', 'Marker', 'o');
 % hold on;
 % scatter(Xvol(ROI2_coord_ind), Yvol(ROI2_coord_ind), 'DisplayName', 'Dataset 2','Marker', 'x');
 % scatter(Xvol(ROI3_coord_ind), Yvol(ROI3_coord_ind), 'DisplayName', 'Dataset 3', 'Marker', 'o');
