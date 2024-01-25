@@ -58,7 +58,7 @@ for run=1:length(path)
        cond4_des = find(results{iBlock}.condition==4 & results{iBlock}.flashAnswer==3);
        
        confidences.desired.cond1.all{iBlock} = results{iBlock}.confAnswer(cond1_des);
-
+       
        confidences.desired.cond1.mean(iBlock) = mean(confidences.desired.cond1.all{iBlock}(confidences.desired.cond1.all{iBlock}>10) -10);
        confidences.desired.cond1.std(iBlock) = std(confidences.desired.cond1.all{iBlock}(confidences.desired.cond1.all{iBlock} >10) -10);
     
@@ -98,23 +98,6 @@ for run=1:length(path)
        confidences.misses(iBlock) = sum(results{iBlock}.confAnswer<10);
     end
     
-
-    % checker function
-%     %condition 1 larger than 85% correct
-%     screened = true
-%     if trial_scores.average_scores(1) < 0.85
-%         screened = false
-%     end
-%     if trial_scores.average_scores(4) < 0.85
-%         screened = false
-%     end
-%     cellArray = struct2cell(confidences.desired.cond2.all)
-%     resultArray = cat(1, cellArray{:})
-
-    %condition 2 larger than 35% > 2.5
-    %condition 4 larger than 85% correct
-    
-
     behaviour.confidences = confidences;
     
     % timing measurements:

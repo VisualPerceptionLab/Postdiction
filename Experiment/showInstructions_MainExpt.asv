@@ -24,7 +24,7 @@ text = [text 'Each trial will start with a fixation point, which will be present
 text = [text 'Under the fixation mark, flashes will be presented. '];
 text = [text 'On each trial, your task will be to report how many flashes you saw and how confident you are in your response.\n\n'];
 text = [text 'Please indicate whether you saw two or three flashes using "u" for 2 and "i" for 3. Place your index finger on "u" and middle finger on "i". '];
-text = [text 'For indicating how confident you are in your response, please use "r" (very confident), "e" (quite confident), "w" (not so confident)", "q" (not confident at all). Please place the four fingers of the left hand on "qwer". (1/2)\n\n'];
+text = [text 'For indicating how confident you are in your response, please use "r" (very confident), "e" (quite confident), "w" (not so confident)", "q" (not confident at all). Please place the four fingers of the left hand on "qwer (1/2)".\n\n'];
 
 
 

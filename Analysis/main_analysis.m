@@ -1,7 +1,7 @@
 % here we could call betasanalysis.m and analyse_behavior to plot/analyse
 % all data.
 clear all; close all;
-subjects = {'Oliver_humanpilot','Oliver_humanpilot_copy_for_testing'};
+subjects = {'S04'};
 
 % How do I make sure this works for one and for many subjects?
 % The data structure is
@@ -34,7 +34,7 @@ for iSubject=1:nSubjects
     bar(data, 'LineWidth', 2);
     
     % Customize subplot title
-    title(['S', num2str(iSubject)]);
+    title([subjects{iSubject}]);
     
     % Add other customization as needed
     
@@ -110,7 +110,7 @@ for iSubject=1:nSubjects
     %bar(undesired, 'LineWidth', 2);
     
     % Customize subplot title
-    title(['S', num2str(iSubject)]);
+    title([subjects{iSubject}]);
     
     % Add other customization as needed
     

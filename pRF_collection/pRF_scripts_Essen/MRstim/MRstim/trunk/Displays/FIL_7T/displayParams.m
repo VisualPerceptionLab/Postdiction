@@ -6,7 +6,7 @@ params.dimensions = [35.5 22]; %[38.5 29.5]
 params.distance = 113;
 params.frameRate = 60;
 params.cmapDepth = 10;
-params.screenNumber = 0; %0; %check in scanner
+params.screenNumber = 2; %0; %check in scanner
 % Descriptive parameters
 params.computerName = 'FIL_7T';
 params.monitor = 'Epson Projector';

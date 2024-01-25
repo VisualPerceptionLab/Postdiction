@@ -37,8 +37,13 @@ try
         nBlocks = 2;
         nTrialsPerBlock = 32;
     else 
+        if mriTiming
+            nBlocks = 2;
+            nTrialsPerBlock = 52;
+        else
         nBlocks = 4;
         nTrialsPerBlock = 52;
+        end
     end
     if mod(nTrialsPerBlock,4) ~= 0
         disp('WARNING: nTrialsPerBlock is not a multiple of 4, counterbalancing will fail!');
