@@ -100,17 +100,24 @@ for run=1:length(path)
     
 
     % checker function
-%     %condition 1 larger than 85% correct
-%     screened = true
-%     if trial_scores.average_scores(1) < 0.85
-%         screened = false
-%     end
-%     if trial_scores.average_scores(4) < 0.85
-%         screened = false
-%     end
-%     cellArray = struct2cell(confidences.desired.cond2.all)
-%     resultArray = cat(1, cellArray{:})
+    %condition 1 larger than 85% correct
+    screened = true;
+    if trial_scores.average_scores(1) < 0.85
+        screened = false
+    end
+    if trial_scores.average_scores(4) < 0.85
+        screened = false
+    end
+    highconfav = 0;
+    for iBlock = 1:nBlocks
+        % count
+        highconfav = sum(confidences.desired.cond2.all{iBlock} < 13 & confidences.desired.cond2.all{iBlock} > 10)
+    end
 
+    if highconfav < 15
+        screened = false;
+    end
+    disp(screened)
     %condition 2 larger than 35% > 2.5
     %condition 4 larger than 85% correct
     

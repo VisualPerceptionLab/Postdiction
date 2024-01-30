@@ -15,7 +15,7 @@ global environment
 %%%%% open window
 % hardcode so that mri uses extended screen 2
 if strcmp(environment,'mri') || strcmp(environment,'mri_offline')
-    windowPtrOrScreenNumber = 0;
+    windowPtrOrScreenNumber = 2;
 elseif ~exist('windowPtrOrScreenNumber','var') || isempty(windowPtrOrScreenNumber)
     windowPtrOrScreenNumber = max(Screen('Screens'));
 end

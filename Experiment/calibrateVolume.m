@@ -25,7 +25,7 @@ try
     sampleRate = 44100;
     %rampTime = 0.01; % rise and fall times of the tones.
     toneDur = 0.007; % 7ms
-    toneFreqs = 2000; % 800hz postdiction % A4 C#5 E5
+    toneFreqs = 800; % 800hz postdiction % A4 C#5 E5
     SOA = 0.75; % SOA between tone sequences
     
     % create tones
