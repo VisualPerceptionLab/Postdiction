@@ -40,7 +40,8 @@ switch environmentID
         end
 
         if Eyelink('Initialize')~=0; return; end % open a connection to the eyetracker PC
-        Eyelink('Openfile','postdeye')               % create test.edf on the eyetracker PC
+        eyename = ['postd', num2str(subjID)]
+        Eyelink('Openfile',eyename)               % create test.edf on the eyetracker PC
         ret_val = Eyelink('StartRecording')      % start recording (to the file)
         
         

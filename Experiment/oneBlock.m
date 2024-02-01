@@ -34,9 +34,9 @@ responseTime = 2;
 
 params = struct("visStimWidth", visStimWidth, "visStimLength", visStimLength, "visStimEcc", visStimEcc, "visStimHeight", visStimHeight, "stimColour", stimColour, "preOnset", preOnset, "stimDur", stimDur, "stimInterval", stimInterval, "toneDur", toneDur, "toneFreqs", toneFreqs, "responseTime", responseTime);
 
-design = repmat([1 2 3 4],1,nTrials/4);
-ExpDesign = design(randperm(nTrials));
-
+% design = repmat([1 2 3 4],1,nTrials/4);
+% ExpDesign = design(randperm(nTrials));
+ExpDesign = getExperimentalDesign(nTrials)
 %Start the sequence of trials
 PsychPortAudio('RunMode', pahandle, 1);
 % Initialise
