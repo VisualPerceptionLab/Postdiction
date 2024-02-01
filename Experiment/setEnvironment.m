@@ -38,6 +38,11 @@ switch environmentID
                 scanPulseDeviceID = index(device);
             end
         end
+
+        if Eyelink('Initialize')~=0; return; end % open a connection to the eyetracker PC
+        Eyelink('Openfile','postdeye')               % create test.edf on the eyetracker PC
+        ret_val = Eyelink('StartRecording')      % start recording (to the file)
+        
         
     case 2
         environment = 'mri_offline'

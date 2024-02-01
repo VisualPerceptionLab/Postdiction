@@ -57,7 +57,7 @@ try
     practice = 0;
     
     % create a counterbalanced trial structure for a (task) block.
-    %trialStructure = getTrialStructure(nTrialsPerBlock, propOmission);
+   
    
     currentTime = round(clock);
     if showInstructions == 1
@@ -115,6 +115,7 @@ try
     % store the time at which the experiment actually starts - i.e. the
     % start of the first trial.
     initialTime = time;
+    Eyelink('Message','Trigger %d','initial_time')    % optionally send triggers (to the file)
     data = [];
     %Display blocks
     for iBlock = 1:nBlocks
@@ -123,15 +124,9 @@ try
         [background,Lmin,Lmax] = calibrateLum(contrasts(iBlock)); 
         pitch = 800;
         % Create trial sequence for the block
-%         trialSequence = trialStructure(randperm(nTrialsPerBlock),:);
-        % Hack it so that there are no more than 5 omissions in a row,
-        % and that the first trial is always a valid trial.
-        % Show example gratings (and tone-orientation contingency if applicable)
-
-%         
-        %Present a block of trials
-        %trialSequence
-        %mriTiming = false;
+        
+        
+        
         if mriTiming
             data{iBlock} = oneBlockScanner(time, volume, training, nTrialsPerBlock, sampleRate);
         else 
@@ -172,7 +167,12 @@ try
     %         % Save staircase values for future use.
     %         save(fullfile(resultDir,'curStaircases.mat'), 'orientationQ', 'contrastQ');
     %     end
-    
+    if mriTiming
+        Eyelink('StopRecording')                 % stop recording
+        Eyelink('Closefile')                     % close the file
+        Eyelink('ReceiveFile')                   % copy the file to the Stimulus PC
+        Eyelink('Shutdown')                      % close the connection to the eyetracker PC
+    end
     % Close the audio device:
     PsychPortAudio('Close', pahandle);
     

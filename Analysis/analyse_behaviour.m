@@ -10,7 +10,7 @@ function all_runs_behaviour = analyse_behaviour(subject)
 
 % Find out which operating system we're running on
 if ispc
-    results_path = 'D:\Documents\PhD project\postdiction_AV_fMRI\Data Collection\Data';
+    results_path = 'D:\Documents\PhD_project\postdiction_AV_fMRI\Data Collection\Data';
 elseif isunix
     results_path = 'D:/something';
 end
