@@ -1,7 +1,7 @@
 % here we could call betasanalysis.m and analyse_behavior to plot/analyse
 % all data.
 clear all; close all;
-subjects = {'S01','S02', 'S03', 'S04', 'S05', 'S06'};
+subjects = {'S01','S02', 'S03', 'S03_scan', 'S04', 'S05', 'S06'};
 
 % How do I make sure this works for one and for many subjects?
 % The data structure is
@@ -41,10 +41,10 @@ for iSubject=1:nSubjects
         % Add other customization as needed
         
         % Example: Add labels, legend, etc. (replace with your own code)
-        xlabel('Scores per condition');
+        xlabel('Scores for each run, per condition');
         ylabel('% desired ans');
         ylim([0 1])
-        %legend('Run1', 'Run2', 'Run3', 'Run4');
+        legend('Run1', 'Run2', 'Run3', 'Run4');
     else
         data = mean(subject_behaviour{iRun}.trial_scores.all_scores, 1);
     end

@@ -10,12 +10,12 @@ function all_runs_behaviour = analyse_behaviour(subject)
 
 % Find out which operating system we're running on
 if ispc
-    results_path = 'D:\Documents\PhD_project\postdiction_AV_fMRI\Data Collection\Data';
+    results_path = 'D:\Documents\PhD_project\postdiction_AV_fMRI\data_collection\Data';
 elseif isunix
-    results_path = 'D:/something';
+    results_path = '/mnt/d/Documents/PhD_project/postdiction_AV_fMRI/data_collection/Data';
 end
-
-path = dir(fullfile(results_path, subject, 'results_mainexp_*'));
+results_path
+path = dir(fullfile(results_path, subject, 'results_mainexp_*'))
 % Create results, fill results with each iBlock
 for run=1:length(path)
     results = load(fullfile(results_path, subject, path(run).name)).data;

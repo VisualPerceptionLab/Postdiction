@@ -1,15 +1,14 @@
-%function designMatrix = getExperimentalDesign(totalTrials)
+function designMatrix = getExperimentalDesign(totalTrials)
 
 % Number of trials and conditions
 numConditions = 4;
-totalTrials = 52;
 trialsPerSubBlock = totalTrials/numConditions;
 % Initialize the design matrix
 designMatrix = zeros(totalTrials, 1);
 subBlocks = 4;
 RepsPerSubBlock = floor((totalTrials/subBlocks)/4);
 remainder = totalTrials - RepsPerSubBlock * numConditions * subBlocks;
-%%
+
 % foreach of n submatrix
 numbers = 1:4;
 for subblock = 1:numConditions
@@ -24,9 +23,9 @@ for subblock = 1:numConditions
 end
 
 % Display the design matrix
-disp('Experimental Design Matrix:');
-disp(designMatrix);
-hist(designMatrix);
+% disp('Experimental Design Matrix:');
+% disp(designMatrix);
+% hist(designMatrix);
 % add a random 1, 2, 3 or 4
 % random permute
 %put on start and endindex

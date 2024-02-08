@@ -1,27 +1,36 @@
+close all;
 clear all;
 spm = 'D:\spm12';
+pRFdir = 'D:\Documents\PhD_project\postdiction_AV_fMRI\fMRI_processing\pRF_analysis\pRF_analysis\petkok_analysis_2016_PB\SubjectData';
+pRFpostfix = 'MrVistaWarped_motionRegress\Session'
 addpath(spm)
-Xhead = spm_vol('D:\Documents\PhD project\postdiction_AV_fMRI\fMRI_processing\pRF_analysis\pRF_analysis\petkok_analysis_2016_PB\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\x0.nii');
+allSubjects = [3];
+prfsubj = sprintf('Subject%02d', allSubjects(1));
+allSubjects = {'S03'};
+betasubj = allSubjects(1);
+prffullfile = char(fullfile(pRFdir, prfsubj, pRFpostfix, 'x0.nii'))
+Xhead = spm_vol(char(prffullfile))
 Xvol = spm_read_vols(Xhead);
-Yhead = spm_vol('D:\Documents\PhD project\postdiction_AV_fMRI\fMRI_processing\pRF_analysis\pRF_analysis\petkok_analysis_2016_PB\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\y0.nii');
+Yhead = spm_vol(char(fullfile(pRFdir, prfsubj, pRFpostfix, 'y0.nii')));
 Yvol = spm_read_vols(Yhead);
 %Sighead = spm_vol('D:\Documents\MATLAB\PRF\pRF_analysis\pRF_analysis\petkok_analysis_2016\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\x0.nii');
 %Sigvol = spm_read_vols(Sighead);
-Varhead = spm_vol('D:\Documents\PhD project\postdiction_AV_fMRI\fMRI_processing\pRF_analysis\pRF_analysis\petkok_analysis_2016_PB\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\varexp.nii');
+Varhead = spm_vol(char(fullfile(pRFdir, prfsubj, pRFpostfix, 'varexp.nii')));
 Varvol = spm_read_vols(Varhead);
-Sighead = spm_vol('D:\Documents\PhD project\postdiction_AV_fMRI\fMRI_processing\pRF_analysis\pRF_analysis\petkok_analysis_2016_PB\SubjectData\Subject01\MrVistaWarped_motionRegress\Session\sigma.nii');
+Sighead = spm_vol(char(fullfile(pRFdir, prfsubj, pRFpostfix, 'sigma.nii')));
 Sigvol = spm_read_vols(Sighead);
 % Make this the beta per condition, so first four betas
-Mainhead1 = spm_vol('D:\Documents\PhD project\postdiction_AV_fMRI\fMRI_processing\LayerfMRI_Hallucinations\Subject_data\techpilot5\FirstLevelModelSmooth\con_0001.nii');
-Mainhead2 = spm_vol('D:\Documents\PhD project\postdiction_AV_fMRI\fMRI_processing\LayerfMRI_Hallucinations\Subject_data\techpilot5\FirstLevelModelSmooth\con_0002.nii');
-Mainhead3 = spm_vol('D:\Documents\PhD project\postdiction_AV_fMRI\fMRI_processing\LayerfMRI_Hallucinations\Subject_data\techpilot5\FirstLevelModelSmooth\con_0003.nii');
-Mainhead4 = spm_vol('D:\Documents\PhD project\postdiction_AV_fMRI\fMRI_processing\LayerfMRI_Hallucinations\Subject_data\techpilot5\FirstLevelModelSmooth\con_0004.nii');
+betadir = 'D:\Documents\PhD_project\postdiction_AV_fMRI\fMRI_processing\LayerfMRI_Hallucinations\Subject_data';
+Mainhead1 = spm_vol(char(fullfile(betadir, betasubj, 'FirstLevelModelSmooth\con_0001.nii')));
+Mainhead2 = spm_vol(char(fullfile(betadir, betasubj, 'FirstLevelModelSmooth\con_0002.nii')));
+Mainhead3 = spm_vol(char(fullfile(betadir, betasubj, 'FirstLevelModelSmooth\con_0003.nii')));
+Mainhead4 = spm_vol(char(fullfile(betadir, betasubj, 'FirstLevelModelSmooth\con_0004.nii')));
 
 Mainvols = {spm_read_vols(Mainhead1), spm_read_vols(Mainhead2), spm_read_vols(Mainhead3), spm_read_vols(Mainhead4)};
 
-visStimWidth = 0.28; 
-visStimLength = 1.2; 
-visStimHorizEcc = 1.42;
+visStimWidth = 0.28*1.5; 
+visStimLength = 1.2*1.5; 
+visStimHorizEcc = 1.42* 1.5;
 visStimVertEcc = 4.3;
 
 % ROI 1 - left flash

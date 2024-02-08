@@ -19,6 +19,7 @@ try
     [mriTiming, waitTime, sampleRate] = setEnvironment(true); % Initialise environment, including audio.
     KbName('UnifyKeyNames');
     subjID = input('Subject number?: ');
+    
     %% This might be a safer way to ensure consistency in omissions&contrast across participants.
     training = input('1 = Behavourial Training 0 = Scanning');
     % creates a practice block
@@ -115,7 +116,7 @@ try
     % store the time at which the experiment actually starts - i.e. the
     % start of the first trial.
     initialTime = time;
-    Eyelink('Message','Trigger %d','initial_time')    % optionally send triggers (to the file)
+    Eyelink('Message','Trigger %s',num2str(initialTime))    % optionally send triggers (to the file)
     data = [];
     %Display blocks
     for iBlock = 1:nBlocks
