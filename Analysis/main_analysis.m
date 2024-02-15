@@ -1,7 +1,7 @@
 % here we could call betasanalysis.m and analyse_behavior to plot/analyse
 % all data.
-clear all; close all;
-subjects = {'S01','S02', 'S03', 'S04', 'S05', 'S06'};
+clear all; %close all;
+subjects = {'S03_scan', 'S02_scan'}%{'S01','S02', 'S03', 'S04', 'S05', 'S06'};
 
 % How do I make sure this works for one and for many subjects?
 % The data structure is

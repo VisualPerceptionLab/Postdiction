@@ -137,7 +137,7 @@ end
     % Plot a bar chart for the corresponding data
     bar(cell2mat(plotmeans));
     hold on;
-    for cond = 1:conditions
+    for cond = 1:4
         x = (1:ROI_nr) - .48 + cond*0.19;  % Adjust x-coordinates for each set of bars
         errorbar(x, cell2mat(plotmeans(:,cond)), cell2mat(ploterrors(:,cond)), '.', 'LineWidth', 1.5);
     end
@@ -158,7 +158,7 @@ end
         
     
     
-    ROI1_coord_ind= find(Xvol>= flash1.xmin - Sigvol & Xvol<= flash1.xmax + visStimHorizEcc/2 - visStimWidth/2 & Yvol >= flash1.ymin - Sigvol & Yvol <= flash1.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax);
+    ROI1_coord_ind= find(Xvol>= bullseye.xmin - Sigvol & Xvol<= bullseye.xmax + Sigvol & Yvol >= bullseye.ymin - Sigvol & Yvol <= bullseye.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax);
     
     ROI2_coord_ind = find(Xvol>= flash2.xmin - visStimHorizEcc/2 + visStimWidth/2 & Xvol<= flash2.xmax + visStimHorizEcc/2 - visStimWidth/2 & Yvol >= flash2.ymin -  Sigvol & Yvol <= flash2.ymax + Sigvol & Varvol > varexpmax & Sigvol < Sigmax); 
     
@@ -173,10 +173,10 @@ end
     figure;
     %scatter(X, Y, 'DisplayName', 'Dataset 1', 'Marker', 'o');
     %scatter(Xvol(:,:), Yvol(:,:), 2, 'filled');
-    hold on;
-    scatter(Xvol(ROI1_coord_ind), Yvol(ROI1_coord_ind), 'DisplayName', 'Dataset 1','Marker', 'x');
-    scatter(Xvol(ROI2_coord_ind), Yvol(ROI2_coord_ind), 'DisplayName', 'Dataset 2','Marker', 'o');
-    scatter(Xvol(ROI3_coord_ind), Yvol(ROI3_coord_ind), 'DisplayName', 'Dataset 3', 'Marker', 'x');
+    % hold on;
+    scatter(Xvol(ROI1_coord_ind), Yvol(ROI1_coord_ind), 'DisplayName', 'Dataset 2','Marker', 'x');
+    scatter(Xvol(ROI2_coord_ind), Yvol(ROI2_coord_ind), 'DisplayName', 'Dataset 2','Marker', 'x');
+    scatter(Xvol(ROI3_coord_ind), Yvol(ROI3_coord_ind), 'DisplayName', 'Dataset 3', 'Marker', 'o');
     scatter(Xvol(ROI4_coord_ind), Yvol(ROI4_coord_ind), 'DisplayName', 'Dataset 4', 'Marker', '+');
     scatter(Xvol(ROI5_coord_ind), Yvol(ROI5_coord_ind), 'DisplayName', 'Dataset 5', 'Marker', '+');
     xlim([-5.5 5.5]);
