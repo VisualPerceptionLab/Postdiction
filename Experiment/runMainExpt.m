@@ -18,7 +18,8 @@ try
     
     [mriTiming, waitTime, sampleRate] = setEnvironment(true); % Initialise environment, including audio.
     KbName('UnifyKeyNames');
-    subjID = input('Subject number?: ');
+    subjID = input('Subject number: ');
+    
     
     %% This might be a safer way to ensure consistency in omissions&contrast across participants.
     training = input('1 = Behavourial Training 0 = Scanning');

@@ -9,10 +9,11 @@ delete(instrfind)
 pRF_paths = fullfile(pwd,'MRstim','MRstim');
 pRF_paths = genpath(pRF_paths);
 addpath(pRF_paths);
-subjID = input('Subject number?: ');
+subjID = input('Subject number: ');
+run = input('Run: ');
 LoadPsychHID
 if Eyelink('Initialize')~=0; return; end % open a connection to the eyetracker PC
-eyename = ['prfeye', num2str(subjID)]
+eyename = ['PRF', num2str(run)]
 Eyelink('Openfile',eyename)               % create test.edf on the eyetracker PC
 ret_val = Eyelink('StartRecording')      % start recording (to the file)
 
