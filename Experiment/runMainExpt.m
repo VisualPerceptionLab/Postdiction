@@ -5,7 +5,7 @@
 
 clear all; close all;
 
-rng('shuffle') % re5set the state of the random number generator.
+%rng('shuffle') % re5set the state of the random number generator.
 
 global window width height;
 global environment;
@@ -117,7 +117,9 @@ try
     % store the time at which the experiment actually starts - i.e. the
     % start of the first trial.
     initialTime = time;
+    if mriTiming
     Eyelink('Message','Trigger %s',num2str(initialTime))    % optionally send triggers (to the file)
+    end
     data = [];
     %Display blocks
     for iBlock = 1:nBlocks
@@ -132,7 +134,7 @@ try
         if mriTiming
             data{iBlock} = oneBlockScanner(time, volume, training, nTrialsPerBlock, sampleRate);
         else 
-            data{iBlock} = oneBlock(time, volume, training, nTrialsPerBlock, sampleRate);
+            data{iBlock} = oneBlockScanner(time, volume, training, nTrialsPerBlock, sampleRate);
         end
         
         %Save the data
