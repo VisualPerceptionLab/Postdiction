@@ -56,8 +56,8 @@ for iSubj =1:length(betaSubjects)
 
     Mainvols = {spm_read_vols(Mainhead1), spm_read_vols(Mainhead2), spm_read_vols(Mainhead3), spm_read_vols(Mainhead4)};%, spm_read_vols(Mainhead7)};
     contrasts = length(Mainvols);
-    visStimWidth = 0.28*1.5; 
-    visStimLength = 1.2*1.5; 
+    visStimWidth = 0.28; 
+    visStimLength = 1.2; 
     visStimHorizEcc = 1.42* 1.5;
     visStimVertEcc = 4.3;
     individual_var_mult = 4;

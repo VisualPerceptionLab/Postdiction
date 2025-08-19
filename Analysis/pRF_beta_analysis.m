@@ -56,8 +56,8 @@ for iSubj =1:length(betaSubjects)
 
     Mainvols = {spm_read_vols(Mainhead1), spm_read_vols(Mainhead2), spm_read_vols(Mainhead3), spm_read_vols(Mainhead4)};%, spm_read_vols(Mainhead7)};
     contrasts = length(Mainvols);
-    visStimWidth = 0.28*1.5; 
-    visStimLength = 1.2*1.5; 
+    visStimWidth = 0.28; 
+    visStimLength = 1.2; 
     visStimHorizEcc = 1.42* 1.5;
     visStimVertEcc = 4.3;
     individual_var_mult = 4;
@@ -93,7 +93,7 @@ for iSubj =1:length(betaSubjects)
     ROI_boundary = .0;
 
     % Roi_ind: ROI x condition indices
-    Sigmax = 1.5; %1.42 - (1/2)*visStimWidth; original: 1.5
+    Sigmax = 1.3; %1.42 - (1/2)*visStimWidth; original: 1.5
     Sigmin = 0.1;
     varexpmin = .1; %change to sigmax 1 and varexpmin .2 original: .1
     Roi = cell(5, 4);

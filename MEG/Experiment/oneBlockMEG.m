@@ -24,14 +24,15 @@ stimColour = Lmax;
 preOnset = 1;
 % MEG wiki
 beamer_latency = 1/60;
-stimDur = 1/60;  %16.6ms
-stimInterval = 3/60; %52ms inbetween stimuli
+stimDur = 10/60;  %16.6ms
+stimInterval = 20/60; %52ms inbetween stimuli
 toneDur = 0.01; % now 10ms % 7ms
 halfframe = 1/120;
 toneFreqs = pitch; % postdiction % A4 C#5 E5
-%flash_text = '';
-%conf_text = '';
+% Diode square size
+rectSize=30;
 responseTime = 2;
+end_trig = 0.07;
 
 params = struct("visStimWidth", visStimWidth, "visStimLength", visStimLength, "visStimEcc", visStimEcc, "visStimHeight", visStimHeight, "stimColour", stimColour, "preOnset", preOnset, "stimDur", stimDur, "stimInterval", stimInterval, "toneDur", toneDur, "toneFreqs", toneFreqs, "responseTime", responseTime);
 
@@ -63,6 +64,7 @@ for iTrial=1:nTrials
 
     % Present the fixation bull's eye, as a cue of trial onset
     %Screen('DrawText', window , '+', fixRect , CenterRect(fixRect, [0 0 width height]));
+    Screen('FillRect',window,0,[0 height-rectSize rectSize height]); % add black square for photodiode
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     % presentationTime keeps the start time of trial and show time of all visual
     % cues
@@ -71,7 +73,8 @@ for iTrial=1:nTrials
     
     % Stimulus Pair 1
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
-   
+    
+    Screen('FillRect',window,255,[0 height-rectSize rectSize height]); % add white square for photodiode
     Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], vis_stim1_coord));
     
     %PK: first rectangle coordinates
@@ -83,18 +86,24 @@ for iTrial=1:nTrials
     %startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, time ,0);
     time = presentationTime(iTrial,1) + preOnset;
     presentationTime(iTrial,2) = Screen('Flip', window, time - halfframe);
+     % end trigger after auditory stimulus has ended?
+    
+    if strcmp(environment,'meg')
+            trialCode = 11; 
+            io64(io, port, trialCode) % Send trigger about what stimulus was presented.
+    end
+
+    Screen('FillRect',window,0,[0 height-rectSize rectSize height]); % add black square for photodiode
+
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     endPresentationTime(iTrial, 1) = Screen('Flip', window, presentationTime(iTrial,2) + stimDur - halfframe);
     startAudioTime(iTrial, 1) = PsychPortAudio('Start', pahandle, 1, presentationTime(iTrial,2) + beamer_latency,1);
+     if strcmp(environment,'meg')
+            trialCode = 21; 
+            io64(io, port, trialCode) % Send trigger about what stimulus was presented.
+    end
     
-    % end trigger after auditory stimulus has ended?
-    end_trig = 0.07;
-    if strcmp(environment,'meg')
-        trialCode = predShape + 30; % auditory tone presentation. 31 or 34
-        io64( io, port, trialCode); % Send trigger about what stimulus was presented.
-        WaitSecs(end_trig);
-        io64( io, port, 0); % Send signal that trial has ended.
-    end % Send signal that trial has ended.
+   
     
     % Duration between stimuli
     time = endPresentationTime(iTrial, 1) + stimInterval;
@@ -103,8 +112,17 @@ for iTrial=1:nTrials
     
     % just flip to keep timing right
     if thisCondition == 1
+
+    Screen('FillRect',window,255,[0 height-rectSize rectSize height]); % add white square for photodiode
     presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe);
+    if strcmp(environment,'meg')
+            trialCode = 12; 
+            io64(io, port, trialCode) % Send trigger about what stimulus was presented.
+    end
+    
+    
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
+    Screen('FillRect',window,0,[0 height-rectSize rectSize height]); % add black square for photodiode
     endPresentationTime(iTrial, 2) = Screen('Flip', window, presentationTime(iTrial,3) + stimDur - halfframe);
     end
     
@@ -114,7 +132,13 @@ for iTrial=1:nTrials
     % Start audio playback at time 'time', return onset timestamp.
     % calculate when new audio should come
     %presentationTime(iTrial,3) = Screen('Flip', window, startAudioTime(iTrial, 2) - halfframe);
+    Screen('FillRect',window,255,[0 height-rectSize rectSize height]); % add white square for photodiode
     presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe);
+    if strcmp(environment,'meg')
+            trialCode = 22; 
+            io64(io, port, trialCode) % Send trigger about what stimulus was presented.
+    end
+    Screen('FillRect',window,0,[0 height-rectSize rectSize height]); % add white square for photodiode
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     endPresentationTime(iTrial, 2) = Screen('Flip', window, presentationTime(iTrial,3) + stimDur - halfframe);
     startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, presentationTime(iTrial,3) + beamer_latency,1);
@@ -124,8 +148,15 @@ for iTrial=1:nTrials
     % invisible rabbit
     if thisCondition == 3 
     % Visual cue 2
+  
+    Screen('FillRect',window,255,[0 height-rectSize rectSize height]); % add white square for photodiode
     Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], vis_stim2_coord));
     presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe);
+    if strcmp(environment,'meg')
+            trialCode = 22; % shape presentation, trial code is 21 or 24. 
+            io64(io, port, trialCode) % Send trigger about what stimulus was presented.
+    end
+    Screen('FillRect',window,0,[0 height-rectSize rectSize height]); % add black square for photodiode
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     endPresentationTime(iTrial, 2) = Screen('Flip', window, presentationTime(iTrial,3) + stimDur - halfframe);
     %Show first visual stimulus one frame flip later for its indended
@@ -134,8 +165,14 @@ for iTrial=1:nTrials
     % if condition 4: rect, sound
     if thisCondition == 4 
     % Visual cue 2
+    Screen('FillRect',window,255,[0 height-rectSize rectSize height]); % add white square for photodiode
     Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], vis_stim2_coord));
     presentationTime(iTrial,3) = Screen('Flip', window, time - halfframe);
+    if strcmp(environment,'meg')
+            trialCode = 22; 
+            io64(io, port, trialCode) % Send trigger about what stimulus was presented.
+    end
+    Screen('FillRect',window,0,[0 height-rectSize rectSize height]); % add black square for photodiode
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     endPresentationTime(iTrial, 2) = Screen('Flip', window, presentationTime(iTrial,3) + stimDur - halfframe);
     startAudioTime(iTrial, 2) = PsychPortAudio('Start', pahandle, 1, presentationTime(iTrial,3) + beamer_latency, 1);
@@ -147,7 +184,7 @@ for iTrial=1:nTrials
 
 
     % Stimulus Pair 3
-    
+    Screen('FillRect',window,255,[0 height-rectSize rectSize height]); % add white square for photodiode
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     Screen('FillRect', window, stimColour, CenterRect([0 0 visStimWidth visStimLength], vis_stim3_coord));
     % interspace with some time
@@ -155,6 +192,7 @@ for iTrial=1:nTrials
     
     %presentationTime(iTrial,4) = Screen('Flip', window, startAudioTime(iTrial, 3) - halfframe);
     presentationTime(iTrial,4) = Screen('Flip', window, time - halfframe);
+    Screen('FillRect',window,0,[0 height-rectSize rectSize height]); % add black square for photodiode
     % flip to empty after 17ms
     Screen('DrawTexture', window, fixCrossTexture, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     endPresentationTime(iTrial, 3) = Screen('Flip', window, presentationTime(iTrial,4) + stimDur - halfframe);
@@ -193,9 +231,10 @@ for iTrial=1:nTrials
     if (flashAnswer == -10) || (confAnswer == -10)
         % Present red bull's eye dot.
         Screen('DrawTexture', window, fixCrossTexture_miss, fixRect, CenterRect(fixRect, [0 0 width height]));
+        Screen('FillRect',window,0,[0 height-rectSize rectSize height]); % add black square for photodiode
         Screen('Flip', window, time + 0.3 - halfframe);
     end
-    
+    Screen('FillRect',window,0,[0 height-rectSize rectSize height]); % add black square for photodiode
     Screen('DrawTexture', window, fixCrossTexture_dim, fixRect, CenterRect(fixRect, [0 -FixMarkHeight width height]));
     tempPresentationTime(1) = Screen('Flip', window, time - halfframe);
     time = tempPresentationTime(1);
