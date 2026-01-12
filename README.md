@@ -1,8 +1,8 @@
 # Postdiction: Neural Decoding of Audiovisual Illusions
 
-**A high-performance pipeline for collecting and decoding ultra-high resolution brain activity data (7T fMRI & MEG).**
+**An adapted high-performance pipeline for collecting and decoding ultra-high resolution brain activity data (7T fMRI & MEG).**
 
-This repository contains the experimental code and analysis pipeline used to investigate *postdictive perception*—how the brain updates past perceptions based on future input. The codebase handles stimulus presentation with millisecond precision and performs high-dimensional time-series decoding to reconstruct visual illusions from neural activity.
+This repository contains the experimental code and analysis pipeline used to investigate *postdictive perception*—how the brain updates past perceptions based on future input. The codebase handles stimulus presentation with millisecond precision and performs high-dimensional time-series decoding to reconstruct visual illusions from neural activity. The code was adapted for previous experiments for stimuli presentation.
 
 ### 📄 Reference
 **Barkema, P., et al. (2025).** *Deep layers of primary visual cortex encode postdictive perception.*
