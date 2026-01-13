@@ -7,7 +7,7 @@ This repository contains the experimental code and analysis pipeline used to inv
 ### 📄 Reference
 **Barkema, P., et al. (2025).** *Deep layers of primary visual cortex encode postdictive perception.*
 > Presented at **VSS (Visual Science Society)**, May 2025.
-
+[Video Link](https://www.youtube.com/watch?v=UetvGUnviXQ)
 ---
 
 ## 🚀 Project Overview
