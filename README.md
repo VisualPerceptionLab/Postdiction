@@ -29,8 +29,11 @@ This project was built to address the challenge of synchronizing rapid audiovisu
 * **Hardware Targets:** Siemens 7T fMRI, MEG (CTF Systems)
 
 ## :open_book: Research
+
+### Looking inside the human 'black box'
 I was able to, for the first time in the field, successfully create illusions from this [experiment](https://www.youtube.com/watch?v=yCpsQ8LZOco) in two extremely complex SOTA environments for mapping the brain and its activity: the 7T fMRI scanner (unique hardware setup, millimeter precision, magnetic noise, hardware delays, unique setup) and MEG scanner (millisecond precision, noisy channels, movement artefacts), to get a real-time chart of brain information transmission. The code deals with precise presentation of tones and flashes at the same time with millisecond precision, taking into account fundamental problems, such as human-in-the-loop experiment, visual angles and screen refresh rates.
 
+### Understanding hallucinations: the overconfident boss analogy
 We used very precise brain mapping methods to reduce millions of brain activity data points to hundreds. We demonstrated that our perception is no livestream, but a post-hoc reconstructed **hallucination** in the brain, created through **faulty** post-hoc revision of incoming information by higher-up areas: like an overconfident boss convincing their expert employee that they are wrong, when they are not. We are now preparing to publish this important evidence on our brain's reality in a **high impact journal**.
 
 ## 📂 Repository Structure
